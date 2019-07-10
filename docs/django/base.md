@@ -4,6 +4,7 @@
 
 [Django英文网](https://docs.djangoproject.com/en/2.2/)
 
+- 虚拟环境下，源码路径查看：`~/.virtualenvs/py3django/lib/python3.7/site-packages`
 - 项目初始化：`django-admin startproject myDjango`。
 - 创建app：`python manage.py startapp my_app`。
 
