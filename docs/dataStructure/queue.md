@@ -70,3 +70,10 @@ from collections import deque（Python）
 - 有限资源池(如数据库连接池)
 
   在资源有限的场景下，当没有空闲资源时，基本上都可以通过“队列”这种数据结构来实现请求排队。
+
+## 优先队列
+
+实现机制：
+
+- Heap（Binary、Binomial多项式、Fibonacci)
+- Binary Search Tree

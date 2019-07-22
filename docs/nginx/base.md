@@ -52,10 +52,22 @@
 3. Configure
 
   ``` sh
-  # 查看支持参数
+  # 查看configure支持参数，中间件如下
   ./configure --help | more
   ```
 
 4. 中间件介绍
+
+- 第一部分：Nginx执行时检索目录作为辅助文件，示例如下：
+  - prefix：预设目录
+  - modules-path：动态模块
+  - lock-path：nginx.lock文件路径
+- 第二部分：确认是否使用某些模块
+  - with前缀：with前缀的均不会默认编译进Nginx
+  - without前缀：without前缀均会默认编译进Nginx
+- 第三部分：指定Nginx编译时的特殊参数及添加第三方模块，示例如下：
+  - with-cc：设置C编译的路径
+  - with-debug：打印debug级别的日志
+
 5. 编译
 6. 安装

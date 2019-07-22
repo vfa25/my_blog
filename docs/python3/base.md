@@ -1,5 +1,7 @@
 # Python基础
 
+<h3 style="color: purple;">如果一生只能选择一门编程语言，我也会选择Python。</h3>
+
 注：该章均在python3.7虚拟环境下，命令若未显式注明版本的均默认v3.7，如pip3、python3。
 
 ## 参考文档
