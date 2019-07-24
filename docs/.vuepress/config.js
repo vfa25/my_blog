@@ -50,6 +50,7 @@ module.exports = {
           'dataStructure/linkedList',
           'dataStructure/stack',
           'dataStructure/queue',
+          'dataStructure/skipList',
         ]
       },
       {
