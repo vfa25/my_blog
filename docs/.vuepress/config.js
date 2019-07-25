@@ -12,27 +12,34 @@ module.exports = {
     nav: [
       { text: '偏前端', link: '/frontEnd/' },
       { text: 'Server端', link: '/serverSide/' },
-      { text: '跨端', link: '/common/' },
+      { text: '通用', link: '/general/' },
       { text: 'Github', link: 'https://github.com/vfa25/my_doc' }
     ],
     sidebar: {
       '/frontEnd/': [
         {
-          title: '开场白',
+          title: '前言',
           collapsable: false,
           children: [
             ['', 'Introduction']
           ]
         },
         {
-          title: 'ReactNative',
+          title: 'Babel',
+          collapsable: false,
           children: [
-            'reactNative/introduction',
-            'reactNative/debug',
-            'reactNative/layout',
-            'reactNative/navigation'
+            'babel/AST',
           ]
         }
+        // {
+        //   title: 'ReactNative',
+        //   children: [
+        //     'reactNative/introduction',
+        //     'reactNative/debug',
+        //     'reactNative/layout',
+        //     'reactNative/navigation'
+        //   ]
+        // }
       ],
       '/serverSide/': [
         {
@@ -50,6 +57,26 @@ module.exports = {
           ]
         },
         {
+          title: 'Django',
+          collapsable: false,
+          children: [
+            'django/base',
+            'django/rest_framework',
+          ]
+        },
+        {
+          title: 'Scrapy',
+          children: [
+            'scrapy/base'
+          ]
+        },
+        {
+          title: 'Nginx',
+          children: [
+            'nginx/base'
+          ]
+        },
+        {
           title: '服务器配置（操作系统Ubuntu）',
           children: [
             'config/base',
@@ -62,27 +89,8 @@ module.exports = {
             'config/database',
           ]
         },
-        {
-          title: 'Django',
-          children: [
-            'django/base',
-            'django/rest_framework',
-          ]
-        },
-        {
-          title: 'Nginx',
-          children: [
-            'nginx/base'
-          ]
-        },
-        {
-          title: 'Scrapy',
-          children: [
-            'scrapy/base'
-          ]
-        },
       ],
-      '/common/': [
+      '/general/': [
         {
           title: '开场白',
           collapsable: false,
@@ -92,6 +100,7 @@ module.exports = {
         },
         {
           title: '数据结构',
+          collapsable: false,
           children: [
             'dataStructure/base',
             'dataStructure/array',
@@ -104,6 +113,7 @@ module.exports = {
         },
         {
           title: '算法',
+          collapsable: false,
           children: [
             'algorithm/base',
             'algorithm/recursion',
@@ -118,8 +128,8 @@ module.exports = {
             'webSafe/other'
           ]
         },
-      ]
+      ],
     }
   }
-}
+};
 
