@@ -43,7 +43,7 @@
 	```
 
 	> migration会生成Django默认数据表，如下图；之后module(数据模型)的修改，migration会同步变更数据库。
-	![](../.imgs/gen_tables.png)
+	![](../../.imgs/gen_tables.png)
 
 	- 编写业务逻辑：views.py。
 	- 配置url路由转换规则：urls.py。

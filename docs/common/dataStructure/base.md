@@ -9,7 +9,7 @@
 
   - [Know Thy Complexities!](http://www.bigocheatsheet.com/)`
 
-  ![](./imgs/know_thy_complexities.png)
+  ![](../../.imgs/know_thy_complexities.png)
 
   - 注意空间复杂度的概念：是指除了`原本的数据存储空间外`，算法运行还需要`额外的存储空间`。
 

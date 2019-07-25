@@ -5,7 +5,7 @@
 Redis 中的有序集合`Sorted Set`的就是用跳表来实现的（还由双hash mao构成的字典共同实现）。
 
 跳表示意图：
-![跳表示意图](./imgs/skip_list.jpg)
+![跳表示意图](../../.imgs/skip_list.jpg)
 
 总结一下：**这种链表加多级索引的结构，就是跳表**。
 

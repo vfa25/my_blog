@@ -2,7 +2,7 @@
 
 XSRF 又名 [CSRF](https://developer.mozilla.org/en-US/docs/Learn/Server-side/First_steps/Website_security#Cross-Site_Request_Forgery_(CSRF))，跨站请求伪造，是前端常见的一种攻击方式，先通过一张图来认识它的攻击手段。
 
-![xsrf](../.imgs/xsrf.png)
+![xsrf](../../.imgs/xsrf.png)
 
 ## 如何进行XSRF伪造
 1. 表单提交（action指向受攻击网站A）
