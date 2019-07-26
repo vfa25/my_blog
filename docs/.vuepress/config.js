@@ -29,6 +29,7 @@ module.exports = {
           collapsable: false,
           children: [
             'babel/AST',
+            'babel/base'
           ]
         }
         // {

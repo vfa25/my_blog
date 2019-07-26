@@ -49,3 +49,122 @@ console.log([...acorn.tokenizer("1 + 1")])
 Acorn，提供了一种扩展的方式来编写相关的插件：[Acorn Plugins](https://github.com/acornjs/acorn#plugins)。
 
 如解析jsx语法插件[acorn-jsx](https://github.com/RReverser/acorn-jsx)
+
+## Demo:符合CommonJS规范的模块依赖
+
+```js
+// 文件夹目录
+├── demo1
+│   └── exports1.js
+├── demo2
+│   └── exports2.js
+├── index.js
+
+// demo1/exports1.js
+var lodash = require("lodash");
+var exports2 = require("../demo2/exports2.js");
+// demo2/exports2.js
+var fs = require("fs");
+```
+
+```js
+// index.js
+const fs = require("fs");
+const path = require("path");
+const acorn = require("acorn");
+const treeify = require('treeify');
+
+const { readFileSync } = fs;
+
+var result = parseDependencies(`
+var os = require("os");
+var exports1 = require("./demo1/exports1.js");
+`, __dirname);
+
+console.log(treeify.asTree(result, true));
+
+function parseDependencies(str, dirname) {
+  const ast = acorn.parse(str);
+  const resource = [];// 依赖模块
+  walkNode(ast, (node) => {// 从根节点开始深度遍历
+    const callee = node.callee;
+    const args = node.arguments;
+    if (
+      node.type === 'CallExpression' && // 函数调用表达式
+      callee.type === 'Identifier' && //标识符，如变量声明、函数声明...
+      callee.name === 'require' && // 泛函参数require
+      args.length === 1 &&
+      args[0].type === 'Literal' // 字面量
+    ) {
+      let item = {
+        string: str.substring(node.start, node.end),
+        path: args[0].value,
+        start: node.start,
+        end: node.end
+      };
+      let resolvePaths = require.resolve.paths(args[0].value);
+      if (resolvePaths === null || Array.isArray(resolvePaths) && resolvePaths.length !== 1) {
+        // 原生模块 或 第三方模块
+      } else {
+        // 文件模块
+        const resolvedFile = path.resolve(dirname, args[0].value);
+        if (fs.existsSync(resolvedFile)) {
+          let data = readFileSync(resolvedFile, 'utf-8');
+          let resolveDir = path.dirname(resolvedFile);
+          item.children = parseDependencies(data, resolveDir);
+        }
+      }
+      resource.push(item);
+    }
+  });
+  return resource;
+}
+
+// 深度遍历，包括当前结点、支结点
+function walkNode(node, callback) {
+  callback(node);
+
+  // 有 type 字段的被认为是一个节点
+  Object.keys(node).forEach((key) => {
+    const item = node[key];
+    if (Array.isArray(item)) {
+      item.forEach((sub) => {
+        sub.type && walkNode(sub, callback);
+      });
+    } else {
+      item && item.type && walkNode(item, callback);
+    }
+  });
+}
+```
+
+```sh
+# 控制台打印结果
+├─ 0
+│  ├─ string: require("os")
+│  ├─ path: os
+│  ├─ start: 10
+│  └─ end: 23
+└─ 1
+   ├─ string: require("./demo1/exports1.js")
+   ├─ path: ./demo1/exports1.js
+   ├─ start: 40
+   ├─ end: 70
+   └─ children
+      ├─ 0
+      │  ├─ string: require("lodash")
+      │  ├─ path: lodash
+      │  ├─ start: 13
+      │  └─ end: 30
+      └─ 1
+         ├─ string: require("../demo2/exports2.js")
+         ├─ path: ../demo2/exports2.js
+         ├─ start: 47
+         ├─ end: 78
+         └─ children
+            └─ 0
+               ├─ string: require("fs")
+               ├─ path: fs
+               ├─ start: 9
+               └─ end: 22
+```
