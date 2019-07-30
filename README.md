@@ -50,7 +50,7 @@ npm run prd:deploy
 
 - 该静态资源Nginx配置
 
-服务端执行`sudo vi /etc/nginx/conf.d/XXXX.conf`，[HTTP2配置说明](http://doc.vfa25.cn/doc/server/nginx.html#http2%E9%85%8D%E7%BD%AE)。
+服务端执行`sudo vi /etc/nginx/conf.d/XXXX.conf`，[HTTP2配置说明](http://doc.vfa25.cn/doc/serverSide/config/nginx.html#http2配置)。
 
 ```
 server {

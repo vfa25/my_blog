@@ -4,13 +4,11 @@
 
 注：该章均在python3.7虚拟环境下，命令若未显式注明版本的均默认v3.7，如pip3、python3。
 
-## 参考文档
+## Reference
 
-[Python官网](https://www.python.org)
-
-[Anaconda官方下载地址](https://www.anaconda.com/download)
-
-[Python编码风格指南](https://python.freelycode.com/contribution/detail/47)
+- [Python官网](https://www.python.org)
+- [Anaconda官方下载地址](https://www.anaconda.com/download)
+- [Python编码风格指南](https://python.freelycode.com/contribution/detail/47)
 
 - MAC下命令行输入`IDLE3`打开python3 IDLE。
 

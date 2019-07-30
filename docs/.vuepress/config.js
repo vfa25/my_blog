@@ -11,9 +11,9 @@ module.exports = {
     docsDir: 'docs',
     nav: [
       { text: '偏前端', link: '/frontEnd/' },
-      { text: 'Server端', link: '/serverSide/' },
+      { text: 'Server', link: '/serverSide/' },
       { text: '通用', link: '/general/' },
-      { text: 'Github', link: 'https://github.com/vfa25/my_doc' }
+      { text: 'GitHub', link: 'https://github.com/vfa25/my_doc' }
     ],
     sidebar: {
       '/frontEnd/': [
@@ -25,11 +25,12 @@ module.exports = {
           ]
         },
         {
-          title: 'Babel',
+          title: 'Parser：用JS解析JS',
           collapsable: false,
           children: [
+            'babel/base',
             'babel/AST',
-            'babel/base'
+            // 'babel/plugin',
           ]
         }
         // {
@@ -110,6 +111,7 @@ module.exports = {
             'dataStructure/queue',
             // 'dataStructure/skipList',
             'dataStructure/hashTable',
+            'dataStructure/heap',
           ]
         },
         {

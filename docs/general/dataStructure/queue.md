@@ -1,17 +1,19 @@
 # 队列(Queue)
 
-## 什么是“队列”？
+## Reference
+
+- [Python之队列API](http://python.jobbole.com/87577/)
+
+## 什么是“队列”
 
 - 先进者先出，这就是典型的“队列“。一种操作受限的线性表数据结构。
 - 最基本的操作：入队 enqueue()，放一个数据到队列尾部；出队 dequeue()，从队列头部取一个元素。
 
-## 如何实现“队列”？
+## 如何实现“队列”
 
 ```py
 from collections import deque（Python）
 ```
-
-参考[Python之队列API](http://python.jobbole.com/87577/)
 
 ## 队列的常见应用
 

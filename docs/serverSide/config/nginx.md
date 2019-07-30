@@ -204,7 +204,7 @@ HTTP2有一个突破性特点：“信道复用”，也称“多工（Multiplex
 - CORS跨域默认只允许三种方法（get, post, head），即不需要预请求。
 - CORS跨域默认只允许三种content-type（text/plain即字符串，multipart/form-data即form表单，application/x-www-form-urlencoded即json格式），即不需要预请求
 
-如请求头设置了参考链接[CORS-safelisted request-header](https://fetch.spec.whatwg.org/#cors-safelisted-request-header)中字段的值,是否需要 "CORS预请求" 是分情况的。
+已设置请求头：[CORS-safelisted request-header](https://fetch.spec.whatwg.org/#cors-safelisted-request-header)中字段的值,是否需要 "CORS预请求" 是分情况的。
 
 如下放行即可：
 Access-Control-Allow-Headers允许请求头；

@@ -53,9 +53,9 @@ Linux默认22端口，透明即不安全，出于安全考虑，需要修改下�
 
 注：CentOS操作系统是有自带的firewalld，如果需要配置iptables需要先关了默认firewalld。
 
-同样，Ubuntu也有ufw，此处不再累述，配置参考[如何在Ubuntu 18.04上使用UFW设置防火墙](https://www.linuxidc.com/Linux/2018-06/152881.htm)。
+同样，Ubuntu也有ufw，此处不再累述，配置：[如何在Ubuntu 18.04上使用UFW设置防火墙](https://www.linuxidc.com/Linux/2018-06/152881.htm)。
 
-iptables配置完成后，规则是自动立即生效的，但是机器重启动后，规则会丢失，参考[Ubuntu 14.04 配置iptables防火墙](https://www.linuxidc.com/Linux/2017-02/140556.htm)。
+iptables配置完成后，规则是自动立即生效的，但是机器重启动后，规则会丢失，配置：[Ubuntu 14.04 配置iptables防火墙](https://www.linuxidc.com/Linux/2017-02/140556.htm)。
 
 Ubuntu下可以通过以下步骤保存iptables设置，并实现开机自动加载。
 
@@ -140,7 +140,7 @@ Ubuntu下可以通过以下步骤保存iptables设置，并实现开机自动加
     ```
 
 * Ubuntu iptables默认重启服务器后清空，配置开机自启动。
-  参考[Ubuntu的iptables保存和重启后自动生效的方法](https://blog.csdn.net/u011355981/article/details/52288215)
+  [Ubuntu的iptables保存和重启后自动生效的方法](https://blog.csdn.net/u011355981/article/details/52288215)
 
   首先，如果用过CentOS，会发现它有个/etc/sysconfig目录，但Ubuntu没有。
 
