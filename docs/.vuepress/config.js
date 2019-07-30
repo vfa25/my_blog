@@ -64,6 +64,7 @@ module.exports = {
           children: [
             'django/base',
             'django/rest_framework',
+            'django/loginStatus',
           ]
         },
         {

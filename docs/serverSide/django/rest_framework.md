@@ -2,7 +2,7 @@
 
 以下均称之为`DRF`，[官方文档](https://www.django-rest-framework.org/)。
 
-源码路径备份`cd ~/.virtualenvs/py3django/lib/python3.7/site-packages/rest_framework`。
+源码路径备份`cd ~/.virtualenvs/py3django/lib/python3.6/site-packages/rest_framework`。
 
 ## 自动生成API文档
 

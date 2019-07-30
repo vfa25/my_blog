@@ -1,7 +1,5 @@
 # Scrapy基础
 
-注：该章均在python3.7虚拟环境下，命令若未显式注明版本的均默认v3.7，如pip3、python3。
-
 - 新建项目
 
 ```sh
@@ -75,11 +73,11 @@ sudo ln -s /usr/local/mysql/bin/mysql_config /usr/local/bin/mysql_config
 # 这个要先关闭csrutil，具体可以百度。
 # Mac重启后，执行
 
-sudo install_name_tool -change libmysqlclient.21.dylib  /usr/local/mysql/lib/libmysqlclient.21.dylib /Users/a/.virtualenvs/py3scrapy/lib/python3.7/site-packages/MySQLdb/_mysql.cpython-37m-darwin.so
+sudo install_name_tool -change libmysqlclient.21.dylib  /usr/local/mysql/lib/libmysqlclient.21.dylib /Users/a/.virtualenvs/py3scrapy/lib/python3.6/site-packages/MySQLdb/_mysql.cpython-37m-darwin.so
 
 # 随后，报错信息Library not loaded: libcrypto.1.0.0.dylib，执行
 
-sudo install_name_tool -change libcrypto.1.0.0.dylib  /usr/local/mysql/lib/libcrypto.1.0.0.dylib /Users/a/.virtualenvs/py3scrapy/lib/python3.7/site-packages/MySQLdb/_mysql.cpython-37m-darwin.so
+sudo install_name_tool -change libcrypto.1.0.0.dylib  /usr/local/mysql/lib/libcrypto.1.0.0.dylib /Users/a/.virtualenvs/py3scrapy/lib/python3.6/site-packages/MySQLdb/_mysql.cpython-37m-darwin.so
 
 # 最后，再开启csrutil就好。
 ```

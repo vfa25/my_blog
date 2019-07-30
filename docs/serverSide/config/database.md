@@ -10,4 +10,4 @@
 
   MySQL Workbench连接`阿里云数据库`注意事项：
 
-  - 云数据库需要开放白名单。公网IP地址不同于直接`ifconfig`获取，[RDS for MySQL或MariaDB TX如何定位本地公网IP地址](https://help.aliyun.com/knowledge_detail/41754.html?spm=5176.2020520104.0.0.2b4b14502CFYGn)。
+  - 云数据库需要开放白名单。公网IP地址不同于直接`ifconfig`获取，[RDS for MySQL或MariaDB TX如何定位本地公网IP地址](https://help.aliyun.com/knowledge_detail/41754.html?spm=5176.2020520104.0.0.2b4b14502CFYGn)或直接百度搜索`本地IP`。

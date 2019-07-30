@@ -2,7 +2,7 @@
 
 <h3 style="color: purple;">如果一生只能选择一门编程语言，我也会选择Python。</h3>
 
-注：该章均在python3.7虚拟环境下，命令若未显式注明版本的均默认v3.7，如pip3、python3。
+***注：该笔记均默认python3.6虚拟环境下。另外，如果不是python3的老司机，强烈建议安装python3.6，因为诸如`tensorflow`或`django-rest-framework-jwt`目前只全面支持到该版本。***
 
 ## Reference
 
@@ -50,17 +50,17 @@
   pip3 install virtualenvwrapper
 
   sudo find / -name 'virtualenvwrapper.sh'
-  # 找到 /Library/Frameworks/Python.framework/Versions/3.7/bin/virtualenvwrapper.sh
+  # 找到 /Library/Frameworks/Python.framework/Versions/3.6/bin/virtualenvwrapper.sh
 
   # 编辑环境变量
   vim ~/.bash_profile
 
   # which python3 的输出，这个不配置会报以下错误/usr/local/opt/python@2/bin/python2.7: No module named virtualenvwrapper
-  export VIRTUALENVWRAPPER_PYTHON=/Library/Frameworks/Python.framework/Versions/3.7/bin/python3
+  export VIRTUALENVWRAPPER_PYTHON=/Library/Frameworks/Python.framework/Versions/3.6/bin/python3
   # 虚拟环境保存位置，不同于项目目录，每当创建新环境，都会在这个目录(WORKON_HOME=~/.virtualenvs)
   export WORKON_HOME=$HOME/.virtualenvs
   # 上一步找到的source路径，这个不配置相关命令行无法使用
-  source /Library/Frameworks/Python.framework/Versions/3.7/bin/virtualenvwrapper.sh
+  source /Library/Frameworks/Python.framework/Versions/3.6/bin/virtualenvwrapper.sh
 
   # 最后，执行完后重启命令行窗口
   source ~/.bash_profile
@@ -69,7 +69,7 @@
   - 使用方式
     - 列出所有虚拟环境 workon
     - 创建基本环境 mkvirtualenv [环境名]
-    - 创建基本环境（指定安装路径） mkvirtualenv --python=/Library/Frameworks/Python.framework/Versions/3.7/bin/python3 [环境名]
+    - 创建基本环境（指定安装路径） mkvirtualenv --python=/Library/Frameworks/Python.framework/Versions/3.6/bin/python3 [环境名]
     - 激活环境 workon [环境名]
     - 退出环境 deactivate [环境名]
     - 删除环境 rmvirtualenv [环境名]
