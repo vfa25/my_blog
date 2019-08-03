@@ -10,7 +10,13 @@ module.exports = {
     editLinks: false,
     docsDir: 'docs',
     nav: [
-      { text: '偏前端', link: '/frontEnd/' },
+      {
+        text: '偏前端',
+        items: [
+          { text: '前端日常', link: '/frontEnd/' },
+          { text: '源码解析', link: '/sourceCode/' }
+        ]
+      },
       { text: 'Server', link: '/serverSide/' },
       { text: '通用', link: '/general/' },
       { text: 'GitHub', link: 'https://github.com/vfa25/my_doc' }
@@ -30,7 +36,7 @@ module.exports = {
           children: [
             'babel/base',
             'babel/AST',
-            // 'babel/plugin',
+            'babel/plugin',
           ]
         }
         // {
@@ -39,9 +45,17 @@ module.exports = {
         //     'reactNative/introduction',
         //     'reactNative/debug',
         //     'reactNative/layout',
-        //     'reactNative/navigation'
         //   ]
         // }
+      ],
+      '/sourceCode/': [
+        {
+          title: '前言',
+          collapsable: false,
+          children: [
+            ['', 'Introduction']
+          ]
+        },
       ],
       '/serverSide/': [
         {

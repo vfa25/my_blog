@@ -12,6 +12,7 @@
 
 - [你真的会用 Babel 吗?](https://juejin.im/post/59b9ffa8f265da06710d8e89#heading-28)
 - [一口(很长的)气了解 babel](https://juejin.im/post/5c19c5e0e51d4502a232c1c6)
+<!-- - [Commonjs模块的值拷贝和ES模块的值引用](https://www.jianshu.com/p/1cfc5673e61d) -->
 
 ## Babel 编译
 
@@ -116,11 +117,11 @@ useBuiltIns 参数说明：
 
 - babel-cli
 
-[babel-cli](https://babeljs.io/docs/en/babel-cli/)为babel提供了命令行操作，一般用不到。
+[babel-cli](https://babeljs.io/docs/en/babel-cli/)为babel提供了命令行操作。
 
 - **babel-node**
 
-babel-node 使`ES6语法`可以直接运行在`node`环境。
+babel-node 使`ES6语法`可以直接运行在`node`环境，不是独立安装。babel7前，可通过安装 babel-cli 包获得。babel7版本，需要安装 @babel/core、@babel/cli 两个包。
 
 - **babel-polyfill（内部集成了 core-js 和 regenerator）**
 
