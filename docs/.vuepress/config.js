@@ -14,7 +14,7 @@ module.exports = {
         text: '偏前端',
         items: [
           { text: '前端日常', link: '/frontEnd/' },
-          { text: '源码解析', link: '/sourceCode/' }
+          // { text: '源码解析', link: '/sourceCode/' }
         ]
       },
       { text: 'Server', link: '/serverSide/' },
@@ -69,7 +69,7 @@ module.exports = {
           title: 'Python3',
           children: [
             'python3/base',
-            'python3/function'
+            'python3/prdConfig',
           ]
         },
         {
@@ -141,8 +141,11 @@ module.exports = {
         },
         {
           title: 'Web 安全',
+          collapsable: false,
           children: [
             'webSafe/xsrf',
+            'webSafe/xss',
+            'webSafe/sqlInject',
             'webSafe/other'
           ]
         },

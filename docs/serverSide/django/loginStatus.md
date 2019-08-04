@@ -1,4 +1,4 @@
-# 登录状态模块注解
+# 登录状态模块源码注解
 
 ## JWT(Json Web Token)
 
@@ -14,6 +14,83 @@
 b'{"typ":"JWT","alg":"HS256"}'
 # 第二部分可得，即对应user表主键为2，用户名，expires过期时间，注册邮箱等用户信息
 b'{"user_id":2,"username":"xxx","exp":1564413136,"email":"xxxxx@163.com"}'
+```
+
+源码注解
+
+```py
+# 先来看一下 obtain_jwt_token 这个 APIView
+from rest_framework_jwt.views import obtain_jwt_token
+# obtain_jwt_token
+# obtain_jwt_token = ObtainJSONWebToken.as_view()
+
+class ObtainJSONWebToken(JSONWebTokenAPIView):
+    """
+    API View that receives a POST with a user's username and password.
+
+    Returns a JSON Web Token that can be used for authenticated requests.
+    """
+    serializer_class = JSONWebTokenSerializer
+
+# ObtainJSONWebToken继承自 JSONWebTokenAPIView，
+# 后者的 post 方法有一段逻辑，很明显，token的生成是 JSONWebTokenSerializer 做的， Ctrl + - 退回去
+def post(self, request, *args, **kwargs):
+    serializer = self.get_serializer(data=request.data)
+
+    if serializer.is_valid():
+        user = serializer.object.get('user') or request.user
+        token = serializer.object.get('token')
+        pass
+```
+
+`JSONWebTokenSerializer`的`validate`方法中，`token`是函数调用`jwt_encode_handler(payload)`的返回值，其中`payload = jwt_payload_handler(user)`，这里的逻辑比较清晰，就是base64编码一下。
+
+```py
+def jwt_payload_handler(user):
+    username_field = get_username_field()
+    username = get_username(user)
+
+    warnings.warn(
+        'The following fields will be removed in the future: '
+        '`email` and `user_id`. ',
+        DeprecationWarning
+    )
+
+    payload = {
+        'user_id': user.pk,
+        'username': username,
+        'exp': datetime.utcnow() + api_settings.JWT_EXPIRATION_DELTA
+    }
+    if hasattr(user, 'email'):
+        payload['email'] = user.email
+    if isinstance(user.pk, uuid.UUID):
+        payload['user_id'] = str(user.pk)
+
+    payload[username_field] = username
+
+    # Include original issued at time for a brand new token,
+    # to allow token refresh
+    if api_settings.JWT_ALLOW_REFRESH:
+        payload['orig_iat'] = timegm(
+            datetime.utcnow().utctimetuple()
+        )
+
+    if api_settings.JWT_AUDIENCE is not None:
+        payload['aud'] = api_settings.JWT_AUDIENCE
+
+    if api_settings.JWT_ISSUER is not None:
+        payload['iss'] = api_settings.JWT_ISSUER
+
+    return payload
+
+def jwt_encode_handler(payload):
+    key = api_settings.JWT_PRIVATE_KEY or jwt_get_secret_key(payload)
+    return jwt.encode(
+        payload,
+        key,
+        api_settings.JWT_ALGORITHM
+    ).decode('utf-8')
+
 ```
 
 ## Django Session校验浅析
@@ -43,7 +120,7 @@ def process_request(self, request):
 
 2. `AuthenticationMiddleware`中间件，只有一个请求拦截
 
-先断言`session`属性的寻在，随后执行`get_user(request)`方法，这里是惰性的
+先断言`session`属性的存在，随后执行`get_user(request)`方法，这里是惰性的
 
 ```py
 def process_request(self, request):

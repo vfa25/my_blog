@@ -1,7 +1,6 @@
 # 开场白
 
-<!-- <h3 style="color: purple;">我们可以接受定义时候的复杂，但绝不接受调用时候的复杂。</h3>
-<p style="direction: rtl;"><span>原话出自<i style="color: purple;">七月</i>，共勉</span><span>——</span></p> -->
+<h3 style="color: purple;">如果用一个工具进行构建时莫名其妙失败，尝试清一下用户级缓存吧“~/.cache”，这种BUG太没有意思了。</h3>
 
 - 我们一直在试图，将现实世界中的事物用计算机语言来描述。
 

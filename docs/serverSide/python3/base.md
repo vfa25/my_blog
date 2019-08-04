@@ -70,6 +70,7 @@
     - 列出所有虚拟环境 workon
     - 创建基本环境 mkvirtualenv [环境名]
     - 创建基本环境（指定安装路径） mkvirtualenv --python=/Library/Frameworks/Python.framework/Versions/3.6/bin/python3 [环境名]
+    - 创建基本环境（指定安装路径） mkvirtualenv -p /Library/Frameworks/Python.framework/Versions/3.6/bin/python3 [环境名]
     - 激活环境 workon [环境名]
     - 退出环境 deactivate [环境名]
     - 删除环境 rmvirtualenv [环境名]
@@ -117,3 +118,8 @@
   ```
   
   `Python3`中所有字符已经全内置为unicode了。
+
+## 函数的多态
+
+- [Design Pattern: Not Just Mixin Pattern](http://www.cnblogs.com/fsjohnhuang/p/4634039.html)
+- [关于python中多态的理解](https://www.cnblogs.com/opw3n/p/8035297.html)
