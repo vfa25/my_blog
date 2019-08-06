@@ -13,7 +13,8 @@ module.exports = {
       {
         text: '偏前端',
         items: [
-          { text: '前端日常', link: '/frontEnd/' },
+          { text: '那些基础', link: '/frontEnd/' },
+          { text: '哇哇笔记', link: '/caseInterview/' },
           // { text: '源码解析', link: '/sourceCode/' }
         ]
       },
@@ -23,22 +24,30 @@ module.exports = {
     ],
     sidebar: {
       '/frontEnd/': [
+        ['', 'Introduction'],
         {
-          title: '前言',
-          collapsable: false,
+          title: 'JS',
           children: [
-            ['', 'Introduction']
+            'js/parse',
           ]
         },
         {
           title: 'Parser：用JS解析JS',
-          collapsable: false,
           children: [
             'babel/base',
             'babel/AST',
             'babel/plugin',
           ]
-        }
+        },
+        {
+          title: 'Web 安全',
+          children: [
+            'webSafe/xsrf',
+            'webSafe/xss',
+            'webSafe/sqlInject',
+            'webSafe/other'
+          ]
+        },
         // {
         //   title: 'ReactNative',
         //   children: [
@@ -48,23 +57,20 @@ module.exports = {
         //   ]
         // }
       ],
-      '/sourceCode/': [
+      '/caseInterview/': [
+        ['', '出发吧'],
         {
-          title: '前言',
-          collapsable: false,
+          title: 'JS基础',
           children: [
-            ['', 'Introduction']
+            'jsBase/executionContext',
           ]
         },
       ],
+      '/sourceCode/': [
+        ['', 'Introduction']
+      ],
       '/serverSide/': [
-        {
-          title: '开场白',
-          collapsable: false,
-          children: [
-            ['', 'Introduction']
-          ]
-        },
+        ['', 'Introduction'],
         {
           title: 'Python3',
           children: [
@@ -108,13 +114,7 @@ module.exports = {
         },
       ],
       '/general/': [
-        {
-          title: '开场白',
-          collapsable: false,
-          children: [
-            ['', 'Introduction']
-          ]
-        },
+        ['', 'Introduction'],
         {
           title: '数据结构',
           collapsable: false,
@@ -137,16 +137,6 @@ module.exports = {
             'algorithm/recursion',
             'algorithm/sort',
             'algorithm/binarySearch',
-          ]
-        },
-        {
-          title: 'Web 安全',
-          collapsable: false,
-          children: [
-            'webSafe/xsrf',
-            'webSafe/xss',
-            'webSafe/sqlInject',
-            'webSafe/other'
           ]
         },
       ],
