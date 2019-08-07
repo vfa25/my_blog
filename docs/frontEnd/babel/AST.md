@@ -30,7 +30,7 @@ Uglify有自己的代码解析器（UglifyJS 3），也可以输出 AST，但它
 Babylon是`Babel`的解析器。最初是从`Acorn`fork出来的。
 
 来看一下[性能比较](https://esprima.org/test/compare.html)：
-![](./imgs/speed_comparison.png)
+![](../../.imgs/speed_comparison.png)
 
 可以在[Esprima: Parser](https://esprima.org/demo/parse.html)测试各种代码的解析结果。
 

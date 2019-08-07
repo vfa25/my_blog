@@ -1,7 +1,7 @@
 # 执行上下文
 
 执行上下文（Execution Context），每个执行上下文可抽象为对象。图示三个基本属性：
-![](./imgs/execution_context_obj.png)
+![](../../.imgs/execution_context_obj.png)
 
 ## thisValue
 

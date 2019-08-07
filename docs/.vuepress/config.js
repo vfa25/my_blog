@@ -27,6 +27,7 @@ module.exports = {
         ['', 'Introduction'],
         {
           title: 'JS',
+          collapsable: false,
           children: [
             'js/parse',
           ]
@@ -61,6 +62,7 @@ module.exports = {
         ['', '出发吧'],
         {
           title: 'JS基础',
+          collapsable: false,
           children: [
             'jsBase/executionContext',
           ]

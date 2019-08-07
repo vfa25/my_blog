@@ -8,13 +8,15 @@
 二维数组寻址：对于 m * n 的数组，a [ i ][ j ] (i < m, j < n)的地址
 `address = base_address + ( i * n + j) * data_type_size`。
 
+在Python中，数组支持负数下标。
+
+## 最大优点：快速查询
+
 - `访问`操作
   用下标随机访问，时间复杂度为 ***O(1)*** ；若使用二分查找，时间复杂度为 ***O(logn)*** ；
 
 - `插入、删除`操作，时间复杂度为 ***O(n)***
   `最好时间复杂度`为 ***O(1)*** ，`最坏时间复杂度`为 ***O(n)*** ，`平均时间复杂度`为 ***(1+2+...+n)/n = O(n)*** （加权平均）。
-  
-在Python中，数组支持负数下标。
 
 ## 访问越界问题
 
@@ -29,7 +31,62 @@ a[2] = 4
 list assignment index out of range
 ```
 
+那么在索引没有语义，如何表示没有元素？又如何添加元素？如何删除元素？
+
+这里以`Java`语言的数组为例（即静态数组），如何封装`动态数组`（即Java的`ArrayList`）？
+
+![动态数组](../../.imgs/dynamic_array.png)
+
+[Java的静态数组](https://github.com/vfa25/leetcode_notes/blob/master/array/Array.java)，
+现在改写一下链接中的Array类的add方法
+
+```java
+// 为数组在指定索引index添加元素e
+public void add(int index, E e) {
+    if (index < 0 || index > size)
+        throw new IllegalArgumentException("Add failed. Requrie index >= 0 and index <= size.");
+    if (size == data.length)
+        resize(2 * data.length);
+
+    for (int i = size - 1; i >= index; i --)
+        data[i + 1] = data[i];
+    data[index] = e;
+    size ++;
+}
+// 从数组中删除索引index的元素，返回删除的元素
+public E remove(int index) {
+    if (index < 0 || index > size)
+        throw new IllegalArgumentException("Remove failed. Requrie index >= 0 and index <= size.");
+    E ret = data[index];
+    for(int i = index + 1; i < size; i ++)
+        data[i - 1] = data[i];
+    size --;
+
+    if (size == data.length / 2)
+        resize(data.length / 2);
+    return ret;
+}
+// 动态扩容/缩容，系数
+private void resize(int newCapacity) {
+    E[] newData = (E[])new Object[newCapacity];
+    for(int i = 0; i < size; i ++)
+        newData[i] = data[i];
+    data = newData;
+}
+```
+
+### 数据存储和使用泛型
+
 从数组存储的内存模型上来看，数组“下标”最确切的定义应该是“偏移（offset）”。
+
+在`Java`中，解决数组元素多样化的方式是`使用泛型`：
+
+- 让数组这一数据结构可以放置“任何”数据类型。
+- 不可以是基本数据类型，只能是类对象。
+  > 基本类型包括 boolean, byte, char, 整形: short/int/long, 浮点型: float/double。
+- 每个基本数据类型都有对应的包装类（autoboxing机制）。
+  > 对应的包装类：Boolean, Byte, Char, Short, Integer, Long, Float, Double。
+
 
 ## JVM（Java虚拟机）应用
 

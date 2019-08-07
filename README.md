@@ -11,6 +11,12 @@ npm install
 npm run dev
 ```
 
+- 图片资源压缩
+
+```sh
+npm run img:compress
+```
+
 - PM2 服务端部署
 
 根目录下新建文件`ecosystem.yaml`
@@ -41,40 +47,9 @@ deploy:
 
 然后，本地执行以下命令：
 
-```
+```sh
 # 构建服务端目录
 npm run prd:setup
 # 发布
 npm run prd:deploy
-```
-
-- 该静态资源Nginx配置
-
-服务端执行`sudo vi /etc/nginx/conf.d/XXXX.conf`，[HTTP2配置说明](http://doc.vfa25.cn/doc/serverSide/config/nginx.html#http2配置)。
-
-```
-server {
-  listen 80;
-  server_name doc.vfa25.cn;
-
-
-  # Gzip Compression
-  gzip on;
-  gzip_comp_level 6;
-  gzip_vary on;
-  gzip_min_length  1000;
-  gzip_proxied any;
-  gzip_types text/plain text/css application/json application/x-javascript text/xml application/xml application/xml+rss text/javascript;
-  gzip_buffers 16 8k;
-
-  location ^~ /doc/ {
-    alias   /自定义/path/production/current/dist/;
-    autoindex   on;
-  }
-
-  location / {
-    root   /自定义/path/production/current/dist;
-    autoindex   on;
-  }
-}
 ```
