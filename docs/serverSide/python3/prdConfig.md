@@ -47,10 +47,9 @@ mkvirtualenv -p /usr/bin/python3 django_py36
 - 安装`pip install uwsgi`。
 - 测试：项目目录下`uwsgi --http :8000 --module djangoServer.wsgi`
 
-apt-get install uwsgi-plugin-python3
 新建uwsgi.ini 配置文件， 内容如下：
 
-```sh
+```md
     # mysite_uwsgi.ini file
     [uwsgi]
     # plugins-dir = /插件路径/plugins
@@ -88,7 +87,7 @@ killall -INT uwsgi #关闭所有uwsgi实例
 
 ## Nginx配置
 
-```sh
+```md
 # the upstream component nginx needs to connect to
 upstream django {
   # server unix:///path/to/your/mysite/mysite.sock; # for a file socket

@@ -95,7 +95,7 @@ def jwt_encode_handler(payload):
 
 ## Django Session校验浅析
 
-<h4 style="color: purple;">一句话概括：先从请求头信息`cookies`中取到sessionid，其对应`django_session`表结构中的`session_key`，那么对包含主要用户信息的`session_value`进行解码，再以后者查询到用户信息表`auth_user`的主键id，若该主键id存在且通过`校验方法`，则返回`用户详细信息`，否则返回`AnonymousUser`的匿名用户标志。</h4>
+<font color=purple size=4>一句话概括：先从请求头信息`cookies`中取到sessionid，其对应`django_session`表结构中的`session_key`，那么对包含主要用户信息的`session_value`进行解码，再以后者查询到用户信息表`auth_user`的主键id，若该主键id存在且通过`校验方法`，则返回`用户详细信息`，否则返回`AnonymousUser`的匿名用户标志。</font>
 
 先定位到`setting.py`文件的`MIDDLEWARE`。
 

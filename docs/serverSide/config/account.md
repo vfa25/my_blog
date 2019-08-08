@@ -18,7 +18,7 @@ adduser my_manager
 
 提示如下：
 
-```sh
+```md
 Adding user `my_manager' ...
 Adding new group `my_manager' (1000) ...
 Adding new user `my_manager' (1000) with group `my_manager' ...
@@ -85,7 +85,7 @@ gpasswd -a my_manager sudo
 
   > 或者编辑hosts文件，加入这一行：
 
-  ```sh
+  ```md
   sudo vi /etc/hosts
   127.0.0.1 localhost iZbp162mggaelqtp8plk48Z
   ```

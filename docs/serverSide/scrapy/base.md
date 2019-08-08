@@ -32,7 +32,7 @@ scrapy genspider github_app(任务名) https://github.com/trending(目标域名)
 
 - 配置item pipelines
 
-```sh
+```md
 # 编辑 settings.py
 ITEM_PIPELINES = {
    'ArticleSpider.pipelines.ArticlespiderPipeline': 300,

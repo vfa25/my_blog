@@ -1,6 +1,6 @@
 # 基础
 
-<h3 style="color: purple;">数据结构研究的是数据如何在计算机中进行之中和存储，使得我们可以高效的获取数据或者修改数据。</h3>
+<font color=purple size=5>数据结构研究的是数据如何在计算机中进行之中和存储，使得我们可以高效的获取数据或者修改数据。</font>
 <p style="direction: rtl;"><span><i style="color: purple;">liuyubobobo</i></span><span>——</span></p>
 
 - 常见：

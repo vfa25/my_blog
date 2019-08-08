@@ -161,7 +161,7 @@ Ubuntu下可以通过以下步骤保存iptables设置，并实现开机自动加
 
     * `sudo vi /etc/network/interfaces`写入
 
-      ```sh
+      ```md
       pre-up iptables-restore < /etc/network/iptables.up.rules
       ```
 
@@ -214,13 +214,13 @@ Fail2Ban 可以看做是防御性的动作库，通过监控系统的日志文�
 
 * 拷贝一份新的配置文件出来，重新编辑这个配置文件：
 
-  ```sh
+  ```md
   awk '{ printf "# "; print; }' /etc/fail2ban/jail.conf | sudo tee /etc/fail2ban/jail.local
   ```
 
 * 打开`/etc/fail2ban/jail.conf`：
 
-  ```sh
+  ```md
   [DEFAULT]
   ignoreip = 127.0.0.1/8
   # host 被禁止的秒数。

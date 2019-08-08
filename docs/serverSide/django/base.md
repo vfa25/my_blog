@@ -14,7 +14,7 @@
 
 1. Django建默认表(setting.py配置mysql数据表报错解决)
 
-	```sh
+	```md
 	# DATABASES.default.ENGINE'修改为'django.db.backends.mysql',
 	DATABASES = {
 			'default': {

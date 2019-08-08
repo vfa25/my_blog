@@ -153,7 +153,7 @@ function walkNode(node, callback) {
 }
 ```
 
-```sh
+```md
 # 控制台打印结果
 ├─ 0
 │  ├─ string: require("os")

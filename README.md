@@ -21,7 +21,7 @@ npm run img:compress
 
 根目录下新建文件`ecosystem.yaml`
 
-```
+```md
 deploy:
   production:
     # 服务器登录账号，可提前配置本地无密码ssh登录

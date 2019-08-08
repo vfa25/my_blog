@@ -4,7 +4,7 @@
 
   建议直接选择18.04版本，或者低版本登录进去，会有如下提示：
 
-  ```sh
+  ```md
   New release '18.04.1 LTS' available.
   Run 'do-release-upgrade' to upgrade to it.
   ```
@@ -20,7 +20,7 @@
 
   若出现以下提示，`rm /Users/nsky/.ssh/known_hosts`即可
 
-  ```sh
+  ```md
   @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
   @    WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!     @
   @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -38,7 +38,7 @@
 
   若出现以下提示，意为无法确认host主机真实性，只知道其公钥指纹，是否继续连接。输入`yes`即可
 
-  ```sh
+  ```md
   The authenticity of host '47.110.224.7 (47.110.224.7)' can't be established.
   ECDSA key fingerprint is SHA256:uIlIWiw2zbWjzOgd5TvH2k0OgLN7XbSth+m5hGpQoSU.
   Are you sure you want to continue connecting (yes/no)?
@@ -46,7 +46,7 @@
 
   随后输入登录密码
 
-  ```sh
+  ```md
   Warning: Permanently added '47.110.224.7' (ECDSA) to the list of known hosts.
   root@47.110.224.7's password:
   ```

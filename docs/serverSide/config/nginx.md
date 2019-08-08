@@ -44,7 +44,7 @@ sudo nginx -t
 **在`/etc/nginx/conf.d`目录下新增.conf配置文件，必须.conf后缀**
 如 sudo vi /etc/nginx/conf.d/my_blog_8011.conf
 
-```sh
+```md
 # 通过 upstream 可以设定一个简单的负载均衡策略，以应对将来可能的升级
 # 首先定义一个 server 集群 my_blog，里面可以加多个 server，每个 server 对应的值可以用域名，也可以直接用 IP，但通常不会用 IP 来访问，而是通过域名:
 
@@ -95,7 +95,7 @@ sudo service nginx reload
 
 ## HTTP 代理(缓存)服务器 cache
 
-```sh
+```md
 proxy_cache_path /usr/local/etc/nginx/cache  levels=1:2 keys_zone=my_cache:10m;
 # proxy_cache_path缓存文件夹路径,直接写磁盘上; levels二级路径; keys_zone-设置缓存名字及大小
 server {
@@ -179,14 +179,14 @@ HTTP2有一个突破性特点：“信道复用”，也称“多工（Multiplex
 
 [HTTP2体验地址](https://http2.akamai.com/demo/http2-lab.html)
 
-```sh
+```md
 原   listen       443 ssl;
 改为  listen       443 ssl http2;
 ```
 
 - Server Push
 
-  ```sh
+  ```md
   # http2开启推送，https://www.nginx.com/blog/nginx-1-13-9-http2-server-push/
   http2_push_preload on;
   # Link 响应头来做自动推送，nginx 会根据 Link 响应头主动推送这些资源，但需要显式标明资源路径，以绝对路径。
@@ -211,7 +211,7 @@ Access-Control-Allow-Headers允许请求头；
 Access-Control-Allow-Methods允许请求方法；
 Access-Control-Max-Age验证之后有效期(单位s)。
 
-```sh
+```md
   location / {
     add_header 'Access-Control-Allow-Origin' '*' always;
     add_header 'Access-Control-Allow-Credentials' 'true';

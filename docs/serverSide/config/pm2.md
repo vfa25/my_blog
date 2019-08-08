@@ -12,7 +12,7 @@
 
 新建一个文件`ecosystem.yaml`
 
-```sh
+```md
 apps:
   # 启动路径
   - script: app.js
