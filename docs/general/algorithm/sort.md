@@ -142,7 +142,7 @@ if __name__ == '__main__':
 
 基于分治思想的排序算法，一般可以用递归来实现。来看一下递推公式及终止条件：
 
-```
+```md
 递推公式
 merge_sort(p…r) = merge(merge_sort(p…q), merge_sort(q+1…r))
 终止条件
@@ -158,24 +158,24 @@ p >= r 不用再继续分解
 来看一下伪代码：
 
 ```js
-// 归并排序算法，A是数组，n表示数组大小
-merge_sort(A, n) {
-	merge_sort_c(A, 0, n-1)
-}
+  // 归并排序算法，A是数组，n表示数组大小
+  merge_sort(A, n) {
+    merge_sort_c(A, 0, n-1)
+  }
 
-// 递归调用函数
-merge_sort_c(A, p, r) {
-	// 递归终止条件
-	if p > r return
+  // 递归调用函数
+  merge_sort_c(A, p, r) {
+    // 递归终止条件
+    if p > r return
 
-	// 取 p 到 r 的中点值
-	q = (p + r) / 2
-	// 归。分治递归
-	merge_sort_c(A, p, q)
-	merge_sort_c(A, q+1, r)
-	// 并。将 A[p, q] 和 A[q+1, r] 合并为 A[p, r]
-	merge(A[p…r], A[p…q], A[q+1, r])
-}
+    // 取 p 到 r 的中点值
+    q = (p + r) / 2
+    // 归。分治递归
+    merge_sort_c(A, p, q)
+    merge_sort_c(A, q+1, r)
+    // 并。将 A[p, q] 和 A[q+1, r] 合并为 A[p, r]
+    merge(A[p…r], A[p…q], A[q+1, r])
+  }
 ```
 
 并函数 merge 怎么实现呢？可以使用双指针。
@@ -186,31 +186,31 @@ merge_sort_c(A, p, r) {
 
 ```js
 merge(A[p…r], A[p…q], A[q+1, r]) {
-	// 初始化三个数组的索引变量
-	var i := p, j := q+1, k = 0
-	// 申请一个大小与A[p…r]一样的临时数组
-	var tmp := new array[0…r-p]
-	while i <= q AND j <= r do {
-		if A[i] <= A[j] {
-			tmp[k++] = A[i++]
-		} else {
-			tmp[k++] = A[j++]
-		}
-	}
+    // 初始化三个数组的索引变量
+    var i := p, j := q+1, k = 0
+    // 申请一个大小与A[p…r]一样的临时数组
+    var tmp := new array[0…r-p]
+    while i <= q AND j <= r do {
+      if A[i] <= A[j] {
+        tmp[k++] = A[i++]
+      } else {
+        tmp[k++] = A[j++]
+      }
+    }
 
-	// 判断哪个子数组中有剩余数据
-	var start := i, end := q
-	if j <= r then start := j, end := r
+    // 判断哪个子数组中有剩余数据
+    var start := i, end := q
+    if j <= r then start := j, end := r
 
-	// 将剩余数据拷贝到临时数组tmp
-	while start <= end do {
-		tmp[k++] = A[start++]
-	}
+    // 将剩余数据拷贝到临时数组tmp
+    while start <= end do {
+      tmp[k++] = A[start++]
+    }
 
-	// 将tmp中的数组拷贝回A[p…r]
-	for i := 0 to r-p do {
-		A[p+i] = tmp[i]
-	}
+    // 将tmp中的数组拷贝回A[p…r]
+    for i := 0 to r-p do {
+      A[p+i] = tmp[i]
+    }
 }
 ```
 
@@ -220,7 +220,7 @@ merge(A[p…r], A[p…q], A[q+1, r]) {
 
 随后，并的过程，_merge开始对子数组进行排序合并。
 
-[归并排序Python实现](https://github.com/vfa25/leetcode_notes/blob/master/sort/merge_sort.py)
+[归并排序Python实现](https://github.com/vfa25/leetcode_notes/blob/master/notes/sort/merge_sort.py)
 
 - 归并排序是稳定的排序算法吗？
 
@@ -309,7 +309,7 @@ partition(A, p, r) {
 }
 ```
 
-[快速排序Python实现](https://github.com/vfa25/leetcode_notes/blob/master/sort/quick_sort.py)
+[快速排序Python实现](https://github.com/vfa25/leetcode_notes/blob/master/notes/sort/quick_sort.py)
 
 直接上示意图：
 
@@ -404,7 +404,7 @@ partition(A, p, r) {
 
     当扫描完数组A后，数组R内的数据就是按照分数从小到大排列的了。
 
-[计数排序Python实现](https://github.com/vfa25/leetcode_notes/blob/master/sort/counting_sort.py)
+[计数排序Python实现](https://github.com/vfa25/leetcode_notes/blob/master/notes/sort/counting_sort.py)
 
 ## 基数排序(Radix sort)
 

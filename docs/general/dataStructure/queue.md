@@ -6,18 +6,21 @@
 
 ## 什么是“队列”
 
-- 先进者先出，这就是典型的“队列“。一种操作受限的线性表数据结构。
+- 队列是一种操作受限的线性表数据结构。先进先出，First In First Out（FIFO）。
 - 最基本的操作：入队 enqueue()，放一个数据到队列尾部；出队 dequeue()，从队列头部取一个元素。
 
-## 如何实现“队列”
+## 语言提供的“队列”工具类
 
 ```py
 from collections import deque（Python）
 ```
 
-## 队列的常见应用
+## 队列的常见形态
 
-- 循环队列（避免数据搬移的解决方案）
+- 循环队列（避免数据搬移的解决方案，出队操作`O(1)`的时间复杂度）
+
+  先来看一下处理 100000 个数据的用时，[测试普通队列和循环队列](https://github.com/vfa25/leetcode_notes/blob/master/datastructure/src/queue/TestQueue.java)。
+  ![队列用时测试](../../.imgs/test_queue.png)
 
   关键是**确定好队空和队满的判定条件**。
 
@@ -53,9 +56,29 @@ from collections import deque（Python）
         print(circularQueue.head, circularQueue.tail) # 1, 3
   ```
 
+  ![循环队列](../../.imgs/circular_queue.png)
+
   在用数组实现的循环队列中:
-  - 队满的判断条件是 `(tail+1)%n=head`，队空的判断条件是 `head == tail`。
-  - 其实，当队列满时，tail 指向的位置实际上是没有存储数据的。即循环队列会浪费一个数组的存储空间。
+  - 队满的判断条件是 `(tail+1)%n == head`，队空的判断条件是 `head == tail`。
+  - 其实，当队列满时，tail 指向的位置实际上是没有存储数据的。即`循环队列会浪费一个数组的存储空间`。
+
+  [Java实现循环队列](https://github.com/vfa25/leetcode_notes/blob/master/datastructure/src/queue/LoopQueue.java)，在链接中的方法中，注解一下扩容/缩容方法`LoopQueue.resize`：
+
+  ```java
+  private void resize(int newCapacity) {
+      // 注册新的容量
+      E[] newData = (E[])new Object[newCapacity + 1];
+      // 数据搬移：由于原队列front不一定为0；进行front索引归零，并防止索引越界
+      for (int i = 0; i < size; i ++)
+          newData[i] = data[(i + front) % data.length];
+
+      data = newData;
+      front = 0;
+      tail = size;
+  }
+  ```
+
+  显然，循环队列的遍历方法是起点为`i = front`，步长为`(i + 1) % 容量长度`，终点为`tail`。
 
 - 阻塞队列
 

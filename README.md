@@ -11,7 +11,7 @@ npm install
 npm run dev
 ```
 
-- 图片资源压缩
+- 图片资源压缩（该文档站点尽量做到图片资源较小的流量消耗）
 
 ```sh
 npm run img:compress

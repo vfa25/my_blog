@@ -7,8 +7,8 @@ module.exports = {
   ],
   description: '一起愉快的coding吧',
   themeConfig: {
-    editLinks: false,
     docsDir: 'docs',
+    repo: 'https://github.com/vfa25/my_doc',
     nav: [
       {
         text: '偏前端',
@@ -19,8 +19,7 @@ module.exports = {
         ]
       },
       { text: 'Server', link: '/serverSide/' },
-      { text: '通用', link: '/general/' },
-      { text: 'GitHub', link: 'https://github.com/vfa25/my_doc' }
+      { text: '通用', link: '/general/' }
     ],
     sidebar: {
       '/frontEnd/': [
@@ -47,6 +46,12 @@ module.exports = {
             'webSafe/xss',
             'webSafe/sqlInject',
             'webSafe/other'
+          ]
+        },
+        {
+          title: '杂项',
+          children: [
+            'other/cors',
           ]
         },
         // {

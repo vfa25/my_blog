@@ -13,10 +13,12 @@
 ## 最大优点：快速查询
 
 - `访问`操作
-  用下标随机访问，时间复杂度为 ***O(1)*** ；若使用二分查找，时间复杂度为 ***O(logn)*** ；
+
+  大名鼎鼎：下标`随机访问`，时间复杂度为 ***O(1)*** ；若使用`搜索`：二分查找，时间复杂度为 ***O(logn)*** ；
 
 - `插入、删除`操作，时间复杂度为 ***O(n)***
-  `最好时间复杂度`为 ***O(1)*** ，`最坏时间复杂度`为 ***O(n)*** ，`平均时间复杂度`为 ***(1+2+...+n)/n = O(n)*** （加权平均）。
+
+  `最好时间复杂度`为 ***O(1)*** ，`最坏时间复杂度`为 ***O(n)*** ，`平均时间复杂度`为 ***(1+2+...+n)/n = O(n)*** （数学期望）。
 
 ## 访问越界问题
 
@@ -33,45 +35,50 @@ list assignment index out of range
 
 那么在索引没有语义，如何表示没有元素？又如何添加元素？如何删除元素？
 
-这里以`Java`语言的数组为例（即静态数组），如何封装`动态数组`（即Java的`ArrayList`）？
+这里以`Java`语言的数组为例（即静态数组），如何封装`动态数组`（即Java的`java.util.ArrayList`）？
 
 ![动态数组](../../.imgs/dynamic_array.png)
 
-[Java的静态数组](https://github.com/vfa25/leetcode_notes/blob/master/array/Array.java)，
+[Java的静态数组](https://github.com/vfa25/leetcode_notes/blob/master/datastructure/src/array/StaticArray.java)，
 现在改写一下链接中的Array类的add方法
 
 ```java
-// 为数组在指定索引index添加元素e
-public void add(int index, E e) {
-    if (index < 0 || index > size)
-        throw new IllegalArgumentException("Add failed. Requrie index >= 0 and index <= size.");
-    if (size == data.length)
-        resize(2 * data.length);
+public class Array<E> {
+    private E[] data;
+    private int size;
+    // 为数组在指定索引index添加元素e
+    public void add(int index, E e) {
+        if (index < 0 || index > size)
+            throw new IllegalArgumentException("Add failed. Requrie index >= 0 and index <= size.");
+        if (size == data.length)
+            resize(2 * data.length);
 
-    for (int i = size - 1; i >= index; i --)
-        data[i + 1] = data[i];
-    data[index] = e;
-    size ++;
-}
-// 从数组中删除索引index的元素，返回删除的元素
-public E remove(int index) {
-    if (index < 0 || index > size)
-        throw new IllegalArgumentException("Remove failed. Requrie index >= 0 and index <= size.");
-    E ret = data[index];
-    for(int i = index + 1; i < size; i ++)
-        data[i - 1] = data[i];
-    size --;
+        for (int i = size - 1; i >= index; i --)
+            data[i + 1] = data[i];
+        data[index] = e;
+        size ++;
+    }
+    // 从数组中删除索引index的元素，返回删除的元素
+    public E remove(int index) {
+        if (index < 0 || index > size)
+            throw new IllegalArgumentException("Remove failed. Requrie index >= 0 and index <= size.");
+        E ret = data[index];
+        for(int i = index + 1; i < size; i ++)
+            data[i - 1] = data[i];
+        size --;
 
-    if (size == data.length / 2)
-        resize(data.length / 2);
-    return ret;
-}
-// 动态扩容/缩容，系数
-private void resize(int newCapacity) {
-    E[] newData = (E[])new Object[newCapacity];
-    for(int i = 0; i < size; i ++)
-        newData[i] = data[i];
-    data = newData;
+        // 防止复杂度震荡
+        if (size == data.length / 4 && data.length / 2 != 0)
+            resize(data.length / 2);
+        return ret;
+    }
+    // 动态扩容/缩容，系数
+    private void resize(int newCapacity) {
+        E[] newData = (E[])new Object[newCapacity];
+        for(int i = 0; i < size; i ++)
+            newData[i] = data[i];
+        data = newData;
+    }
 }
 ```
 
