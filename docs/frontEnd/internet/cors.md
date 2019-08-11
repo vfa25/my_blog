@@ -2,7 +2,7 @@
 
 <font color=purple size=4>本篇只重点关注Ajax跨域、Cookie跨域，CORS解决。</font>
 
-前段开发最常用的就是Nginx配置正向代理，[这儿是一个Cookie跨域，Node反向代理例子，仅学习用](http://case.vfa25.cn/cors/)。
+前端开发最常用的就是Nginx配置正向代理，[这儿是一个Cookie跨域Node反向代理例子，仅学习用](http://case.vfa25.cn/cors/)。
 
 ## Reference
 
@@ -55,7 +55,7 @@ CORS是一个W3C标准，全称是"跨域资源共享"（Cross-origin resource s
   - Last-Event-ID
   - Content-Type（只限于三个值application/x-www-form-urlencoded、 multipart/form-data、text/plain）
 
-凡是不同时满足上面两个条件，就属于非简单请求。
+凡是不同时满足上面两个条件，就属于非简单请求。文档查看[CORS-safelisted request-header](https://fetch.spec.whatwg.org/#cors-safelisted-request-header)。
 
 ## 同源策略的表象
 
@@ -69,7 +69,7 @@ CORS是一个W3C标准，全称是"跨域资源共享"（Cross-origin resource s
 
 ## 如何解决跨域
 
-常用的方法如`JSONP`，`CORS`、`后端接口转发，即反向代理`，这里仅介绍`CORS`字段，具体配置转场`/Server/Nginx模块`。
+常用的方法如`JSONP`，`CORS`、`后端接口转发，即反向代理`，`天然跨域的标签，如img、script`，这里仅介绍`CORS`字段，具体配置转场`/Server/Nginx模块`。
 
 - Access-Control-Allow-Origin
 

@@ -92,9 +92,11 @@ Ubuntu下可以通过以下步骤保存iptables设置，并实现开机自动加
 
   * Ubuntu默认没有iptables配置文件，需先生成自定义配置文件：
 
-    iptables配置文件路径及文件名建议为`/etc/network/iptables.up.rules`，因为执行iptables-apply默认指向该文件，也可以通过-w参数指定文件；Ubuntu 没有重启iptables的命令，执行`iptables-apply`生效
+    iptables配置文件路径及文件名建议为`/etc/network/iptables.up.rules`，因为执行iptables-apply默认指向该文件，执行后者的原因是：Ubuntu 没有重启iptables的命令，需执行`iptables-apply`方能使配置生效（该命令也可以通过-w参数指定文件）；
 
-    注：其他路径可以执行命令`sudo iptables-restore < /etc/otherpath/iptables.up.rules`，使防火墙规则生效：。
+    另外，如果配置文件设置了其他路径，可以执行命令`sudo iptables-restore < /etc/otherpath/iptables.up.rules`，然后执行`iptables-apply`使防火墙规则生效。
+
+    现在来编辑一下配置文件：
 
     ``` sh
     sudo vi /etc/network/iptables.up.rules
@@ -139,6 +141,10 @@ Ubuntu下可以通过以下步骤保存iptables设置，并实现开机自动加
     COMMIT
     ```
 
+    以上述方法是配置规则并生效后，`iptables -L -n`查看，我这里截屏了入方向（阿里云服务器本身也有出入方向规则配置，这两个双放行才行）：
+
+    ![iptables规则](./imgs/iptables-rule.png)
+
 * Ubuntu iptables默认重启服务器后清空，配置开机自启动。
   [Ubuntu的iptables保存和重启后自动生效的方法](https://blog.csdn.net/u011355981/article/details/52288215)
 
@@ -147,7 +153,7 @@ Ubuntu下可以通过以下步骤保存iptables设置，并实现开机自动加
   两种方案：
   1. OS启动生效：须要iptables的生效脚本保存到init.d目录。
 
-    利用工具：`iptables-persistent`。iptables-persistent是一个开机启动脚本，在/etc/init.d/目录下。查看可知，保存文件是在：/etc/iptables/rules.v4或/etc/iptables/rules.v6。
+    利用工具：`iptables-persistent`。这是一个开机启动脚本，在/etc/init.d/目录下。查看可知，它会将自定义的配置保存到文件：/etc/iptables/rules.v4或/etc/iptables/rules.v6。
 
     ***只需安装iptables-persistent，按提示保存***
 
@@ -157,7 +163,7 @@ Ubuntu下可以通过以下步骤保存iptables设置，并实现开机自动加
     sudo netfilter-persistent save
     ```
 
-  2. 网卡启动时生效（我这里阿里云Ubuntu这种方式测试无效），以下方法二选一：
+  2. 网卡启动时生效（下面分别是两种方法，但是我这里阿里云Ubuntu这俩方式测试均无效）：
 
     * `sudo vi /etc/network/interfaces`写入
 

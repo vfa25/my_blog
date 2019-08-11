@@ -197,7 +197,7 @@ babel-polyfill会污染全局空间，并可能导致不同版本间的冲突，
 
 但是babel-runtime有个缺点，它不模拟实例方法，即内置对象原型上的方法，所以类似Array.prototype.find，通过babel-runtime是无法使用的。
 
-**最终结论**：如果你不知道自己会用到什么，索性抛弃`babel-runtime`，选择`polyfill`：
+**最终结论**：如果你不知道自己会用到什么，索性抛弃`babel-runtime`，选择`polyfill`。
 
 **最好的实践应该是在 babel-preset-env 设置 "useBuiltIns": "usage"，按需引入 polyfill。**
 

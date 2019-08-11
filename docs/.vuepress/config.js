@@ -29,6 +29,7 @@ module.exports = {
           collapsable: false,
           children: [
             'js/parse',
+            'js/module',
           ]
         },
         {
@@ -49,9 +50,9 @@ module.exports = {
           ]
         },
         {
-          title: '杂项',
+          title: '网络',
           children: [
-            'other/cors',
+            'internet/cors',
           ]
         },
         // {
