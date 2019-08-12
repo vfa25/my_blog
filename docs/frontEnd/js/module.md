@@ -6,12 +6,12 @@
 
 [深入浅出 Node.js（三）：深入 Node.js 的模块机制](https://www.infoq.cn/article/nodejs-module-mechanism)
 
-- `exports`和`module.exports`的区别
+### `exports`和`module.exports`的区别
 
 **module.exports才是真正的模块导出接口**，只不过`exports`与其指向了同一个内存。
 基于这个原理，前端开发者应该知道什么情况下可以修改这二者的引用。
 
-- CommonJS模块是按值拷贝，这是什么意思
+### CommonJS模块是按值拷贝，这是什么意思
 
 现象：依赖于同一模块，其中一个的数据更改，会影响其他模块。
 
@@ -109,3 +109,67 @@ module.exports = {
 ```
 
 故，Commonjs 模块导出，其实只是对`新module.exports空对象`进行了`赋值（exports）`或`导出对象的浅拷贝（module.exports）`。
+
+## ESModule
+
+### ESModule的按值引用
+
+按值引用，在原始值改变时 import 的加载值也会随之变化
+
+```js
+// b.mjs
+export let count = 1;
+export function add() {
+  count++;
+}
+export function get() {
+  return count;
+}
+// a.mjs
+import { count, add, get } from './b.mjs';
+console.log(count); // 1
+add();
+console.log(count); // 2
+console.log(get()); // 2
+```
+
+### 模块私有变量
+
+- Symbol()作key
+
+尽管Symbol()作为对象属性名时并非私有属性，但是在做模块化时，可以操作成私有属性。
+
+```js
+// a.js
+var _symbol = Symbol()
+class Person {
+  constructor() {
+    this[_symbol] = 'xxx'
+  }
+  getName() {
+    console.log(this[_symbol])
+  }
+  changeName(name) {
+    this[_symbol] = name
+  }
+}
+```
+
+- 工厂方法
+
+```js
+// a.js
+function Person() {
+  var _name = ''
+  var PersonProto = {
+    getName() {
+      console.log(_name)
+    },
+    changeName(name) {
+      _name = name
+    }
+  }
+  return PersonProto
+}
+module.exports = Perosn
+```

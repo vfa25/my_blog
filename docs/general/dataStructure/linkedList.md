@@ -19,12 +19,15 @@ class Node {
 
 ![链表示意图](../../.imgs/linked_list.png)
 
-不同于数组喜欢在尾部添加元素，链表更倾向于在头部添加元素，因为有一个head变量维护头结点。
+不同于数组喜欢在尾部添加元素，
+链表更倾向于在头部添加元素，有一个head变量维护头结点，是`O(1)`的时间复杂度。
 
 ```md
 node.next = head
 head = node
 ```
+
+[一个普通的链表实现](https://github.com/vfa25/leetcode_notes/blob/master/datastructure/src/linkedlist/LinkedList.java)
 
 ## 链表与数组的区别
 
