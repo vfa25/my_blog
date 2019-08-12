@@ -93,6 +93,8 @@ sudo service nginx reload
 
 此时，应可以不输端口号进行访问（即默认80端口）了。
 
+注意：有时候`nginx`可能会占用其他端口，通过`netstat -anlp| grep nginx`查看，默认应只80，或（https下多个443）。
+
 ## HTTP 代理(缓存)服务器 cache
 
 ```md
