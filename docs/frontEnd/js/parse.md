@@ -89,19 +89,42 @@
 4. 一旦对应的上下文执行完毕，就从栈顶弹出，并将上下文控制权交给当前的栈。
 5. 这样依次执行（最终都会回到全局执行上下文）。
 
-![执行上下文栈](./imgs/execution-context-stack.png)
+![执行上下文栈](../../.imgs/execution-context-stack.png)
 
 如果程序执行完毕后被弹出执行栈，若是没有被引用（没有形成闭包），那么这个函数中用到的内存就会被垃圾处理器自动回收。
 
 ### 执行上下文（Execution Context）
 
-每个执行上下文都可以抽象为一个对象，且都有一系列的属性（即上下文状态state）主要有以下三个
+每个执行上下文都可以抽象为一个对象，且都有一系列的属性（即上下文状态state）主要有以下三个：
+变量对象(variable object)、this指针(this value)、作用域链(scope chain)。
 
-![执行上下文](./imgs/execution-context.png)
+![执行上下文](../../.imgs/execution-context.png)
 
-- 变量对象(variable object)
-- this指针(this value)
-- 作用域链(scope chain)
+<font color=purple size=4>执行上下文的代码被分成两个基本的阶段来处理（无论global还是function）：</font>
+
+1. 进入执行上下文
+
+    当进入执行上下文（代码执行之前）时，VO里已经包含了下列属性：
+
+    - 函数的所有形参（如果我们是在函数执行上下文中）
+    - 所有函数声明（FunctionDeclaration, FD）：如果变量对象已经存在相同名称的属性，则完全**替换**这个属性
+    - 所有变量声明（var, VariableDeclaration）：如果变量名称跟已经声明的形式参数或函数相同，则变量声明**不会干扰**已经存在的这类属性。
+
+2. 执行代码
+
+    此时，AO/VO已经拥有了属性值（或是undefined，表示仅分配了内存）。
+
+    下例也证明了：变量是在进入上下文阶段放入VO中的。
+
+    ```js
+    if (true) {
+      var a = 1;
+    } else {
+      var b = 2;
+    }
+    alert(a); // 1
+    alert(b); // undefined,不是b没有声明，而是b的值是undefined
+    ```
 
 ### VO（变量对象）与AO（活动对象）
 
@@ -110,8 +133,8 @@ VO（variable object）是与执行上下文相关的`数据作用域(scope of d
 
 AO（activation object)，当函数被调用者激活，AO就被创建了，除去存储变量与函数声明之外，还包含普通参数(formal parameters)和特殊参数arguments对象。
 
-- 在函数上下文中：VO === AO
-- 在全局上下文中：VO === this === global
+- 在函数上下文中：VO === AO（而且多了formal parameters和arguments）
+- 在全局上下文中：VO === this === global（window只是浏览器环境下的其中一个属性且引用自身，还有如Math、String等）
 
 ### 作用域链（Scope Chains）
 
@@ -127,7 +150,7 @@ AO（activation object)，当函数被调用者激活，AO就被创建了，除�
   直到全局上下文中也没找到就报错
 ```
 
-![作用域链](./imgs/scope-chains.png)
+![作用域链](../../.imgs/scope-chains.png)
 
 注意：with或catch可以改变作用域链。而这些对象都是一些简单对象，他们也会有原型链。这样的话，作用域链会从两个维度来搜寻。
 

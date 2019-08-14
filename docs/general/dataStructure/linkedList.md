@@ -1,6 +1,6 @@
 # 链表(Linked list)
 
-<font color=purple size=5>真正的动态数据结构，也是最简单的动态数据结构，很重要！</font>
+<font color=purple size=4>真正的动态数据结构，也是最简单的动态数据结构，很重要！</font>
 
 可以说是更高级动态数据结构的基石，如：二分搜索树、Trie字典树、平衡二叉树、AVL、红黑树等。
 

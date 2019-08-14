@@ -143,7 +143,7 @@ Ubuntu下可以通过以下步骤保存iptables设置，并实现开机自动加
 
     以上述方法是配置规则并生效后，`iptables -L -n`查看，我这里截屏了入方向（阿里云服务器本身也有出入方向规则配置，这两个双放行才行）：
 
-    ![iptables规则](./imgs/iptables-rule.png)
+    ![iptables规则](../../.imgs/iptables-rule.png)
 
 * Ubuntu iptables默认重启服务器后清空，配置开机自启动。
   [Ubuntu的iptables保存和重启后自动生效的方法](https://blog.csdn.net/u011355981/article/details/52288215)
