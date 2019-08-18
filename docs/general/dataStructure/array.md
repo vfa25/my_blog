@@ -39,7 +39,7 @@ list assignment index out of range
 
 ![动态数组](../../.imgs/dynamic_array.png)
 
-[Java的静态数组](https://github.com/vfa25/leetcode_notes/blob/master/datastructure/src/array/StaticArray.java)，
+[Java的静态数组](https://github.com/vfa25/dataStructure-algorithm/blob/master/datastructure/src/array/StaticArray.java)，
 现在改写一下链接中的Array类的add方法
 
 ```java

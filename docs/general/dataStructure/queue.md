@@ -17,9 +17,13 @@ from collections import deque（Python）
 
 ## 队列的常见形态
 
-- 循环队列（避免数据搬移的解决方案，出队操作`O(1)`的时间复杂度）
+- 链表实现队列（出队操作`O(1)`的时间复杂度）
 
-  先来看一下处理 100000 个数据的用时，[测试普通队列和循环队列](https://github.com/vfa25/leetcode_notes/blob/master/datastructure/src/queue/TestQueue.java)。
+[Java版链表队列](https://github.com/vfa25/dataStructure-algorithm/blob/master/datastructure/src/queue/LinkedListQueue.java)
+
+- 数组实现循环队列（避免数据搬移的解决方案，出队操作`O(1)`的时间复杂度）
+
+  先来看一下处理 100000 个数据的用时，[测试普通队列和循环队列](https://github.com/vfa25/dataStructure-algorithm/blob/master/datastructure/src/queue/TestQueue.java)。
   ![队列用时测试](../../.imgs/test_queue.png)
 
   关键是**确定好队空和队满的判定条件**。
@@ -62,7 +66,7 @@ from collections import deque（Python）
   - 队满的判断条件是 `(tail+1)%n == head`，队空的判断条件是 `head == tail`。
   - 其实，当队列满时，tail 指向的位置实际上是没有存储数据的。即`循环队列会浪费一个数组的存储空间`。
 
-  [Java实现循环队列](https://github.com/vfa25/leetcode_notes/blob/master/datastructure/src/queue/LoopQueue.java)，在链接中的方法中，注解一下扩容/缩容方法`LoopQueue.resize`：
+  [Java版循环队列](https://github.com/vfa25/dataStructure-algorithm/blob/master/datastructure/src/queue/LoopQueue.java)，在链接中的方法中，注解一下扩容/缩容方法`LoopQueue.resize`：
 
   ```java
   private void resize(int newCapacity) {

@@ -126,13 +126,15 @@ if __name__ == '__main__':
 
 ![](../../.imgs/selection_sort.png)
 
-- 冒泡排序是原地排序算法吗？
+[Java实现](https://github.com/vfa25/dataStructure-algorithm/blob/master/algorithms/src/sortingBasic/SelectionSort.java)
+
+- 选择排序是原地排序算法吗？
 
   **是**。只涉及筛选出最小元素，只需要常量级的临时空间，所以它的空间复杂度为 O(1)。
-- 冒泡排序是稳定的排序算法吗？
+- 选择排序是稳定的排序算法吗？
 
   **不是**。选择排序是一种不稳定的排序算法。选择排序每次都要找剩余未排序元素中的最小值，并和前面的元素交换位置，这样破坏了稳定性。
-- 冒泡排序的时间复杂度是多少？
+- 选择排序的时间复杂度是多少？
 
   每个元素总要遍历一圈。故，选择排序的`最好情况时间复杂度、最坏情况和平均情况时间复杂度都为O(n^2)`。
 
@@ -220,7 +222,7 @@ merge(A[p…r], A[p…q], A[q+1, r]) {
 
 随后，并的过程，_merge开始对子数组进行排序合并。
 
-[归并排序Python实现](https://github.com/vfa25/leetcode_notes/blob/master/notes/sort/merge_sort.py)
+[归并排序Python实现](https://github.com/vfa25/dataStructure-algorithm/blob/master/leetcode-notes/sort/merge_sort.py)
 
 - 归并排序是稳定的排序算法吗？
 
@@ -309,7 +311,7 @@ partition(A, p, r) {
 }
 ```
 
-[快速排序Python实现](https://github.com/vfa25/leetcode_notes/blob/master/notes/sort/quick_sort.py)
+[快速排序Python实现](https://github.com/vfa25/dataStructure-algorithm/blob/master/leetcode-notes/sort/quick_sort.py)
 
 直接上示意图：
 
@@ -404,7 +406,7 @@ partition(A, p, r) {
 
     当扫描完数组A后，数组R内的数据就是按照分数从小到大排列的了。
 
-[计数排序Python实现](https://github.com/vfa25/leetcode_notes/blob/master/notes/sort/counting_sort.py)
+[计数排序Python实现](https://github.com/vfa25/dataStructure-algorithm/blob/master/leetcode-notes/sort/counting_sort.py)
 
 ## 基数排序(Radix sort)
 

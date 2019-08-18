@@ -27,7 +27,7 @@ node.next = head
 head = node
 ```
 
-[一个普通的链表实现](https://github.com/vfa25/leetcode_notes/blob/master/datastructure/src/linkedlist/LinkedList.java)
+[Java版链表](https://github.com/vfa25/dataStructure-algorithm/blob/master/datastructure/src/linkedlist/LinkedList.java)、[new ListNode(int[] nums)，generate单链表](https://github.com/vfa25/dataStructure-algorithm/blob/master/datastructure/src/linkedlist/ListNode.java)。
 
 ## 链表与数组的区别
 

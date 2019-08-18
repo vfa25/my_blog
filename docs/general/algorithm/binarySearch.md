@@ -17,7 +17,7 @@
 
 ***有序数组中不存在重复元素***
 
-- 以循环方法 [Python实现](https://github.com/vfa25/leetcode_notes/blob/master/notes/bsearch/bsearch_circle.py)：
+- 以循环方法 [Python实现](https://github.com/vfa25/dataStructure-algorithm/blob/master/leetcode-notes/bsearch/bsearch_circle.py)：
 
     链接中，low、high、mid 都是指数组下标，其中 low 和 high 表示当前查找的区间范围。mid 表示该范围的中间位置。通过对比其值与 value 的大小，去更新下一次循环要查找的区间范围，直到找到或者区间缩小为 0，既退出循环。
 
@@ -30,7 +30,7 @@
     3. **low和high的更新**。
     low=mid+1，high=mid-1；而不是 low=mid 或 high=mid，后者可能会死循环。
 
-- 以递归方法 [Python实现](https://github.com/vfa25/leetcode_notes/blob/master/notes/bsearch/bsearch_recursion.py)：
+- 以递归方法 [Python实现](https://github.com/vfa25/dataStructure-algorithm/blob/master/leetcode-notes/bsearch/bsearch_recursion.py)：
 
 ## 二分查找适用范围及局限
 
@@ -41,7 +41,7 @@
 
 ## 4种常见的二分查找变形问题
 
-链接：[Python实现](https://github.com/vfa25/leetcode_notes/blob/master/notes/bsearch/bs_variants.py)
+链接：[Python实现](https://github.com/vfa25/dataStructure-algorithm/blob/master/leetcode-notes/bsearch/bs_variants.py)
 
 **查找第一个值等于给定值的元素**
 
