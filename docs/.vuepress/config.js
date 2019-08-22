@@ -14,7 +14,7 @@ module.exports = {
         text: '偏前端',
         items: [
           { text: '那些基础', link: '/frontEnd/' },
-          { text: '哇哇笔记', link: '/caseInterview/' },
+          // { text: '哇哇笔记', link: '/caseInterview/' },
           // { text: '源码解析', link: '/sourceCode/' }
         ]
       },
@@ -135,6 +135,7 @@ module.exports = {
             'dataStructure/hashTable',
             // 'dataStructure/skipList',
             'dataStructure/heap',
+            'dataStructure/binarySearchTree'
           ]
         },
         {
