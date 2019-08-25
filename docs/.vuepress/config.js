@@ -135,7 +135,9 @@ module.exports = {
             'dataStructure/hashTable',
             // 'dataStructure/skipList',
             'dataStructure/heap',
-            'dataStructure/binarySearchTree'
+            'dataStructure/binarySearchTree',
+            'dataStructure/set',
+            'dataStructure/map'
           ]
         },
         {

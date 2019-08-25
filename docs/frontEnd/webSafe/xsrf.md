@@ -19,7 +19,7 @@ XSRF 又名 [CSRF](https://developer.mozilla.org/en-US/docs/Learn/Server-side/Fi
 
 包括但不限于：
 
-- referer验证，但是 referer请求头 也是可以伪造的。
+- referer验证，但是 referer请求头 也是可以伪造的（Headless Chrome）。
 - `XSRF-token`，`token`不在前端生成，而是在每次访问站点的时候服务端生成。由于`token`很难伪造，所以就能区分这个请求是否是用户正常发起的。服务端通过 `set-cookie` 的方式回塞到客户端，然后客户端发送请求的时候，从 `cookie` 中对应的字段读取出 `token`后：
   1. 添加到请求 `headers` 中。这样服务端就可以从请求 `headers` 中读取这个 `token` 并验证（如axios库即是以`xsrfCookieName`表示存储token的`cookie`名称，`xsrfHeaderName`表示请求headers中token对应的`header`名称）。
   2. 添加到表单隐藏元素中（如Python的Django框架中，模板语法`{% csrf_token %}`就是使用的该方法插入了隐藏表单元素）。
