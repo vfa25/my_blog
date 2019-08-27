@@ -26,7 +26,7 @@ public interface Set<E> {
 
 [Set实现比较：基于二分搜索树 VS 基于链表](https://github.com/vfa25/dataStructure-algorithm/blob/master/datastructure/src/set/TestSet.java)
 
-O(logn) VS O(n)，对于12万单词的文章，非重单词统计耗时：![BST对比链表实现Set](./imgs/test-set.png)
+O(logn) VS O(n)，对于12万单词的文章，非重单词统计耗时：![BST对比链表实现Set](../../.imgs/test-set.png)
 
 |             | [LinkedListSet](https://github.com/vfa25/dataStructure-algorithm/blob/master/datastructure/src/set/LinkedListSet.java) | [BSTSet](https://github.com/vfa25/dataStructure-algorithm/blob/master/datastructure/src/set/BSTSet.java) |
 |-------------|---------------| ----------- |

@@ -103,8 +103,10 @@ module.exports = {
         },
         {
           title: 'Nginx',
+          collapsable: false,
           children: [
-            'nginx/base'
+            'nginx/base',
+            'nginx/syntax',
           ]
         },
         {
@@ -133,7 +135,7 @@ module.exports = {
             'dataStructure/stack',
             'dataStructure/queue',
             'dataStructure/hashTable',
-            // 'dataStructure/skipList',
+            'dataStructure/skipList',
             'dataStructure/heap',
             'dataStructure/binarySearchTree',
             'dataStructure/set',

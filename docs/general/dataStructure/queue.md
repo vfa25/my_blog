@@ -102,7 +102,7 @@ from collections import deque（Python）
 
 ## 优先队列
 
-实现机制：
+实现机制：正常入，按照优先级出。
 
 - Heap（Binary、Binomial多项式、Fibonacci)
 - Binary Search Tree
