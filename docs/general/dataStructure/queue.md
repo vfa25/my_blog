@@ -106,3 +106,13 @@ from collections import deque（Python）
 
 - Heap（Binary、Binomial多项式、Fibonacci)
 - Binary Search Tree
+
+**关键点在于：动态的处理出队顺序，优先级高者出队**
+
+在实现层面，则体现在`出队操作dequeue`和`获取队首元素getFront`。
+
+|             | 入队          | 出队（拿出最大元素）|
+|-------------|-------------- | --------------- |
+| 普通线性结构  | O(1)          | O(n)            |
+| 顺序线性结构  | O(n)          | O(1)            |
+| [堆](/general/dataStructure/heap.html) | O(logn) | O(logn) |

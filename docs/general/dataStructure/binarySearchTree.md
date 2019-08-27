@@ -1,10 +1,10 @@
-# 二分搜索树(Binary Search Tree)
+# 二叉搜索树(Binary Search Tree)
 
 ## 特点
 
-- 二分搜索树也是二叉树。
-- 二分搜索树的每个结点的值：大于其左子树的所有结点的值；同时小于其右子树的所有结点的值。
-- 每一棵子树也是二分搜索树。
+- 二叉搜索树也是二叉树。
+- 二叉搜索树的每个结点的值：大于其左子树的所有结点的值；同时小于其右子树的所有结点的值。
+- 每一棵子树也是二叉搜索树。
 
 ## 原则（条件）
 
@@ -13,27 +13,26 @@
 
 ## 常见操作的时间复杂度
 
-访问、搜索、插入、删除，全为`O(logn)`的平均时间复杂度（本章节伪代码不考虑树中重复元素）。
+访问、搜索、插入、删除，全为`O(logn)`的最好情况时间复杂度（本章节伪代码不考虑树中重复元素）。
 
-[Java版二分搜索树](https://github.com/vfa25/dataStructure-algorithm/blob/master/datastructure/src/bstree/BST.java)
+[Java版二叉搜索树](https://github.com/vfa25/dataStructure-algorithm/blob/master/datastructure/src/bstree/BST.java)
 
 ### 插入
 
 ![bstree-add](../../.imgs/bstree-add.gif)[图片来源](https://mp.weixin.qq.com/s/dAmOl1i3_0uXe2cWO9jSdA)
 
-二分搜索树的插入操作和链表较为类似，但多了`比较`和`left/right指针选择`。
+二叉搜索树的插入操作和链表较为类似，但多了`比较`和`left/right指针选择`。
 
 - 递归方式，结束条件为`目标位置（左孩子或右孩子）为null`，伪代码：
 
-```md
+```matlab
 function add(node, e):
-  if (node == null) return new Node(e);
+  if node == null then return new Node(e);
 
-  if (e < node.e) {
-    node.left = add(node.left, e);
-  } else if (e > node.e) {
-    node.right = add(node.right, e);
-  }
+  if e < node.e
+    then node.left = add(node.left, e);
+  elseif e > node.e
+    then node.right = add(node.right, e);
 
   return node;
 ```
@@ -47,27 +46,29 @@ function add(node, e):
   - 找到后继结点`s`，其将替换待删除结点`d`的位置，即`s -> right = removeMin(d -> right)`、`s -> left = d -> left`。
   - 最后删除`d`，`s`成为新的子树的根。
 
-![二分搜索树删除结点示意图](../../.imgs/bstree-remove.png)
+![二叉搜索树删除结点示意图](../../.imgs/bstree-remove.png)
 
-```md
+```matlab
 function remove(node, e) {
-  if (node == null) then return null;
-  if (e < node.e) {
-    node.left = remove(node.left, e)
-  } elif (e > node. e) {
-    node.right = remove(node.right, e)
-  } else {
-    if (node.left == null) {
-      rightNode = node.right
-      node.right = null
-      size--
-      return rightNode
-    } elif (node.right == null) {
-      leftNode = node.left
-      node.left = null
-      size--
-      return leftNode
-    } else {
+  if node == null then return null;
+  if e < node.e)
+    then node.left = remove(node.left, e)
+  elseif e > node. e)
+    then node.right = remove(node.right, e)
+  else
+    if node.left == null
+      then
+        rightNode = node.right
+        node.right = null
+        size--
+        return rightNode
+    elseif node.right == null
+      then
+        leftNode = node.left
+        node.left = null
+        size--
+        return leftNode
+    else
       // 关键
       successor = minimum(node.right);
       successor.right = removeMin(node.right);
@@ -75,8 +76,6 @@ function remove(node, e) {
 
       node.left = node.right = null;
       return successor;
-    }
-  }
 }
 ```
 
@@ -88,40 +87,35 @@ function remove(node, e) {
 
 - 递归方式，结束条件为`匹配到结点`或`查找到null`，伪代码：
 
-```md
+```matlab
 function contains(node, e):
-  if (node == null) return false;
-  if (e == node.e) return true;
+  if node == null then return false;
+  if e == node.e then return true;
 
-  if (e < node.e) {
-    return contains(node.left, e);
-  } else if (e > node.e) {
-    return contains(node.right, e);
-  }
+  if e < node.e
+    then return contains(node.left, e);
+  elseif e > node.e
+    then return contains(node.right, e);
 ```
 
 ### 求floor值
 
-二分搜索树有顺序性，获取floor值也变为可能。
+二叉搜索树有顺序性，获取floor值也变为可能。
 
-```md
+```matlab
 function floor(node, e) {
-    if (node == null) {
-      return null;
-    }
+  if node == null then return null;
 
-    if (e == node.e)
-        return node;
-    else if (e < node.e)
-        return floor(node.left, e);
-    else {
-        result = floor(node.right, e);
-        if (result == null)
-            return node;
-        else {
-            return result;
-        }
-    }
+  if e == node.e
+    then return node;
+  elseif e < node.e
+    then return floor(node.left, e);
+  else
+    result = floor(node.right, e);
+    if result == null
+      then return node;
+    else
+      return result;
 }
 ```
 
@@ -131,17 +125,17 @@ function floor(node, e) {
 
 根据`访问结点`与`对左右子树递归遍历`的`时间点`不同，有以下三种
 
-![二分搜索树遍历概览](../../.imgs/bstree-overview.png)
+![二叉搜索树遍历概览](../../.imgs/bstree-overview.png)
 
-```md
+```matlab
 function traverse(node):
   if node == null then return;
 
-  访问该结点? --------- 前序遍历
+  访问该结点? /*前序遍历*/
   travese(node.left);
-  访问该结点? --------- 中序遍历
+  访问该结点? /*中序遍历*/
   traverse(node.right);
-  访问该结点? --------- 后序遍历
+  访问该结点? /*后序遍历*/
 ```
 
 - 前序遍历
@@ -156,9 +150,9 @@ function traverse(node):
 
 特点：会先处理某个结点的左子树及右子树，再处理结点本身，是一个从叶子结点开始的过程。
 
-应用场景：为二分搜索树释放内存。
+应用场景：为二叉搜索树释放内存。
 
-### 二分搜索树的 DFS 和 BFS
+### 二叉搜索树的 DFS 和 BFS
 
 无论前中后序遍历，均是深度优先遍历。以下以迭代方式实现，仅学习用。
 
