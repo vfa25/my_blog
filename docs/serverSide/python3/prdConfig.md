@@ -1,4 +1,4 @@
-# Nginx + uwsgi 配置Python环境
+# Ubuntu线上环境：Nginx + uwsgi
 
 不要用root用户发布Web应用，且下级用户至少赋予sudo权限。
 
@@ -84,6 +84,40 @@ pkill -f uwsgi #重启
 killall -HUP uwsgi #所有的uwsgi实例都重启
 killall -INT uwsgi #关闭所有uwsgi实例
 ```
+
+- uwsgi 服务器开机自启动（使用update-rc.d命令）
+
+  1. 在目录`/etc/init.d/`路径下新建shell`uwsgi.sh`，内容如下：
+
+  ```md
+  #!/bin/bash -e
+  ### BEGIN INIT INFO
+  # Provides:          adbd
+  # Required-Start:
+  # Required-Stop:
+  # Default-Start:
+  # Default-Stop:
+  # Short-Description:
+  # Description:       Linux ADB
+  ### END INIT INFO
+
+  source /root/.virtualenvs/django_py36/bin/activate # 进入虚拟环境，代替 workon django_py36
+  uwsgi --ini /www/conf/django/uwsgi.ini &
+  ```
+
+  错误解决：如果`source: not found`。尝试执行`dpkg-reconfigure dash`（需要root权限），在界面中选择`no`，
+  再运行`ls -l /bin/sh`后，显示`/bin/sh -> bash`。
+
+  2. 添加进`/etc/rc*.d`（即开机自启动）
+
+  ```sh
+  cd /etc/init.d/
+  # 添加可执行权限，linux下文件颜色会由灰变绿
+  chmod +x uwsgi.sh
+  update-rc.d uwsgi.sh defaults 99
+  ```
+
+  查看目录`/etc/rc*.d/`下是否有`*uwsgi.sh`，如果没有，即代表未生效。尝试执行`update-rc.d uwsgi.sh enable`。
 
 ## Nginx配置
 

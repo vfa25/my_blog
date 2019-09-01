@@ -1,4 +1,20 @@
-# 登录状态模块源码注解
+# 登录状态模块
+
+## 业务问题
+
+- `CSRF Failed: CSRF token missing or incorrect`的403状态码
+
+    **场景复现**：`DRF`的后台系统使用的`SessionMiddleware`登录模式，其机制会在cookie中设置sessionid（domain为`/`），
+    使得在登录态下，对外API会在[校验CSRF令牌时返回403状态码](https://stackoverflow.com/questions/26639169/csrf-failed-csrf-token-missing-or-incorrect/26639895#26639895)。
+
+    **解决**：[取消指定接口的CSRF校验](https://stackoverflow.com/questions/30871033/django-rest-framework-remove-csrf)，选择了[django-braces](https://github.com/brack3t/django-braces)。
+
+    ```py
+    from braces.views import CsrfExemptMixin
+    class SmsCodeViewset(CsrfExemptMixin, CreateModelMixin, viewsets.GenericViewSet):
+      authentication_classes = []
+      ...
+    ```
 
 ## JWT(Json Web Token)
 

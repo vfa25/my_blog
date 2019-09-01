@@ -121,6 +121,21 @@ source 是 clone 下来的源码，shared 里面是日志文件和 pid 之类，
   pm2 startup ubuntu
   ```
 
+- 开机自启动（非root用户）
+
+  - pm2 startup（添加一个systemd条目，开机之后就可以去读取当前用户更目录的下面存储的配置文件）
+
+  会出现以下提示，直接将`sudo env PATH=$PATH:...`执行即可。
+
+  ```sh
+  [PM2] Init System found: systemd
+  [PM2] To setup the Startup Script, copy/paste the following command:
+  sudo env PATH=$PATH:...
+  ```
+
+  - pm2 save（配置现在运行的程序开机启动，保存在用户目录下）
+  - pm2 unstartup systemd（如果需要取消开机启动条目）
+
 ***报错解决***
 
 - npm: command not found \n post-deploy hook failed，可是服务端明明有npm。

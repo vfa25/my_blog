@@ -16,8 +16,11 @@ Web 服务一般跑在 1024+ 的端口上，直接通过默认80端口无法启�
 - 删掉阿里云服务器预装的Apache，如果用不到。
 
 ``` sh
+# 停止服务
 sudo service apache2 stop
+# 取消 update-rc.d 自启动， -f 是必须的
 sudo update-rc.d -f apache2 remove
+# 移除安装
 sudo apt-get remove apache2
 ```
 
@@ -62,7 +65,7 @@ server {
     gzip_vary on;
     gzip_min_length  1000;
     gzip_proxied any;
-    gzip_types text/plain text/css application/json application/x-javascript text/xml application/xml application/xml+rss text/javascript;
+    gzip_types text/plain application/javascript application/x-javascript text/css application/xml text/javascript application/x-httpd-php image/jpeg image/gif image/png;
     gzip_buffers 16 8k;
 
     location / {
@@ -122,48 +125,42 @@ server {
 
 ```bash
 server {
-  listen 443; # SSL 访问端口号为 443
-  server_name www.vfa25.cn; # 填写绑定证书的域名
+  listen       80;
+  server_name  www.vfa25.cn;
+  return 302 https://$server_name$request_uri;
+}
+
+server {
+  listen 443 ssl; # SSL 访问端口号为 443
+  server_name *.vfa25.cn;
+
+  charset     utf-8;
+
+  error_log  logs/443-error.log;
+
+  # max upload size
+  client_max_body_size 75M;
   
-  # 如果不是 https 协议，重定向到 https，同时带上所有参数
-  if ($ssl_protocol = "") {
-    return 301 https://$server_name$request_uri;
+  if ($host ~* "^vfa25.cn$") {
+    rewrite ^/(.*)$ https://www.vfa25.cn/ permanent;
     # 也可以直接重写到新的 https 地址
+    # return 301 https://$server_name$request_uri;
     # rewrite ^(.*) https://$host$1 permanent;
-    # return 301 https://vfa25.cn$request_uri;
-    # rewrite ^ https://$host$request_uri? permanent;
+    # rewrite ^ https://$host$request_uri?permanent;
   }
-  ssl on; # 启用SSL功能（或者listen      443 ssl;）二选一
+
   ssl_certificate XXXX_www.vfa25.cn.pem; # 证书文件
   ssl_certificate_key XXXX_www.vfa25.cn.key; # 私钥文件
-
   # ssl_session_cache    shared:SSL:1m;
   ssl_session_timeout 5m;
-
   ssl_protocols TLSv1 TLSv1.1 TLSv1.2; # 使用的协议
-  ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:HIGH:!aNULL:!MD5:!RC4:!DHE; #配置加密套件
+  ssl_ciphers ECDHE-RSA-xxx; #配置加密套件
   ssl_prefer_server_ciphers on;
 
   location / {
       root   html; # 对外提供内容访问的站点目录
       index  index.html index.htm;
   }
-  # location / {
-  #    proxy_cache my_cache;
-  #    proxy_pass http://127.0.0.1:8888;
-  #    proxy_set_header Host $host;
-  # }
-}
-```
-
-或许可设置80接口跳转
-
-```bash
-server {
-  listen       80 default_server;
-  listen       [::]:80 default_server;
-  server_name  test.com;
-  return 302 https://$server_name$request_uri; # URI (Uniform Resource Identifier) 统一资源标志符
 }
 ```
 

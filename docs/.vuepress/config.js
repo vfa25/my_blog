@@ -14,7 +14,6 @@ module.exports = {
         text: '偏前端',
         items: [
           { text: '那些基础', link: '/frontEnd/' },
-          // { text: '哇哇笔记', link: '/caseInterview/' },
           // { text: '源码解析', link: '/sourceCode/' }
         ]
       },
@@ -41,18 +40,20 @@ module.exports = {
           ]
         },
         {
+          title: '网络',
+          collapsable: false,
+          children: [
+            'internet/http-cache',
+            'internet/cors',
+          ]
+        },
+        {
           title: 'Web 安全',
           children: [
             'webSafe/xsrf',
             'webSafe/xss',
             'webSafe/sqlInject',
             'webSafe/other'
-          ]
-        },
-        {
-          title: '网络',
-          children: [
-            'internet/cors',
           ]
         },
         // {

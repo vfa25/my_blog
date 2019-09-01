@@ -1,6 +1,5 @@
 # 开场白
 
 <font color=purple size=5>any application that can be written in JavaScript, will eventually be written in JavaScript.</font>
-<p style="direction: rtl;"><span>一个比它的出处更有名的定律</span><span>——</span></p>
 
-- 感觉最近给JS太少的偏爱了
+尝试着建立对前端认知的知识体系，没准哪天就豁然开朗了。切入点总是可以的，从JS的词法、语法解析开始，从浏览器地址栏回车开始。。。enter
