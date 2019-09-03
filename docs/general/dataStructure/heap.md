@@ -11,7 +11,7 @@
 
 同理，对应的可以定义`小顶堆`。
 
-![大顶堆](./imgs/max-heap.png)
+![大顶堆](../../.imgs/max-heap.png)
 
 可以使用数组这种数据结构，来存储二叉堆元素，对于图示，是从索引1开始存储元素。关系结点索引：
 
@@ -91,7 +91,7 @@ function siftDown(k) {
 思路：将给定数组视作二叉堆，随后找到最后一个`非叶子结点`，从其开始，倒序，循环进行`Sift Down`操作。
 而要找到最后一个`非叶子结点`，只需拿到数组最后一个元素索引`i`，即可通过`(i-1)/2`求得其`父结点的索引`。
 
-![O(n) vs O(nlogn)，是否使用Heapify对比](./imgs/heap-heapify.png)
+![O(n) vs O(nlogn)，是否使用Heapify对比](../../.imgs/heap-heapify.png)
 
 ```matlab
 // 只需在构造函数中遍历执行Sift Down即可
