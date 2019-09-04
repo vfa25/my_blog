@@ -116,3 +116,5 @@ from collections import deque（Python）
 | 普通线性结构  | O(1)          | O(n)            |
 | 顺序线性结构  | O(n)          | O(1)            |
 | [堆](/general/dataStructure/heap.html) | O(logn) | O(logn) |
+
+注：工具类中（如java.util.priorityQueue）底层实现并非二叉堆，而是斐波那契堆或平衡二叉树。

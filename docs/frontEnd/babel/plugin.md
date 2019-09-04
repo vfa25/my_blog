@@ -1,56 +1,155 @@
-# 转译插件
+# babel-plugin-import源码解析
 
-## Reference
+这里以`babel-plugin-import`分析一下转译插件的工作原理。
 
-- [Babel插件手册](https://github.com/jamiebuilds/babel-handbook/blob/master/translations/zh-Hans/plugin-handbook.md#toc-stages-of-babel)
-- [深入Babel，这一篇就够了](https://juejin.im/post/5c21b584e51d4548ac6f6c99#heading-1)
+先来看一下`import { Button } from 'antd';`[解析后的AST](https://astexplorer.net/)（记得选择babylon）。
+
+## 准备
 
 ### 文档
 
-- [babel-traverse：用于操作AST状态--Path的属性及方法](https://github.com/babel/babel/tree/master/packages/babel-traverse/src/path)
-- [babel-types：Babel官网](https://babeljs.io/docs/en/babel-types)、[The core Babylon AST node types](https://github.com/babel/babylon/blob/master/ast/spec.md)
+- [Babel core手册（GitHub）](https://github.com/jamiebuilds/babel-handbook/blob/master/translations/zh-Hans/plugin-handbook.md#toc-stages-of-babel)
+- [Babylon AST结点类型枚举（GitHub）](https://github.com/babel/babylon/blob/master/ast/spec.md)
+- [babel-traverse（GitHub）：用于操作AST状态--Path的属性及方法](https://github.com/babel/babel/tree/master/packages/babel-traverse/src/path)
+- [babel-types（Babel文档）](https://babeljs.io/docs/en/babel-types)
+- [@babel/helper-module-imports（Babel文档）](https://babeljs.io/docs/en/next/babel-helper-module-imports.html)
 
-- [ESTree规范](https://developer.mozilla.org/en-US/docs/Mozilla/Projects/SpiderMonkey/Parser_API)
+- [ESTree规范（MDN）](https://developer.mozilla.org/en-US/docs/Mozilla/Projects/SpiderMonkey/Parser_API)
 
-附：将代码解析成AST（[在线工具](https://astexplorer.net/)）。
+## 本地调试结果
 
-前两篇文章很详细，这儿不再搬运，在其基础上，以一个例子分析一下：`babel-plugin-import`。
+[babel-plugin-import的GitHub地址](https://github.com/ant-design/babel-plugin-import)。
 
-## babel-plugin-import
-
-[源码GitHub地址](https://github.com/ant-design/babel-plugin-import)
-
-先从`package.json`查看入口`main`字段为`lib/index.js`，这是个build后的`comminjs规范`文件，定位到入口`src/index.js`。
-
-先来看一下依赖`src/Plugins.js`文件的辅助函数：
+先来看一下，以如下方式引用`Button组件`时的转换结果。
 
 ```js
-// src/Plugins.js
-import { join } from 'path';
-// 用于导入node文件模块，文档查看 https://babeljs.io/docs/en/next/babel-helper-module-imports.html
-import { addSideEffect, addDefault, addNamed } from '@babel/helper-module-imports';
+import { Button } from 'antd';
+ReactDOM.render(<Button>xxxx</Button>);
+```
 
-// 转换函数，如 transCamel('MySelect', '-')，返回'my-select'
-function transCamel(_str, symbol) {
-  const str = _str[0].toLowerCase() + _str.substr(1);
-  return str.replace(/([A-Z])/g, ($1) => `${symbol}${$1.toLowerCase()}`);
-}
+```js
+require('@babel/register'); // node未完全支持ES6，运行时对ES6转码（dev）
+const babel = require('@babel/core');
+const types = require('@babel/types');
+const plugin = require('../src/index.js').default;
 
-// 路径兼容Windows操作系统
-function winPath(path) {
-  return path.replace(/\\/g, '/');
-}
+const visitor = plugin({types});
+const code = `
+    import { Button } from 'antd';
+    ReactDOM.render(<Button>xxxx</Button>);
+`;
 
-// 路径加载资源
-function normalizeCustomName(originCustomName) {
-  // If set to a string, treat it as a JavaScript source file path.
-  if (typeof originCustomName === 'string') {
-    const customNameExports = require(originCustomName);
-    return typeof customNameExports === 'function'
-      ? customNameExports : customNameExports.default;
+const result = babel.transform(code, {
+    presets: ['umi'],
+    plugins: [
+        [
+            visitor,
+            {
+                libraryName: 'antd',
+                libraryDirectory: 'es',
+                style: true
+            }
+        ]
+    ]
+});
+console.log(result.code);
+// "use strict";
+
+// 这个是@babel/runtime的helper函数
+// var _interopRequireDefault = require("/Users/nsky/Desktop/yaunma/babel-plugin-import/node_modules/_babel-preset-umi@1.6.1@babel-preset-umi/node_modules/@babel/runtime/helpers/interopRequireDefault");
+
+// var _react = _interopRequireDefault(require("react"));
+// require("antd/es/button/style");
+// var _button = _interopRequireDefault(require("antd/es/button"));
+// ReactDOM.render(_react.default.createElement(_button.default, null, "xxxx"));
+```
+
+## 源码分析
+
+根据`webpack`的`resolve.mainFields`的默认配置，入口一般会选用`package.json`的`main`字段，
+即`lib/index.js`，这是build后`comminjs规范`文件，源码入口还是在`src/index.js`。
+
+### 入口文件 /src/index.js
+
+已知Babel进入结点时，是以`访问者模式（visitor）`获取结点信息，并进行相关操作。
+
+入口文件的逻辑很清晰，会导出一个函数，该函数接收一有属性types（即`babel-types`）的对象参数，
+
+返回一个有访问者属性visitor的对象，而visitor对象中定义了对于各结点的访问函数，这样就可以获取具体结点以做出不同的处理。
+
+```js
+import assert from 'assert'; // 断言
+import Plugin from './Plugin';
+// babel调用插件时，会将babel-types作为参数传入
+export default function ({ types }) {
+  let plugins = null; // plugin数组，元素为Plugin实例
+
+  // 注册各结点的访问方法
+  function applyInstance(method, args, context) {
+    for (const plugin of plugins) {
+      if (plugin[method]) {
+        plugin[method].apply(plugin, [...args, context]);
+      }
+    }
   }
-  return originCustomName;
+  const Program = {
+    // path可以看成结点的软链接，有一系列属性和操作方法；opts为插件选项。
+    enter(path, { opts = {} }) {
+      // Init plugin instances once.
+      if (!plugins) {
+        assert(opts.libraryName, 'libraryName should be provided');
+        plugins = [
+          new Plugin(
+            opts.libraryName,
+            opts.libraryDirectory,
+            opts.style,
+            opts.camel2DashComponentName,
+            opts.camel2UnderlineComponentName,
+            opts.fileName,
+            opts.customName,
+            opts.transformToDefaultImport,
+            types
+          ),
+        ];
+      }
+      applyInstance('ProgramEnter', arguments, this); // 注册根结点enter方法
+    },
+    exit() {
+      applyInstance('ProgramExit', arguments, this); // 注册根结点exit方法
+    },
+  };
+  const methods = [
+    'ImportDeclaration',
+    'CallExpression',
+    'MemberExpression',
+    'Property',
+    'VariableDeclarator',
+    'ArrayExpression',
+    'LogicalExpression',
+    'ConditionalExpression',
+    'IfStatement',
+    'ExpressionStatement',
+    'ReturnStatement',
+    'ExportDefaultDeclaration',
+    'BinaryExpression',
+    'NewExpression',
+    'ClassDeclaration',
+  ];
+  const ret = {
+    visitor: { Program },
+  };
+  // 将methods数组元素映射的访问函数全部注册
+  for (const method of methods) {
+    ret.visitor[method] = function () { // eslint-disable-line
+      applyInstance(method, arguments, ret.visitor);  // eslint-disable-line
+    };
+  }
+  return ret; // 返回访问对象
 }
 ```
 
 未完待续。。。
+
+## Reference
+
+- [深入Babel，这一篇就够了](https://juejin.im/post/5c21b584e51d4548ac6f6c99#heading-1)
