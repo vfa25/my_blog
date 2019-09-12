@@ -23,18 +23,19 @@
 
 二叉搜索树的插入操作和链表较为类似，但多了`比较`和`left/right指针选择`。
 
-- 递归方式，结束条件为`目标位置（左孩子或右孩子）为null`，伪代码：
+- 递归方式，结束条件为`目标位置（左子结点或右子结点）为null`，伪代码：
 
-```matlab
-function add(node, e):
-  if node == null then return new Node(e);
+```pascal
+Function add(node, e)
+  if node == null then return new Node(e)
 
   if e < node.e
-    then node.left = add(node.left, e);
+    then node.left := add(node.left, e)
   elseif e > node.e
-    then node.right = add(node.right, e);
+    then node.right := add(node.right, e)
 
-  return node;
+  return node
+End add
 ```
 
 ### 删除
@@ -48,35 +49,35 @@ function add(node, e):
 
 ![二叉搜索树删除结点示意图](../../.imgs/bstree-remove.png)
 
-```matlab
-function remove(node, e) {
-  if node == null then return null;
-  if e < node.e)
-    then node.left = remove(node.left, e)
+```pascal
+Function remove(node, e)
+  if node == null then return null
+  if e < node.e
+    then node.left := remove(node.left, e)
   elseif e > node. e)
-    then node.right = remove(node.right, e)
+    then node.right := remove(node.right, e)
   else
     if node.left == null
       then
-        rightNode = node.right
-        node.right = null
+        rightNode := node.right
+        node.right := null
         size--
         return rightNode
     elseif node.right == null
       then
-        leftNode = node.left
-        node.left = null
+        leftNode := node.left
+        node.left := null
         size--
         return leftNode
     else
       // 关键
-      successor = minimum(node.right);
-      successor.right = removeMin(node.right);
-      successor.left = node.left;
+      successor := minimum(node.right)
+      successor.right := removeMin(node.right)
+      successor.left := node.left
 
-      node.left = node.right = null;
-      return successor;
-}
+      node.left := node.right := null
+      return successor
+End remove
 ```
 
 ### 搜索
@@ -87,36 +88,37 @@ function remove(node, e) {
 
 - 递归方式，结束条件为`匹配到结点`或`查找到null`，伪代码：
 
-```matlab
-function contains(node, e):
-  if node == null then return false;
-  if e == node.e then return true;
+```pascal
+Function contains(node, e)
+  if node == null then return false
+  if e == node.e then return true
 
   if e < node.e
-    then return contains(node.left, e);
+    then return contains(node.left, e)
   elseif e > node.e
-    then return contains(node.right, e);
+    then return contains(node.right, e)
+End contains
 ```
 
 ### 求floor值
 
 二叉搜索树有顺序性，获取floor值也变为可能。
 
-```matlab
-function floor(node, e) {
-  if node == null then return null;
+```pascal
+Function floor(node, e)
+  if node == null then return null
 
   if e == node.e
-    then return node;
+    then return node
   elseif e < node.e
-    then return floor(node.left, e);
+    then return floor(node.left, e)
   else
-    result = floor(node.right, e);
+    result := floor(node.right, e)
     if result == null
-      then return node;
+      then return node
     else
-      return result;
-}
+      return result
+End floor
 ```
 
 ### 遍历
@@ -127,15 +129,16 @@ function floor(node, e) {
 
 ![二叉搜索树遍历概览](../../.imgs/bstree-overview.png)
 
-```matlab
-function traverse(node):
-  if node == null then return;
+```pascal
+Function traverse(node)
+  if node == null then return
 
   访问该结点? /*前序遍历*/
-  travese(node.left);
+  travese(node.left)
   访问该结点? /*中序遍历*/
-  traverse(node.right);
+  traverse(node.right)
   访问该结点? /*后序遍历*/
+End traverse
 ```
 
 - 前序遍历
