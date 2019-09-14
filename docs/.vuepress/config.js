@@ -141,7 +141,8 @@ module.exports = {
             'dataStructure/binarySearchTree',
             'dataStructure/set',
             'dataStructure/map',
-            'dataStructure/segmentTree'
+            'dataStructure/segmentTree',
+            'dataStructure/trie'
           ]
         },
         {
