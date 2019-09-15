@@ -1,3 +1,4 @@
+const md5 = require('md5')
 const {
   mdConf,
   themeConf
@@ -5,7 +6,6 @@ const {
 const { secret } = require('../../app.config')
 
 module.exports = {
-  // base: '/doc/',
   dest: 'dist',
   title: 'Coding积分',
   navbar: true,
@@ -17,7 +17,7 @@ module.exports = {
   head: [
     ['link', { rel: 'icon', href: '/favicon.ico' }],
     ['link', { rel: 'stylesheet', href: 'https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css' }],
-    ['link', { rel: "stylesheet", href: "https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/2.10.0/github-markdown.min.css" }]
+    ['link', { rel: 'stylesheet', href: 'https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/2.10.0/github-markdown.min.css' }]
 
   ],
   description: '愉快的记录学习日常吧',
@@ -44,12 +44,12 @@ module.exports = {
       {
         choosen: 'gitalk',
         options: {
-          clientID: 'Iv1.39128e29ffdd6890',
+          clientID: 'f1d70267492718f2d27e',
           clientSecret: secret || process.env.clientSecret,
           repo: 'my_doc',
           owner: 'vfa25',
           admin: ['vfa25'],
-          id: '<%- frontmatter.commentid || frontmatter.permalink %>',      // Ensure uniqueness and length less than 50
+          id: md5('<%- frontmatter.commentid || frontmatter.permalink %>'),      // Ensure uniqueness and length less than 50
           distractionFreeMode: false,  // Facebook-like distraction free mode
           labels: ['Gitalk', 'Comment'],
           title: '「评论」<%- frontmatter.title %>',

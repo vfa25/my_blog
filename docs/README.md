@@ -2,7 +2,7 @@
 home: true
 heroImage: /logo.jpeg
 actionText: Go →
-actionLink: /frontEnd/
+actionLink: /guide/
 features:
 - title: 高效时效
   details: 偏向于重点难点。

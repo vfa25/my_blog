@@ -1,4 +1,3 @@
-
 module.exports = {
   // markdown-it-anchor 的选项
   anchor: {
@@ -9,7 +8,7 @@ module.exports = {
     includeLevel: [1, 2, 3]
   },
   lineNumbers: true,
-  config: md => {
+  extendMarkdown: md => {
     md.set({html: true})
     md.use(require("markdown-it-katex"))
   }
