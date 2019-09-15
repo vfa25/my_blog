@@ -2,7 +2,7 @@ const md5 = require('md5')
 const {
   mdConf,
   themeConf
-} = require('./myConfig/')
+} = require('./config/')
 const { secret } = require('../../app.config')
 
 module.exports = {
@@ -27,7 +27,7 @@ module.exports = {
     require('vuepress-plugin-viewer'),
     '@vuepress/back-to-top',
     [
-      '@vuepress/google-analytics', { 'ga': 'UA-124601890-1' }
+      '@vuepress/google-analytics', { 'ga': '' }
     ],
     [
       '@vuepress/pwa',

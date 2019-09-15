@@ -55,6 +55,12 @@ const serverSide = [
     ]
   },
   {
+    title: 'Java',
+    children: [
+      'java/class',
+    ]
+  },
+  {
     title: 'Django',
     collapsable: false,
     children: [
@@ -110,7 +116,8 @@ const general = [
       'dataStructure/map',
       'dataStructure/segmentTree',
       'dataStructure/trie',
-      'dataStructure/unionFind'
+      'dataStructure/unionFind',
+      'dataStructure/AVL'
     ]
   },
   {

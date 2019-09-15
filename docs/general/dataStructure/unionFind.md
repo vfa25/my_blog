@@ -12,7 +12,7 @@
 注：连接问题并非路径问题，前者要回答的问题往往较少，毕竟维护更多的信息会有额外的性能消耗。
 
 并查集连接问题示意：指定两点是否连通。
-![并查集连接问题示意图](./imgs/union-find-overview.png)
+![并查集连接问题示意图](../../.imgs/union-find-overview.png)
 
 ## 基本动作
 
@@ -26,7 +26,7 @@
 
 图示中，以红线上方的数字表示元素id，红线下方表示前者所在的集合id。
 
-![Quick Find示意图](./imgs/union-find-quick-find.png)
+![Quick Find示意图](../../.imgs/union-find-quick-find.png)
 
 - 查询连接操作，时间复杂度为$O(1)$。
 - 并集操作，例如`union(1, 4)`，那么1或者4，其原有的集合也会连接。这样在修改时需要遍历操作，因此时间复杂度为$O(n)$。
@@ -42,7 +42,7 @@
 - 若单个新结点，将要向已有结点树上任一结点进行合并操作，只需要将`前者`指向`后者的根结点`即可。
 - 若新结点数上的任一结点，将要向已有结点树上任一结点进行合并操作，只需要将`前者的根结点`指向`后者的根结点`即可。
 
-![Quick Union示意图01](./imgs/union-find-quick-union01.png)
+![Quick Union示意图01](../../.imgs/union-find-quick-union01.png)
 
 其实每个结点都有且仅有一个指针，因此可以以数组的方式存储。
 
@@ -52,7 +52,7 @@
   在当执行`union(9, 4)`时，需先查询到`id==4的根结点`，再将`id==9`指向该根结点；
   这可以防止树状结构退化成链表。
 
-![Quick Union示意图02](./imgs/union-find-quick-union02.png)
+![Quick Union示意图02](../../.imgs/union-find-quick-union02.png)
 
 - 查询连接操作，时间复杂度为$O(h)$，其中h为树状结构的深度
 - 并集操作，时间复杂度为$O(h)$，其中h为树状结构的深度
@@ -126,14 +126,14 @@ End unionElements
 树状结构size优化：[并查集第3版（Java）](https://github.com/vfa25/dataStructure-algorithm/blob/master/datastructure/src/unionfind/UnionFindVersion03.java)
 
 图示为生成0-10万的随机整数，并执行10万次并和查操作用时：
-![三个版本测试示意图](./imgs/union-find-test.png)
+![三个版本测试示意图](../../.imgs/union-find-test.png)
 
 ## rank优化
 
 如下图所示，此时若执行`union(4, 2)`，则结点8会指向结点7（后者结点数更多），层数直接变为4。
 所以更优的合并方案是结点7指向结点8，因此，记录以某一结点为根的树的层数的思路，才是更优解。
 
-![基于rank优化的触发点](./imgs/union-find-optimize-rank.png)
+![基于rank优化的触发点](../../.imgs/union-find-optimize-rank.png)
 
 注意rank的语义，表示排位、排名。概括以下几点
 
@@ -168,7 +168,7 @@ End unionElements
 
 如下图所示，在表征连接时，它们并无区别。因此，只要能使树的深度降低，总是更优解。
 
-![路径压缩示意图](./imgs/union-find-optimize-path-compression.png)
+![路径压缩示意图](../../.imgs/union-find-optimize-path-compression.png)
 
 思路既定，这时有一个结构设计问题——在什么时候进行路径压缩
 
@@ -216,8 +216,6 @@ End unionElements
 
 严格意义上，并查集的时间复杂度结论为$O(log^*{n})$（iterated logarithm，并非一般的logn）。
 
-<font size=6>
-$log^*{n} = \{^{\qquad0\qquad\qquad\qquad if(n\leq1)}_{1+log^*(logn)\qquad if(n>1)}$
-</font>
+<font size=6>$log^*{n} = \{^{\qquad0\qquad\qquad\qquad if(n\leq1)}_{1+log^*(logn)\qquad if(n>1)}$</font>
 
 当n>1时，该式会一直递归，这是个比$O(logn)$还快的时间复杂度，近乎是$O(1)$级别。
