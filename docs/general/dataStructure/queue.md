@@ -17,11 +17,11 @@ from collections import deque（Python）
 
 ## 队列的常见形态
 
-- 链表实现队列（出队操作`O(1)`的时间复杂度）
+- 链表实现队列（出队操作$O(1)$的时间复杂度）
 
 [Java版链表队列](https://github.com/vfa25/dataStructure-algorithm/blob/master/datastructure/src/queue/LinkedListQueue.java)
 
-- 数组实现循环队列（避免数据搬移的解决方案，出队操作`O(1)`的时间复杂度）
+- 数组实现循环队列（避免数据搬移的解决方案，出队操作$O(1)$的时间复杂度）
 
   先来看一下处理 100000 个数据的用时，[测试普通队列和循环队列](https://github.com/vfa25/dataStructure-algorithm/blob/master/datastructure/src/queue/TestQueue.java)。
   ![队列用时测试](../../.imgs/test_queue.png)
@@ -113,8 +113,8 @@ from collections import deque（Python）
 
 |             | 入队          | 出队（拿出最大元素）|
 |-------------|-------------- | --------------- |
-| 普通线性结构  | O(1)          | O(n)            |
-| 顺序线性结构  | O(n)          | O(1)            |
-| [堆](/general/dataStructure/heap.html) | O(logn) | O(logn) |
+| 普通线性结构  | $O(1)$        | $O(n)$          |
+| 顺序线性结构  | $O(n)$        | $O(1)$          |
+| [堆](/general/dataStructure/heap.html) | $O(logn)$ | $O(logn)$ |
 
 注：工具类中（如java.util.priorityQueue）底层实现并非二叉堆，而是斐波那契堆或平衡二叉树。

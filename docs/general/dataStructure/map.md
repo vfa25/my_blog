@@ -24,15 +24,15 @@ public interface Map<K, V> {
 
 [Map实现比较：基于二叉搜索树 VS 基于链表](https://github.com/vfa25/dataStructure-algorithm/blob/master/datastructure/src/map/TestMap.java)
 
-O(logn) VS O(n)，对于12万单词的文章，单词字典统计耗时：![BST对比链表实现Map](../../.imgs/test-map.png)
+$O(logn)$ VS $O(n)$，对于12万单词的文章，单词字典统计耗时：![BST对比链表实现Map](../../.imgs/test-map.png)
 
 |             | [LinkedListMap](https://github.com/vfa25/dataStructure-algorithm/blob/master/datastructure/src/map/LinkedListMap.java) | [BSTMap](https://github.com/vfa25/dataStructure-algorithm/blob/master/datastructure/src/map/BSTMap.java) |
 |-------------|---------------| ----------- |
-| 增 add      | O(n)          | O(h) 最好：O(logn) 最坏：O(n) |
-| 删 remove   | O(n)          | O(h) 最好：O(logn) 最坏：O(n) |
-| 改 set      | O(n)          | O(h) 最好：O(logn) 最坏：O(n) |
-| 查 get      | O(n)          | O(h) 最好：O(logn) 最坏：O(n) |
-| 查 contains | O(n)          | O(h) 最好：O(logn) 最坏：O(n) |
+| 增 add      | $O(n)$        | $O(h)$ 最好：$O(logn)$ 最坏：$O(n)$ |
+| 删 remove   | $O(n)$        | $O(h)$ 最好：$O(logn)$ 最坏：$O(n)$ |
+| 改 set      | $O(n)$        | $O(h)$ 最好：$O(logn)$ 最坏：$O(n)$ |
+| 查 get      | $O(n)$        | $O(h)$ 最好：$O(logn)$ 最坏：$O(n)$ |
+| 查 contains | $O(n)$        | $O(h)$ 最好：$O(logn)$ 最坏：$O(n)$ |
 > 其中 h 为二叉搜索树深度
 
 ## 有序映射和无序映射

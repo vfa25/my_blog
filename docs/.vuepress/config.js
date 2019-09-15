@@ -1,162 +1,62 @@
+const {
+  mdConf,
+  themeConf
+} = require('./myConfig/')
+const { secret } = require('../../app.config')
+
 module.exports = {
-  base: '/doc/',
+  // base: '/doc/',
   dest: 'dist',
-  title: '日常手记',
+  title: 'Coding积分',
+  navbar: true,
+  editLinks: true,
+  editLinkText: '在 GitHub 上编辑此页',
+  lastUpdated: '更新于',
+  themeConfig: themeConf,
+  markdown: mdConf,
   head: [
-    ['link', { rel: 'icon', href: '/favicon.ico' }]
+    ['link', { rel: 'icon', href: '/favicon.ico' }],
+    ['link', { rel: 'stylesheet', href: 'https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css' }],
+    ['link', { rel: "stylesheet", href: "https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/2.10.0/github-markdown.min.css" }]
+
   ],
-  description: '一起愉快的coding吧',
-  themeConfig: {
-    docsDir: 'docs',
-    repo: 'https://github.com/vfa25/my_doc',
-    nav: [
-      {
-        text: '偏前端',
-        items: [
-          { text: '那些基础', link: '/frontEnd/' },
-          // { text: '源码解析', link: '/sourceCode/' }
-        ]
-      },
-      { text: 'Server', link: '/serverSide/' },
-      { text: '通用', link: '/general/' }
+  description: '愉快的记录学习日常吧',
+  plugins: [
+    require('./plugins/my-router'),
+    require('./plugins/my-loader'),
+    require('vuepress-plugin-viewer'),
+    '@vuepress/back-to-top',
+    [
+      '@vuepress/google-analytics', { 'ga': 'UA-124601890-1' }
     ],
-    sidebar: {
-      '/frontEnd/': [
-        ['', 'Introduction'],
-        {
-          title: 'JS',
-          collapsable: false,
-          children: [
-            'js/parse',
-            'js/module',
-          ]
-        },
-        {
-          title: 'Parser：用JS解析JS',
-          children: [
-            'babel/base',
-            'babel/AST',
-            'babel/plugin',
-          ]
-        },
-        {
-          title: '网络',
-          collapsable: false,
-          children: [
-            'internet/http-cache',
-            'internet/cors',
-          ]
-        },
-        {
-          title: 'Web 安全',
-          children: [
-            'webSafe/xsrf',
-            'webSafe/xss',
-            'webSafe/sqlInject',
-            'webSafe/other'
-          ]
-        },
-        // {
-        //   title: 'ReactNative',
-        //   children: [
-        //     'reactNative/introduction',
-        //     'reactNative/debug',
-        //     'reactNative/layout',
-        //   ]
-        // }
-      ],
-      '/caseInterview/': [
-        ['', '出发吧'],
-        {
-          title: 'JS基础',
-          collapsable: false,
-          children: [
-            'jsBase/executionContext',
-          ]
-        },
-      ],
-      '/sourceCode/': [
-        ['', 'Introduction']
-      ],
-      '/serverSide/': [
-        ['', 'Introduction'],
-        {
-          title: 'Python3',
-          children: [
-            'python3/base',
-            'python3/prdConfig',
-          ]
-        },
-        {
-          title: 'Django',
-          collapsable: false,
-          children: [
-            'django/base',
-            'django/rest_framework',
-            'django/loginStatus',
-          ]
-        },
-        {
-          title: 'Scrapy',
-          children: [
-            'scrapy/base'
-          ]
-        },
-        {
-          title: 'Nginx',
-          collapsable: false,
-          children: [
-            'nginx/base',
-            'nginx/syntax',
-          ]
-        },
-        {
-          title: '服务器配置（操作系统Ubuntu）',
-          children: [
-            'config/base',
-            'config/account',
-            'config/safe',
-            'config/env',
-            'config/nginx',
-            'config/domainName',
-            'config/pm2',
-            'config/database',
-          ]
-        },
-      ],
-      '/general/': [
-        ['', 'Introduction'],
-        {
-          title: '数据结构',
-          collapsable: false,
-          children: [
-            'dataStructure/base',
-            'dataStructure/array',
-            'dataStructure/linkedList',
-            'dataStructure/stack',
-            'dataStructure/queue',
-            'dataStructure/hashTable',
-            'dataStructure/skipList',
-            'dataStructure/heap',
-            'dataStructure/binarySearchTree',
-            'dataStructure/set',
-            'dataStructure/map',
-            'dataStructure/segmentTree',
-            'dataStructure/trie'
-          ]
-        },
-        {
-          title: '算法',
-          collapsable: false,
-          children: [
-            'algorithm/base',
-            'algorithm/recursion',
-            'algorithm/sort',
-            'algorithm/binarySearch',
-          ]
-        },
-      ],
-    }
-  }
+    [
+      '@vuepress/pwa',
+      {
+        serviceWorker: true,
+        updatePopup: {
+          message: "发现页面有新内容",
+          buttonText: "刷新"
+        }
+      }
+    ],
+    [
+      'vuepress-plugin-comment',
+      {
+        choosen: 'gitalk',
+        options: {
+          clientID: 'Iv1.39128e29ffdd6890',
+          clientSecret: secret || process.env.clientSecret,
+          repo: 'my_doc',
+          owner: 'vfa25',
+          admin: ['vfa25'],
+          id: '<%- frontmatter.commentid || frontmatter.permalink %>',      // Ensure uniqueness and length less than 50
+          distractionFreeMode: false,  // Facebook-like distraction free mode
+          labels: ['Gitalk', 'Comment'],
+          title: '「评论」<%- frontmatter.title %>',
+          body: '<%- frontmatter.title %>：<%- window.location.origin %><%- frontmatter.to.path || window.location.pathname %>'
+        }
+      }
+    ]
+  ]
 };
 

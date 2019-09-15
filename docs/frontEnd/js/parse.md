@@ -1,4 +1,7 @@
-# JS核心
+---
+title: "JS核心"
+comment: true
+---
 
 ## 快速切入
 

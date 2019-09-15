@@ -26,13 +26,13 @@ public interface Set<E> {
 
 [Set实现比较：基于二叉搜索树 VS 基于链表](https://github.com/vfa25/dataStructure-algorithm/blob/master/datastructure/src/set/TestSet.java)
 
-O(logn) VS O(n)，对于12万单词的文章，非重单词统计耗时：![BST对比链表实现Set](../../.imgs/test-set.png)
+$O(logn)$ VS $O(n)$，对于12万单词的文章，非重单词统计耗时：![BST对比链表实现Set](../../.imgs/test-set.png)
 
 |             | [LinkedListSet](https://github.com/vfa25/dataStructure-algorithm/blob/master/datastructure/src/set/LinkedListSet.java) | [BSTSet](https://github.com/vfa25/dataStructure-algorithm/blob/master/datastructure/src/set/BSTSet.java) |
 |-------------|---------------| ----------- |
-| 增 add      | O(n)          | O(h) 最好：O(logn) 最坏：O(n) |
-| 查 contains | O(n)          | O(h) 最好：O(logn) 最坏：O(n) |
-| 删 remove   | O(n)          | O(h) 最好：O(logn) 最坏：O(n) |
+| 增 add      | $O(n)$        | $O(h)$ 最好：$O(logn)$ 最坏：$O(n)$ |
+| 查 contains | $O(n)$        | $O(h)$ 最好：$O(logn)$ 最坏：$O(n)$ |
+| 删 remove   | $O(n)$        | $O(h)$ 最好：$O(logn)$ 最坏：$O(n)$ |
 > 其中 h 为二叉搜索树深度
 
 ## 有序集合和无序集合
@@ -41,5 +41,5 @@ O(logn) VS O(n)，对于12万单词的文章，非重单词统计耗时：![BST�
 
 两者有各自的应用场景，在实现的层面，通常：
 
-- 有序集合，基于`搜索树`实现（能力更大的同时效率稍差，`O(logn)`的平均时间复杂度）；内置工具类，是以平衡二叉树实现的。
-- 无序集合，基于`哈希表`实现（对于增删查，是无敌的`O(1)`时间复杂度）。
+- 有序集合，基于`搜索树`实现（能力更大的同时效率稍差，$O(logn)$的平均时间复杂度）；内置工具类，是以平衡二叉树实现的。
+- 无序集合，基于`哈希表`实现（对于增删查，是无敌的$O(1)$时间复杂度）。

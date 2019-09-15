@@ -4,8 +4,8 @@
 
 前景提要：起初被设计来做通讯录；将每个英文姓名作为字符串条目以构建Trie，在`isWord == true`结点保存每一条目的详细信息。
 
-根据前面章节对字典（Map）的底层结构分析，在当使用搜索树时（有序映射，键可比较），其时间复杂度为O(logn)。
-但是，Tire可以做到**查询每个条目的时间复杂度，和一共有多少条目无关，而是与查询的字符串长度相关，其时间复杂度为O(w)**。
+根据前面章节对字典（Map）的底层结构分析，在当使用搜索树时（有序映射，键可比较），其时间复杂度为$O(logn)$。
+但是，Tire可以做到**查询每个条目的时间复杂度，和一共有多少条目无关，而是与查询的字符串长度相关，其时间复杂度为$O(w)$**。
 
 ![Trie概览](./imgs/trie-overview.png)
 
@@ -31,7 +31,7 @@ class Node {
 
 - 更多的数据结构
   - 压缩字典树（Compressed Trie）：实现方式即预处理（动态拆分），以使每个结点存储多字符；在空间成本减少的同时，其副作用是，会增加维护成本。
-  - 三分搜索树（Ternary Search Trie）：实现方式即next指针三分（对于一根结点a，根据compare，以`<a`、`==a`、`>a`作三分区）。
+  - 三分搜索树（Ternary Search Trie）：实现方式即next指针三分（对于一根结点a，根据compare，以$<a$、$==a$、$>a$作三分区）。
   - 后缀树：同样作为字符串模式识别。
 - 更多字符串问题
   - 子串查询（如文本中的关键词搜索）：KMP、Boyer-Moore、Rabin-Karp。
@@ -42,7 +42,7 @@ class Node {
 
 ## 基本操作
 
-[Java版Trie](https://github.com/vfa25/dataStructure-algorithm/blob/master/datastructure/src/trie/Trie.java)
+[Java实现Trie](https://github.com/vfa25/dataStructure-algorithm/blob/master/datastructure/src/trie/Trie.java)
 
 ### 添加操作
 

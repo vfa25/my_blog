@@ -1,4 +1,9 @@
-# Acorn 和 AST
+---
+title: "Acorn 和 AST"
+date: "2019-06-23"
+permalink: "2019-06-23-find-min-num"
+comment: false
+---
 
 `AST`即`Abstract Syntax Tree`，汉译为`抽象语法树`。
 
