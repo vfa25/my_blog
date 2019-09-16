@@ -19,7 +19,7 @@ module.exports = {
     ['link', { rel: 'stylesheet', href: 'https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/2.10.0/github-markdown.min.css' }]
 
   ],
-  description: '愉快的记录学习日常吧',
+  // description: '',
   plugins: [
     require('./plugins/my-router'),
     require('./plugins/my-loader'),
