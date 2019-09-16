@@ -1,4 +1,3 @@
-const md5 = require('md5')
 const {
   mdConf,
   themeConf
@@ -49,7 +48,7 @@ module.exports = {
           repo: 'my_doc',
           owner: 'vfa25',
           admin: ['vfa25'],
-          id: md5('<%- frontmatter.commentid || frontmatter.permalink %>'),      // Ensure uniqueness and length less than 50
+          id: '<%- frontmatter.commentid || frontmatter.permalink || frontmatter.title || frontmatter.to.path || window.location.pathname %>', // Ensure uniqueness and length less than 50
           distractionFreeMode: false,  // Facebook-like distraction free mode
           labels: ['Gitalk', 'Comment'],
           title: '「评论」<%- frontmatter.title %>',
