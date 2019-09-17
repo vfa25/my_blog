@@ -1,6 +1,5 @@
 ---
 title: "AVL树"
-comment: true
 ---
 
 AVL树，由`G.M.Adelson-Velsky`和`E.M.Landis`在1962年的论文提出，故以二人名字首字母命名。
@@ -95,18 +94,142 @@ End isBalanced
 
 ## AVL树的左旋转和右旋转
 
-### 右旋转
+### LL、RR：插入的结点在不平衡结点的一侧的同一侧
 
-图示，y结点率先不满足平衡性，且子树整体向左倾斜。
-![右旋转示意](../../.imgs/avl-right-rotate-before.png)
+- LL：右旋转
 
-- 此时`y`结点的平衡因子为2（其左子结点的平衡因子$\geq0$），需解决
-- 同时，$T1<z<T2<x<T3<y<T4$，需维持
+  图示，结点y率先不满足平衡性，且新插入的结点在不平衡结点的左侧的左侧。
+  ![LL-before](../../.imgs/avl-ll-rotate-before.png)
 
-![右旋转finish](../../.imgs/avl-right-rotate-finish.png)
+  - 此时结点`y`的平衡因子为2（其左子结点的平衡因子$\geq0$），需解决
+  - 同时，$T1<z<T2<x<T3<y<T4$，需维持
+
+  那么只需要将结点y作为结点x的右子结点，然后将结点x的原右子结点作为结点y的新左子结点即可。
+
+  ![LL-finish](../../.imgs/avl-ll-rotate-finish.png)
+
+  ```pascal
+  // 对结点y进行右旋操作，返回旋转后新的根结点x
+  Function Node rightRotate(Node y)
+    x := y.left
+    tmp := x.right
+
+    // 右旋关键的两行逻辑
+    x.right := y
+    y.left := tmp
+
+    // 更新height，诸如结点T1/T2/T3/T4/z的高度均未变化
+    y.height := Math.max(getHeight(y.left), getHeight(y.right)) + 1
+    x.height := Math.max(getHeight(x.left), getHeight(x.right)) + 1
+
+    return x
+  End rightRotate
+  ```
+
+- RR：左旋转同理
+
+### LR、RL：插入的结点在不平衡结点的一侧的另一侧
+
+- LR
+
+  图示，结点y率先不满足平衡性，且新插入的结点在不平衡结点的左侧的右侧。
+  ![LR-before](../../.imgs/avl-lr-rotate-before.png)
+
+  - 此时结点`y`的平衡因子为2（其左子结点的平衡因子$<0$），需解决
+  - 同时，$T1<x<T2<z<T3<y<T4$，需维持
+
+  首先对结点x进行左旋转，转化成了LL的情况。
+  ![LR-intermediate](./imgs/avl-lr-rotate-intermediate.png)
+  
+- RL同理
+
+## 维护平衡核心逻辑
+
+[AVL树实现（Java）](https://github.com/vfa25/dataStructure-algorithm/blob/master/datastructure/src/avltree/AVLTree.java)
 
 ```pascal
-// 临时变量缓存T3
-x.right := y
-y.left := T3
+Function Node handleBalance(Node node)
+  // LL
+  if balanceFactor > 1 and getBalanceFactor(node.left) >= 0
+    then return rightRotate(node)
+  // RR
+  if balanceFactor < -1 and getBalanceFactor(node.right) <= 0
+    then return leftRotate(node)
+  // LR
+  if balanceFactor > 1 and getBalanceFactor(node.left) < 0
+    then
+      node.left := leftRotate(node.left)
+      return rightRotate(node)
+  // RL
+  if balanceFactor < -1 and getBalanceFactor(node.right) > 0
+    then
+      node.right := rightRotate(node.right)
+      return leftRotate(node)
+
+  return node
+End handleBalance
 ```
+
+## 添加操作
+
+```pascal
+add(root, key, value)
+
+Function Node add(Node node, K key, V value)
+  if node == null
+    then
+      size ++
+      return new Node(key, value)
+
+  if key < node.key
+    then node.left := add(node.left, key, value)
+  else if key > node.key
+    then node.right := add(node.right, key, value)
+  else
+    node.value := value
+
+  // 更新height
+  node.height = 1 + Math.max(getHeight(node.left), getHeight(node.right))
+  // 计算平衡因子
+  balanceFactor := getBalanceFactor(node)
+  // 平衡维护
+  return handleBalance(node)
+End add
+```
+
+## 删除操作
+
+维护平衡性逻辑同理于添加操作，从待删除结点向上回溯维护平衡性。
+
+但是，删除操作有个查找后继结点的操作，亦需要维护平衡性。伪代码如下。
+
+```pascal
+Function Node remove(Node node, K key)
+  .../* 省略 */...
+  if key == node.key and node.left != null and node.right != null
+    then
+      // 找到后继结点，即比待删除结点大的最小结点
+      successor := minimum(node.right)
+      // 删除掉以node.right为根的二叉搜索树中的最小结点，返回删除结点后新的二叉搜索树的根
+-     successor.right := removeMin(node.right)
++     // 第一种实现方式
++     successor.right := remove(node.right, successor.key)
++     // 第二种实现方式，对于递归实现的辅助函数removeMin，也维护平衡性
++     // 两种方式，出发点一致
+      successor.left := node.left
+
+      node.left := node.right := null
+      retNode := successor
+
++ if retNode == null then return null
+  return handleBalance(retNode)
+End remove
+```
+
+## AVL树的优化
+
+- 若增删操作后，结点的高度和之前的高度相等，那么它的祖先结点将无需维护平衡性。
+
+## AVL树的局限性
+
+平均（统计意义上）性能更优的——红黑树，二者增删改查都是$O(logn)$的时间复杂度，但红黑树的旋转操作相对更少。
