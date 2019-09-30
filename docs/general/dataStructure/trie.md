@@ -42,7 +42,7 @@ class Node {
 
 ## 基本操作
 
-[Java实现Trie](https://github.com/vfa25/dataStructure-algorithm/blob/master/datastructure/src/trie/Trie.java)
+[Java实现Trie](https://github.com/vfa25/dataStructure-algorithm/blob/master/datastructure/src/tree/Trie.java)
 
 ### 添加操作
 

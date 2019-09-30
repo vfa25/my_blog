@@ -117,7 +117,8 @@ const general = [
       'dataStructure/segmentTree',
       'dataStructure/trie',
       'dataStructure/unionFind',
-      'dataStructure/AVL'
+      'dataStructure/AVL',
+      'dataStructure/red-black-tree'
     ]
   },
   {

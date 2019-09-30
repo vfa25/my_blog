@@ -40,7 +40,7 @@
 2. 如果n恰巧是2的整数次幂，那么只需要2n的空间即可（因为仅在叶子结点会真实存储数据，联想结论1易知）。
 3. 如果最坏情况，则需要另外新加一层，故`4n`的静态空间即可完全保证。
 
-[Java版线段树](https://github.com/vfa25/dataStructure-algorithm/blob/master/datastructure/src/segtree/SegmentTree.java)
+[Java实现线段树](https://github.com/vfa25/dataStructure-algorithm/blob/master/datastructure/src/segtree/SegmentTree.java)
 
 ### 创建线段树：$O(n)$
 

@@ -15,7 +15,7 @@
 
 访问、搜索、插入、删除，全为$O(logn)$的最好情况时间复杂度（本章节伪代码不考虑树中重复元素）。
 
-[Java版二叉搜索树](https://github.com/vfa25/dataStructure-algorithm/blob/master/datastructure/src/bstree/BST.java)
+[Java版二叉搜索树](https://github.com/vfa25/dataStructure-algorithm/blob/master/datastructure/src/tree/BST.java)
 
 ### 插入
 

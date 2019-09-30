@@ -139,13 +139,13 @@ End isBalanced
   - 同时，$T1<x<T2<z<T3<y<T4$，需维持
 
   首先对结点x进行左旋转，转化成了LL的情况。
-  ![LR-intermediate](./imgs/avl-lr-rotate-intermediate.png)
+  ![LR-intermediate](../../.imgs/avl-lr-rotate-intermediate.png)
   
 - RL同理
 
 ## 维护平衡核心逻辑
 
-[AVL树实现（Java）](https://github.com/vfa25/dataStructure-algorithm/blob/master/datastructure/src/avltree/AVLTree.java)
+[AVL树实现（Java）](https://github.com/vfa25/dataStructure-algorithm/blob/master/datastructure/src/tree/AVLTree.java)
 
 ```pascal
 Function Node handleBalance(Node node)

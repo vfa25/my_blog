@@ -283,7 +283,7 @@ export default function ({ types }) {
 ```
 
 在经过@babel/preset-react预设，有将arguments的JSXElement`<Button>xxxx</Button>`转化成`React.createElement(Button, null, "xxxx");`
-![jsx被转换后示意图](./imgs/babel-plugin-import-jsx-syntax.png)
+![jsx被转换后示意图](../../.imgs/babel-plugin-import-jsx-syntax.png)
 
 ```js
     CallExpression(path, state) {
