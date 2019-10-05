@@ -2,6 +2,8 @@
 
 ## What
 
+$Algorithms + Data Structures = Programs$
+
 数据结构和算法，更多的出于以空间换取时间。
 
 ## Why

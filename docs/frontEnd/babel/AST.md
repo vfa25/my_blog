@@ -1,7 +1,6 @@
 ---
 title: "Acorn 和 AST"
 date: "2019-06-23"
-permalink: "2019-06-23-find-min-num"
 comment: false
 ---
 

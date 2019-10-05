@@ -1,7 +1,7 @@
-# 基础
+# 数据结构
 
-<font color=purple size=5>数据结构研究的是数据如何在计算机中进行之中和存储，使得我们可以高效的获取数据或者修改数据。</font>
-<p style="direction: rtl;"><span><i style="color: purple;">liuyubobobo</i></span><span>——</span></p>
+<font color=purple size=5>I will, in fact, claim that the difference between a bad programmer and a good one is whether he considers his code or his data structures more important. Bad programmers worry about the code. Good programmers worry about data structures and their relationships.</font>
+<p style="direction: rtl;"><span><i style="color: purple;">Linus Torvalds(creator of Linux)</i></span><span>——</span></p>
 
 ## 简单的时间复杂度分析
 

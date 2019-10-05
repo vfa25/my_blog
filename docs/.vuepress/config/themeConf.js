@@ -18,7 +18,13 @@ module.exports = {
       ]
     },
     { text: 'Server', link: '/serverSide/' },
-    { text: '通用', link: '/general/' }
+    { text: '通用',
+      items: [
+        { text: 'What?Why?', link: '/general/nav/' },
+        { text: '数据结构', link: '/general/dataStructure/' },
+        { text: '算法', link: '/general/algorithm/' }
+      ]
+    }
   ]
 };
 

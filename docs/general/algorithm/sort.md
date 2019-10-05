@@ -3,9 +3,9 @@
 最常用的排序算法：
 
 - $O(n^2)$：冒泡排序、插入排序、选择排序；
-    - 性能剧透：**插入排序 > 冒泡排序 > 选择排序。**
+    - 性能剧透：**插入排序（通常作为复杂排序算法的子过程优化） > 冒泡排序 > 选择排序。**
     - 冒泡排序和选择排序的使用仅限于理论，但有些语言中排序函数的实现原理会用到`插入排序`算法。
-    - 更进一步，优化插入排序：[希尔排序](https://zh.wikipedia.org/wiki/%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F)。以较大步长移动数据，以换取较少的比较和交换，时间复杂度提升至$O(nlog^2n)$。
+    - 更进一步，优化插入排序：[希尔排序](#希尔排序)。以较大步长移动数据，以换取较少的比较和交换，时间复杂度为$O(n^{3/2})$。
 - $O(nlogn)$：归并排序、快速排序；
 - $O(n)$：计数排序、基数排序、桶排序等（线性排序的时间复杂度最低，这三种排序都不涉及元素之间的比较操作，非基于比较的排序算法，但缺点是适用场景比较特殊）。
 
@@ -82,11 +82,15 @@
 
 ## 插入排序(Insertion Sort)
 
-<font color=purple size=4>一句话概括：遍历未排序区间，取其第一个索引结点，并再度遍历已排序区间，以将前者结点“插入”到后者合适的位置。</font>
+<font color=purple size=4>一句话概括：遍历未排序区间，取其第一个索引结点，并再度遍历已排序区间，以将前者结点“插入”到后者合适的位置（插入排序是可以提前终止内层循环的，所以它将会在一些复杂的排序算法中，作为子过程优化）。</font>
+
+![插入排序示意](./imgs/insertion-sort-overview.png)
 
 首先，将数组中的数据分为两个区间，**已排序区间**和**未排序区间**。
 
 初始已排序区间只有一个元素，就是数组的第一个元素。插入算法的核心思想是 ***取未排序区间中的元素，在已排序区间中找到合适的插入位置将其插入，并保证已排序区间数据一直有序***。重复这个过程，直到未排序区间中元素为空，算法结束。
+
+[插入排序(Java)](https://github.com/vfa25/dataStructure-algorithm/blob/master/algorithms/src/sort/InsertionSort.java)
 
 ```py
 def insertionSort(a, n):
@@ -118,6 +122,14 @@ if __name__ == '__main__':
 
   最好情况时间复杂度为$O(n)$，即从尾到头遍历已经有序的数据；最坏情况时间复杂度为$O(n^2)$,即原数组倒序，每次插入都相当于在数组的第一个位置插入新的数据，所以需要移动大量的数据。既然数组插入操作时间复杂度为$O(n)$，那么循环执行n次插入操作，所以平均时间复杂度为$O(n^2)$。
 
+### 希尔排序
+
+[希尔排序维基百科](https://zh.wikipedia.org/wiki/%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F)
+
+![希尔排序示意图](./imgs/shell-sort-overview.png)
+
+[希尔排序：缩小增量的分组原则，每次对增量倍数的分组进行插入排序(Java)](https://github.com/vfa25/dataStructure-algorithm/blob/master/algorithms/src/sort/ShellSort.java)
+
 ## 选择排序(Selection Sort)
 
 <font color=purple size=4>一句话概括：遍历未排序区间，每次都“选择”其中最小值，并替换到已排序区间末尾的位置。</font>
@@ -126,7 +138,7 @@ if __name__ == '__main__':
 
 ![](../../.imgs/selection_sort.png)
 
-[Java实现](https://github.com/vfa25/dataStructure-algorithm/blob/master/algorithms/src/sortingBasic/SelectionSort.java)
+[选择排序：泛型参数(Java)](https://github.com/vfa25/dataStructure-algorithm/blob/master/algorithms/src/sort/SelectionSort.java)
 
 - 选择排序是原地排序算法吗？
 
@@ -251,7 +263,7 @@ merge(A[p…r], A[p…q], A[q+1, r]) {
     不过在任意时刻，CPU 只会有一个函数在执行，也就只会有一个临时的内存空间在使用，并在函数调用栈出栈时，回收临时内存空间。
     所以，临时内存空间最大也就是 n 个数据的大小，空间复杂度为$O(n)$。
 
-## 大名鼎鼎的快排(Quicksort)
+## 大名鼎鼎的快排(Quick Sort)
 
 快排，利用**分治**和**分区**思想：
 
@@ -352,7 +364,7 @@ partition(A, p, r) {
 4. 在排序区间中，当元素个数小于某个常数是，可以考虑使用$O(n^2)$级别的插入排序。
 5. 用哨兵简化代码，每次排序都减少一次判断，尽可能把性能优化到极致。
 
-## 桶排序(Bucket sort)
+## 桶排序(Bucket Sort)
 
 - 原理
   1. 将要排序的数据分到几个有序的桶里（如基于链表或动态扩容的数组），每个桶里的数据再单独进行`归并或快速排序`。
@@ -370,7 +382,7 @@ partition(A, p, r) {
   1. 桶排序比较适合用在外部排序中。
   2. 外部排序就是数据存储在外部磁盘且数据量大，但内存有限，无法将整个数据全部加载到内存中。
 
-## 计数排序(Counting sort)
+## 计数排序(Counting Sort)
 
 - 原理
   1. 计数其实就是桶排序的一种特殊情况。
@@ -409,7 +421,7 @@ partition(A, p, r) {
 
 [计数排序Python实现](https://github.com/vfa25/dataStructure-algorithm/blob/master/leetcode-notes/sort/counting_sort.py)
 
-## 基数排序(Radix sort)
+## 基数排序(Radix Sort)
 
 - 原理（以排序十万个手机号为例说明）
   1. 比较两个手机号码a，b的大小，如果在前面几位中a已经比b大了，那后面几位就不用看了。

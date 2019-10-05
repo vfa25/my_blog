@@ -9,6 +9,14 @@ const frontEnd = [
     ]
   },
   {
+    title: 'Node',
+    collapsable: false,
+    children: [
+      'node/base',
+      'node/event-loop',
+    ]
+  },
+  {
     title: 'Parser：用JS解析JS',
     children: [
       'babel/base',
@@ -18,7 +26,6 @@ const frontEnd = [
   },
   {
     title: '网络',
-    collapsable: false,
     children: [
       'internet/http-cache',
       'internet/cors',
@@ -33,6 +40,7 @@ const frontEnd = [
       'webSafe/other'
     ]
   },
+
   // {
   //   title: 'ReactNative',
   //   children: [
@@ -43,7 +51,14 @@ const frontEnd = [
   // }
 ];
 const sourceCode = [
-  ['', 'Introduction']
+  ['', 'Introduction'],
+  {
+    title: 'React',
+    children: [
+      'react/render',
+      'react/vdom',
+    ]
+  }
 ];
 const serverSide = [
   ['', 'Introduction'],
@@ -97,45 +112,47 @@ const serverSide = [
     ]
   },
 ];
-const general = [
-  ['', 'Introduction'],
+const dataStructure = [
   {
     title: '数据结构',
     collapsable: false,
     children: [
-      'dataStructure/base',
-      'dataStructure/array',
-      'dataStructure/linkedList',
-      'dataStructure/stack',
-      'dataStructure/queue',
-      'dataStructure/hashTable',
-      'dataStructure/skipList',
-      'dataStructure/heap',
-      'dataStructure/binarySearchTree',
-      'dataStructure/set',
-      'dataStructure/map',
-      'dataStructure/segmentTree',
-      'dataStructure/trie',
-      'dataStructure/unionFind',
-      'dataStructure/AVL',
-      'dataStructure/red-black-tree'
+      ['', 'Introduction'],
+      'array',
+      'linkedList',
+      'stack',
+      'queue',
+      'hashTable',
+      'skipList',
+      'heap',
+      'binarySearchTree',
+      'set',
+      'map',
+      'segmentTree',
+      'trie',
+      'unionFind',
+      'AVL',
+      'red-black-tree'
     ]
   },
+];
+const algorithm = [
   {
     title: '算法',
     collapsable: false,
     children: [
-      'algorithm/base',
-      'algorithm/recursion',
-      'algorithm/sort',
-      'algorithm/binarySearch',
+      ['', 'Introduction'],
+      'recursion',
+      'sort',
+      'binarySearch',
     ]
   },
 ];
 
 module.exports = {
   '/frontEnd/': frontEnd,
-  '/sourceCode/': sourceCode,
+  // '/sourceCode/': sourceCode,
   '/serverSide/': serverSide,
-  '/general/': general
+  '/general/dataStructure/': dataStructure,
+  '/general/algorithm/': algorithm
 }
