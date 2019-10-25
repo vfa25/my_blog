@@ -48,8 +48,8 @@ class Node {
 
 向Trie中添加新的单词word，迭代实现。
 
-```pascal
-Function add(String word)
+```js
+void add(String word) {
   cur = root
   for i := 0 to word.length
     do
@@ -63,15 +63,15 @@ Function add(String word)
     then
       cur.isWord := true
       size ++
-End add
+}
 ```
 
 ### 查询操作
 
 查询单词word是否在Trie中，迭代实现。
 
-```pascal
-Function boolean contains(String word)
+```js
+boolean contains(String word) {
   cur = root
   for i := 0 to word.length
     do
@@ -80,7 +80,7 @@ Function boolean contains(String word)
         then return false
       cur := cur.next.get(c)
   return cur.isWord
-End contains
+}
 ```
 
 ### 删除操作
@@ -90,9 +90,9 @@ End contains
 - 如果这是个叶子结点，直接回溯上去，若同时满足父级结点没有其他的next指针，删除后者。
 - 如果这不是个叶子结点，仅删除`isWord == true`的标记位即可。
 
-```pascal
+```js
 // 删除word，返回是否删除成功
-Function boolean remove(String word)
+boolean remove(String word) {
   // 将搜索沿途的结点放入栈中，以备删除
   stack := new Stack()
   stack.push(root)
@@ -124,5 +124,5 @@ Function boolean remove(String word)
       stack.pop()
   
   return true
-End remove
+}
 ```

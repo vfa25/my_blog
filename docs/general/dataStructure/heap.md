@@ -17,7 +17,7 @@
 
 可以使用数组这种数据结构，来存储二叉堆元素，对于图示，是从索引1开始存储元素。关系结点索引：
 
-```pascal
+```js
 parent(i) := i/2
 
 left child (i) := 2*i
@@ -30,7 +30,7 @@ right child (i) := 2*i + 1
 
 ### 关系结点获取索引（从数组的索引0开始存储元素）
 
-```pascal
+```js
 parent(i) := (i - 1)/2
 
 left child (i) := 2*i + 1
@@ -41,38 +41,38 @@ right child (i) := 2*i + 2
 
 元素`Sife Up`（上浮）：即在数组末尾添加元素，同时开始向上一级循环比较临近元素的值。
 
-```pascal
+```js
 data := new Array(capacity)
-Function add(e)
+void add(e) {
   data.addLast(e) // 在数组末尾存储该元素，以备上浮
   siftUp(data.length - 1) // 上浮操作
-End add
+}
 
-Function siftUp(k)
+void siftUp(k) {
   // 如果索引存在 且 当前结点的值大于父结点的值，两两对换，同时维护变量 索引k
   while k > 0 AND data[parent(k)] < data[k])
     do
       swap(k, parent(k))
       k := parent(k)
   end
-End siftUp
+}
 ```
 
 ### 删除操作
 
 元素`Sift Down`（下沉）：取出堆顶元素，将末尾元素移项到堆顶，此时该元素开始下沉，它将比较下一级所有相邻元素的值并找出最大值，二者移项，以此类推，循环比较。
 
-```pascal
+```js
 // 取出堆顶元素，并将数组最后一个元素完成下沉
-Function extractMax()
+Node extractMax() {
   max := data[0]
   data.swap(0, data.length-1)
   data.remove(data.length - 1)
   siftDown(0)
   return max
-End extractMax
+}
 
-Function siftDown(k)
+void siftDown(k) {
   while leftChild(k) < data.length // 该结点的子结点索引未越界
     do
       j := leftChild(k) // 缓存左子结点索引
@@ -83,7 +83,7 @@ Function siftDown(k)
       data.swap(k, j) // 否则二者对换
       k = j // 同时维护变量k
   end
-End siftDown
+}
 ```
 
 ### Heapify
@@ -95,12 +95,12 @@ End siftDown
 
 ![O(n) vs O(nlogn)，是否使用Heapify对比](../../.imgs/heap-heapify.png)
 
-```pascal
+```js
 // 只需在构造函数中遍历执行Sift Down即可
-Function MaxHeap(arr)
+void MaxHeap(arr) {
   data := new ArrayList(arr) // 动态数组
   for i := k downto 0
     do siftDown(i)
   end
-End MaxHeap
+}
 ```

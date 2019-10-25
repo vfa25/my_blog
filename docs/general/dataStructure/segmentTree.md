@@ -40,17 +40,17 @@
 2. 如果n恰巧是2的整数次幂，那么只需要2n的空间即可（因为仅在叶子结点会真实存储数据，联想结论1易知）。
 3. 如果最坏情况，则需要另外新加一层，故`4n`的静态空间即可完全保证。
 
-[Java实现线段树](https://github.com/vfa25/dataStructure-algorithm/blob/master/datastructure/src/segtree/SegmentTree.java)
+[线段树实现（Java）](https://github.com/vfa25/dataStructure-algorithm/blob/master/datastructure/src/segtree/SegmentTree.java)
 
 ### 创建线段树：$O(n)$
 
-```pascal
+```js
 // 已知数据源的拷贝data，去创建线段树tree
 n := data.length
 tree := new Array(4 * n) // 为线段树开辟4n的空间
 buildSegmentTree(0, 0, n - 1)
 
-Function buildSegmentTree(treeIndex, l, r)
+E buildSegmentTree(treeIndex, l, r) {
   if l == r
     then return tree[treeIndex] := data[l]
   
@@ -63,17 +63,17 @@ Function buildSegmentTree(treeIndex, l, r)
 
   // 定制传入合并方法
   tree[treeIndex] := merger.merge(tree[leftTreeIndex], tree[rightTreeIndex])
-End buildSegmentTree
+}
 ```
 
 ### 区间查询：$O(logn)$
 
-```pascal
+```js
 // 已知线段树tree和数据源的拷贝data，查询区间[queryL...queryR]的值
 query(0, 0, data.length - 1, queryL, queryR);
 
 // 在以treeID为根的线段树中[l...r]的范围内，搜索区间[queryL...queryR]的值
-Function query(int treeIndex, int l, int r, int queryL, int queryR)
+E query(int treeIndex, int l, int r, int queryL, int queryR) {
   if l == queryL AND r == queryR
     then return tree[treeIndex]
   mid := l + (r - l) / 2
@@ -90,7 +90,7 @@ Function query(int treeIndex, int l, int r, int queryL, int queryR)
   rightResult := query(rightTreeIndex, mid + 1, r, mid + 1, queryR)
   // 定制传入合并函数
   return merger.merge(leftResult, rightResult)
-End query
+}
 ```
 
 ### put更新操作：$O(logn)$
@@ -98,11 +98,12 @@ End query
 **后序遍历思想**。
 更新操作的关键点是找到数据源的索引index，所对应的线段树上的`叶子结点索引`，最后根据后序遍历思想，回溯时访问结点并merge结果。
 
-```pascal
+```js
 data[index] := e // 更新数据源索引
 set(0, 0, data.length - 1, index, e)
 
-Function set(int treeIndex, int l, int r, int index, E e)
+void set(int treeIndex, int l, int r, int index, E e) {
+
   if l == r
     then return tree[treeIndex] = e
 
@@ -117,5 +118,5 @@ Function set(int treeIndex, int l, int r, int index, E e)
 
   // 更新父级结点
   tree[treeIndex] := merger.merge(tree[leftTreeIndex], tree[rightTreeIndex])
-End set
+}
 ```

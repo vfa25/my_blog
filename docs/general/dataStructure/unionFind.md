@@ -57,16 +57,16 @@
 - 查询连接操作，时间复杂度为$O(h)$，其中h为树状结构的深度
 - 并集操作，时间复杂度为$O(h)$，其中h为树状结构的深度
 
-```pascal
-class UnionFind
+```js
+class UnionFind {
   // 构造函数，每个结点指针均指向自身
-  Function constructor(int size)
-      this.parent := new Array(size)
-      for i := 0 to size-1 do parent[i] = i end
-  End constructor
+  constructor(int size) {
+    this.parent := new Array(size)
+    for i := 0 to size-1 do parent[i] = i end
+  }
 
   // 辅助函数，用于查找根结点
-  Function int find(int p)
+  int find(int p) {
     if p < 0 OR p >= parent.length
         throw new Error("p is out of bound.")
     while p != parent[p]
@@ -74,22 +74,21 @@ class UnionFind
         p := parent[p]
     end
     return p
-  End find
+  }
 
   // 接口实现，两个结点间是否连接
-  Function boolean isConnected(int p, int q)
+  boolean isConnected(int p, int q)
     return find(p) == find(q)
-  End isConnected
 
   // 接口实现，并集操作
-  Function void unionElements(int p, int q)
+  void unionElements(int p, int q) {
     pRoot := find(p)
     qRoot := find(q)
 
     if pRoot == qRoot then return
     parent[pRoot] := qRoot
-  End unionElements
-End UnionFind
+  }
+}
 ```
 
 树状结构实现：[并查集第2版（Java）](https://github.com/vfa25/dataStructure-algorithm/blob/master/datastructure/src/unionfind/UnionFindVersion02.java)
@@ -102,9 +101,9 @@ End UnionFind
 
 概括就是：将较小的树合并到较大的树上面。
 
-```pascal
+```js
 + // 对union方法进行优化，首先全局维护私有数组 sz，初始化时元素均为 1，用以存储以索引i为根的集合中的元素个数
-Function void unionElements(int p, int q)
+void unionElements(int p, int q) {
   pRoot := find(p)
   qRoot := find(q)
 
@@ -120,7 +119,7 @@ Function void unionElements(int p, int q)
 + else
 +   parent[qRoot] := pRoot
 +   sz[pRoot] += sz[qRoot]
-End unionElements
+}
 ```
 
 树状结构size优化：[并查集第3版（Java）](https://github.com/vfa25/dataStructure-algorithm/blob/master/datastructure/src/unionfind/UnionFindVersion03.java)
@@ -143,9 +142,9 @@ End unionElements
 - 在路径压缩中，会出现同层结点rank不同的情况，但整体（root）的大小参考关系依然客观存在。
 - 毕竟，维护“深度”这个语义，也会带来性能消耗，而且没有必要。
 
-```pascal
+```js
 + // 对union方法进行优化，首先全局维护私有数组 rank，初始化时元素均为 1，用以存储以索引i为根的集合所表示的树的层数
-Function void unionElements(int p, int q)
+void unionElements(int p, int q) {
   pRoot := find(p)
   qRoot := find(q)
 
@@ -159,7 +158,7 @@ Function void unionElements(int p, int q)
 + else
 +   parent[qRoot] := pRoot
 +   rank[pRoot] ++
-End unionElements
+}
 ```
 
 树状结构rank优化：[并查集第4版（Java）](https://github.com/vfa25/dataStructure-algorithm/blob/master/datastructure/src/unionfind/UnionFindVersion04.java)
@@ -178,8 +177,8 @@ End unionElements
 
   [并查集第5版（Java）](https://github.com/vfa25/dataStructure-algorithm/blob/master/datastructure/src/unionfind/UnionFindVersion05.java)
 
-  ```pascal
-  Function int find(int p)
+  ```js
+  int find(int p) {
     if p < 0 OR p >= parent.length
         throw new Error("p is out of bound.")
     while p != parent[p]
@@ -188,15 +187,15 @@ End unionElements
         p := parent[p]
     end
     return p
-  End find
+  }
   ```
 
 - 递归实现优化，结果是一次性将深度降到最低（出发结点一次性指向根结点）
 
   [并查集第6版（Java）](https://github.com/vfa25/dataStructure-algorithm/blob/master/datastructure/src/unionfind/UnionFindVersion06.java)
 
-  ```pascal
-  Function int find(int p)
+  ```js
+  int find(int p) {
     if p < 0 OR p >= parent.length
         throw new Error("p is out of bound.")
 
@@ -207,7 +206,7 @@ End unionElements
   - return p
   + if p != parent[p] then parent[p] := find(parent[p])
   + return parent[p]
-  End find
+  }
   ```
 
 ## 时间复杂度

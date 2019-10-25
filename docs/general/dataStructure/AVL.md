@@ -21,63 +21,63 @@ AVL树，是最早的自平衡二叉搜索树结构。
 
 - getHeight：每个node结点均应维护一个树的高度的属性
 
-```pascal
+```js
 // node结点初始化时，高度属性默认为1。node.height := 1
 
-Function int getHeight(Node node)
+int getHeight(Node node) {
   if node == null then return 0
   return node.height
-End getHeight
+}
 ```
 
 - getBalanceFactor：获得结点node的平衡因子，显然叶子结点会默认为0
 
-```pascal
-Function int getBalanceFactor(Node node)
+```js
+int getBalanceFactor(Node node) {
   if node == null then return 0
   return getHeight(node.left) - getHeight(node.right)
-End getBalanceFactor
+}
 ```
 
 - isBST：判断二叉树是否是二叉搜索树
 
 搜索树一个重要的特点是，当中序遍历时，输出会由小及大。
 
-```pascal
-Function boolean isBST()
+```js
+boolean isBST() {
   keys := new Array()
   inOrder(root, keys)
   for i := 1 to keys.size() - 1
     do if keys.get(i - 1)> keys.get(i) then return false
   end
   return true
-End isBST
+}
 
-Function void inOrder(Node node, Array keys)
+void inOrder(Node node, Array keys) {
   if node == null then return
 
   inOrder(node.left, keys)
   keys.add(node.key)
   inOrder(node.right, keys)
-End inOrder
+}
 ```
 
 - isBalanced：判断二叉树是否是平衡二叉树
 
-```pascal
-Function boolean isBalanced()
+```js
+boolean isBalanced() {
   return isBalanced(root)
-End isBalanced
+}
 
 // 判断以node为根的二叉树是否是平衡二叉树，递归算法
-Function boolean isBalanced(Node node)
+boolean isBalanced(Node node) {
   if node == null then return true
 
   int balanceFactor := getBalanceFactor(node) // 获取结点的平衡因子
   if Math.abs(balanceFactor) > 1 then return false
 
   return isBalanced(node.left) AND isBalanced(node.right)
-End isBalanced
+}
 ```
 
 ## 自平衡机制
@@ -108,9 +108,9 @@ End isBalanced
 
   ![LL-finish](../../.imgs/avl-ll-rotate-finish.png)
 
-  ```pascal
+  ```js
   // 对结点y进行右旋操作，返回旋转后新的根结点x
-  Function Node rightRotate(Node y)
+  Node rightRotate(Node y) {
     x := y.left
     tmp := x.right
 
@@ -123,7 +123,7 @@ End isBalanced
     x.height := Math.max(getHeight(x.left), getHeight(x.right)) + 1
 
     return x
-  End rightRotate
+  }
   ```
 
 - RR：左旋转同理
@@ -147,8 +147,8 @@ End isBalanced
 
 [AVL树实现（Java）](https://github.com/vfa25/dataStructure-algorithm/blob/master/datastructure/src/tree/AVLTree.java)
 
-```pascal
-Function Node handleBalance(Node node)
+```js
+Node handleBalance(Node node) {
   // LL
   if balanceFactor > 1 and getBalanceFactor(node.left) >= 0
     then return rightRotate(node)
@@ -167,15 +167,15 @@ Function Node handleBalance(Node node)
       return leftRotate(node)
 
   return node
-End handleBalance
+}
 ```
 
 ## 添加操作
 
-```pascal
+```js
 add(root, key, value)
 
-Function Node add(Node node, K key, V value)
+Node add(Node node, K key, V value) {
   if node == null
     then
       size ++
@@ -194,7 +194,7 @@ Function Node add(Node node, K key, V value)
   balanceFactor := getBalanceFactor(node)
   // 平衡维护
   return handleBalance(node)
-End add
+}
 ```
 
 ## 删除操作
@@ -203,8 +203,8 @@ End add
 
 但是，删除操作有个查找后继结点的操作，亦需要维护平衡性。伪代码如下。
 
-```pascal
-Function Node remove(Node node, K key)
+```js
+Node remove(Node node, K key) {
   .../* 省略 */...
   if key == node.key and node.left != null and node.right != null
     then
@@ -223,7 +223,7 @@ Function Node remove(Node node, K key)
 
 + if retNode == null then return null
   return handleBalance(retNode)
-End remove
+}
 ```
 
 ## AVL树的优化

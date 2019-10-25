@@ -1,3 +1,7 @@
+/**
+ * 本项目配置及插件参考自——https://xin-tan.com
+ */
+
 const {
   mdConf,
   themeConf

@@ -6,16 +6,24 @@
 - 二叉搜索树的每个结点的值：大于其左子树的所有结点的值；同时小于其右子树的所有结点的值。
 - 每一棵子树也是二叉搜索树。
 
+## 概念
+
+- 高度（Height，从下往上）：结点到叶子结点的最长路径（边数）。
+- 深度（Depth，从上往下）：根结点到该结点所经历的边的个数。
+- 层（Level）：结点的深度 + 1。
+
 ## 原则（条件）
 
 - 具有顺序性。
-- 存储的元素必须有可比较性。
+- 存储的元素必须有可比较性（在实际的软件开发中，在二叉查找树中存储的，是一个包含很多字段的对象。利用对象的某个字段作为键值来构建二叉查找树，而其他字段叫作卫星数据）。
 
 ## 常见操作的时间复杂度
 
-访问、搜索、插入、删除，全为$O(logn)$的最好情况时间复杂度（本章节伪代码不考虑树中重复元素）。
+访问、搜索、插入、删除，全为$O(logn)$的最好情况时间复杂度。
 
-[Java版二叉搜索树](https://github.com/vfa25/dataStructure-algorithm/blob/master/datastructure/src/tree/BST.java)
+> 本章节不考虑树中重复元素。处理重复元素两种思路：一是借助链表或动态数组，把值相同的数据存储在一个结点；二是一个结点仍只存储一个数据，若在查找插入位置时，值相同，则当作大于这个结点的值来处理。
+
+[二叉搜索树实现（Java）](https://github.com/vfa25/dataStructure-algorithm/blob/master/datastructure/src/tree/BST.java)
 
 ### 插入
 
@@ -25,8 +33,8 @@
 
 - 递归方式，结束条件为`目标位置（左子结点或右子结点）为null`，伪代码：
 
-```pascal
-Function add(node, e)
+```js
+Node add(node, e) {
   if node == null then return new Node(e)
 
   if e < node.e
@@ -35,7 +43,7 @@ Function add(node, e)
     then node.right := add(node.right, e)
 
   return node
-End add
+}
 ```
 
 ### 删除
@@ -49,8 +57,8 @@ End add
 
 ![二叉搜索树删除结点示意图](../../.imgs/bstree-remove.png)
 
-```pascal
-Function remove(node, e)
+```js
+Node remove(node, e) {
   if node == null then return null
   if e < node.e
     then node.left := remove(node.left, e)
@@ -77,7 +85,7 @@ Function remove(node, e)
 
       node.left := node.right := null
       return successor
-End remove
+}
 ```
 
 ### 搜索
@@ -88,8 +96,8 @@ End remove
 
 - 递归方式，结束条件为`匹配到结点`或`查找到null`，伪代码：
 
-```pascal
-Function contains(node, e)
+```js
+boolean contains(node, e) {
   if node == null then return false
   if e == node.e then return true
 
@@ -97,15 +105,15 @@ Function contains(node, e)
     then return contains(node.left, e)
   elseif e > node.e
     then return contains(node.right, e)
-End contains
+}
 ```
 
 ### 求floor值
 
 二叉搜索树有顺序性，获取floor值也变为可能。
 
-```pascal
-Function floor(node, e)
+```js
+Node floor(node, e) {
   if node == null then return null
 
   if e == node.e
@@ -118,7 +126,7 @@ Function floor(node, e)
       then return node
     else
       return result
-End floor
+}
 ```
 
 ### 遍历
@@ -129,16 +137,16 @@ End floor
 
 ![二叉搜索树遍历概览](../../.imgs/bstree-overview.png)
 
-```pascal
-Function traverse(node)
+```js
+void traverse(Node node) {
   if node == null then return
 
   访问该结点? /*前序遍历*/
-  travese(node.left)
+  traverse(node.left)
   访问该结点? /*中序遍历*/
   traverse(node.right)
   访问该结点? /*后序遍历*/
-End traverse
+}
 ```
 
 - 前序遍历

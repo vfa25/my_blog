@@ -111,12 +111,12 @@ to descendant leaves contain the same number of black nodes.
 
 ![3-结点添加元素-finished](../../.imgs/red-black-tree-3-node-transform-color-finished.png)
 
-```pascal
-Function void flipColors(Node node)
+```js
+void flipColors(Node node) {
   node.color := RED
   node.left.color := BLACK
   node.right.color := BLACK
-End flipColors
+}
 ```
 
 **声明：本章节将继续以等价2-3树的思路，以下旋转时机但请务必代入2-3的特性（另一种，结合红黑树规则的思路，参考文末链接）。**
@@ -127,9 +127,8 @@ End flipColors
 $\Rightarrow$
 ![RBTree左旋转-finished](../../.imgs/red-black-tree-left-rotate-finished.png)
 
-```pascal
-
-Function Node leftRotate(Node node)
+```js
+Node leftRotate(Node node) {
   x := node.right
 
   node.right := x.left
@@ -139,7 +138,7 @@ Function Node leftRotate(Node node)
   node.color := RED
 
   return x
-End leftRotate
+}
 ```
 
 ### 右旋转
@@ -148,8 +147,8 @@ End leftRotate
 $\Rightarrow$
 ![RBTree右旋转-finished](../../.imgs/red-black-tree-right-rotate-finished.png)
 
-```pascal
-Function Node rightRotate(Node node)
+```js
+Node rightRotate(Node node) {
   x := node.left
 
   node.left := x.right
@@ -159,7 +158,7 @@ Function Node rightRotate(Node node)
   node.color := RED
 
   return x
-End rightRotate
+}
 ```
 
 ### 整体论之
@@ -170,7 +169,7 @@ End rightRotate
 
 ![等价3-结点添加元素概览](../../.imgs/red-black-tree-3-node-add-node-overview.png)
 
-```pascal
+```js
 // 维护黑平衡
 if isRed(node.right) and !isRed(node.left)
   then node := leftRotate(node)

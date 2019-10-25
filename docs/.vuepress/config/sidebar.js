@@ -144,6 +144,7 @@ const algorithm = [
       'recursion',
       'sort',
       'binarySearch',
+      'hash',
     ]
   },
 ];
