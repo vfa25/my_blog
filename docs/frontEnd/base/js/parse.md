@@ -92,7 +92,7 @@ comment: true
 4. 一旦对应的上下文执行完毕，就从栈顶弹出，并将上下文控制权交给当前的栈。
 5. 这样依次执行（最终都会回到全局执行上下文）。
 
-![执行上下文栈](../../.imgs/execution-context-stack.png)
+![执行上下文栈](../../../.imgs/execution-context-stack.png)
 
 如果程序执行完毕后被弹出执行栈，若是没有被引用（没有形成闭包），那么这个函数中用到的内存就会被垃圾处理器自动回收。
 
@@ -101,7 +101,7 @@ comment: true
 每个执行上下文都可以抽象为一个对象，且都有一系列的属性（即上下文状态state）主要有以下三个：
 变量对象(variable object)、this指针(this value)、作用域链(scope chain)。
 
-![执行上下文](../../.imgs/execution-context.png)
+![执行上下文](../../../.imgs/execution-context.png)
 
 <font color=purple size=4>执行上下文的代码被分成两个基本的阶段来处理（无论global还是function）：</font>
 
@@ -153,7 +153,7 @@ AO（activation object)，当函数被调用者激活，AO就被创建了，除�
   直到全局上下文中也没找到就报错
 ```
 
-![作用域链](../../.imgs/scope-chains.png)
+![作用域链](../../../.imgs/scope-chains.png)
 
 注意：with或catch可以改变作用域链。而这些对象都是一些简单对象，他们也会有原型链。这样的话，作用域链会从两个维度来搜寻。
 

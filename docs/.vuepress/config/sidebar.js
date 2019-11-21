@@ -1,4 +1,4 @@
-const frontEnd = [
+const frontEndBase = [
   ['', 'Introduction'],
   {
     title: 'JS',
@@ -13,12 +13,14 @@ const frontEnd = [
     collapsable: false,
     children: [
       'react-native/nav',
+      'react-native/startup',
       'react-native/hybrid',
+      'react-native/overview',
+      // 'react-native/dispatch',
     ]
   },
   {
     title: 'Node',
-    collapsable: false,
     children: [
       'node/base',
       'node/event-loop',
@@ -31,9 +33,13 @@ const frontEnd = [
       'babel/AST',
       'babel/plugin',
     ]
-  },
+  }
+];
+const frontEndOther = [
+  ['', 'Introduction'],
   {
     title: '网络',
+    collapsable: false,
     children: [
       'internet/http-cache',
       'internet/cors',
@@ -46,16 +52,6 @@ const frontEnd = [
       'webSafe/xss',
       'webSafe/sqlInject',
       'webSafe/other'
-    ]
-  }
-];
-const sourceCode = [
-  ['', 'Introduction'],
-  {
-    title: 'React',
-    children: [
-      'react/render',
-      'react/vdom',
     ]
   }
 ];
@@ -150,8 +146,8 @@ const algorithm = [
 ];
 
 module.exports = {
-  '/frontEnd/': frontEnd,
-  // '/sourceCode/': sourceCode,
+  '/frontEnd/base/': frontEndBase,
+  '/frontEnd/other/': frontEndOther,
   '/serverSide/': serverSide,
   '/general/dataStructure/': dataStructure,
   '/general/algorithm/': algorithm

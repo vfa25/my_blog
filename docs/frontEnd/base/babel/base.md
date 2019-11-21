@@ -1,6 +1,6 @@
 # Babel初见
 
-![巴别塔](../../.imgs/babel.jpg)
+![巴别塔](../../../.imgs/babel.jpg)
 
 >传说古时候一群人想建一个通天塔，去天上看看上帝在干什么。上帝于是挥挥手，让这群人说不同的语言，于是他们再也不能顺畅沟通，塔也就建不起来了。
 
@@ -18,7 +18,7 @@
 
 babel 总共分为三个阶段：解析，转换，生成。
 
-![编译示意](../../.imgs/compile.png)
+![编译示意](../../../.imgs/compile.png)
 
 ### plugins：transform 的载体
 
@@ -108,7 +108,7 @@ useBuiltIns 参数说明：
 
 ## 各司其职的Babel
 
-![各司其职的babel](../../.imgs/babel-duties.jpeg)
+![各司其职的babel](../../../.imgs/babel-duties.jpeg)
 
 - **@babel/core（核心）**
 

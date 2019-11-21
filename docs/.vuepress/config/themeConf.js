@@ -13,8 +13,8 @@ module.exports = {
     {
       text: '偏前端',
       items: [
-        { text: '前端基础', link: '/frontEnd/' },
-        // { text: '源码解析', link: '/sourceCode/' }
+        { text: '日常总结', link: '/frontEnd/base/' },
+        { text: '前端杂谈', link: '/frontEnd/other/' }
       ]
     },
     { text: 'Server', link: '/serverSide/' },

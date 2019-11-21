@@ -1,6 +1,7 @@
 ---
 home: true
 heroImage: /logo.jpeg
+tagline: 风长无从阻 前端一学徒
 actionText: Go →
 actionLink: /guide/
 features:

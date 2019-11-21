@@ -4,7 +4,7 @@
 
 体验地址：[已部署cdn的站点](https://www.vfa25.cn/antd/)。来揭开`HTTP缓存`的面纱吧。
 
-![CDN加速示意图](../../.imgs/http-cache-load.png)
+![CDN加速示意图](../../../.imgs/http-cache-load.png)
 
 ## HTTP缓存
 
@@ -26,16 +26,16 @@
 
 优先级较高的是`强缓存`，在命中强缓存失败的情况下，才会走`协商缓存`，如果响应头信息没有缓存相关字段，则会命中`启发式缓存`。
 
-![http缓存示意图](../../.imgs/http-cache-overview.png)
+![http缓存示意图](../../../.imgs/http-cache-overview.png)
 
 ## 强缓存
 
 浏览器强缓存：图1、图2
-![强缓存示意图01](../../.imgs/force-cache01.png)
-![强缓存示意图02](../../.imgs/force-cache02.png)
+![强缓存示意图01](../../../.imgs/force-cache01.png)
+![强缓存示意图02](../../../.imgs/force-cache02.png)
 
 代理服务器强缓存：图3
-![强缓存示意图03](../../.imgs/force-cache03.png)
+![强缓存示意图03](../../../.imgs/force-cache03.png)
 
 上述三个图都是强缓存；图1、2比较好理解，图3是因为cache 服务器并未过期（cdn就是这么任性）。
 
@@ -82,12 +82,12 @@ Cache-control的格式是个时间段，优先级高于Expires，并且作为后
 这个通用首部字段虽然不是专门的缓存控制，但是它在为`no-cache`时，可以绕开浏览器强缓存（通常向下兼容http1.0）；
 图示为Chrome强制刷新时的请求头部示意：
 
-![http缓存首部字段Pragma](../../.imgs/http-cache-pragma.png)
+![http缓存首部字段Pragma](../../../.imgs/http-cache-pragma.png)
 
 ## 协商缓存
 
 协商缓存状态码图示
-![协商缓存示意图](../../.imgs/http-cache-304.png)
+![协商缓存示意图](../../../.imgs/http-cache-304.png)
 
 ### 协商缓存的实现：从 Last-Modified 到 Etag
 
@@ -143,13 +143,13 @@ Cache-control的格式是个时间段，优先级高于Expires，并且作为后
 
 在没有诸如`Expires`、`Cache-Control: max-age`、 `Cache-Control: s-maxage`等字段时，为什么浏览器也会缓存。
 
-![启发式缓存图1](../../.imgs/http-cache-heuristic01.png)
+![启发式缓存图1](../../../.imgs/http-cache-heuristic01.png)
 
 这就是所谓的`启发式缓存`，过期时间通常被认为是`Date（创建报文的日期时间）和 Last-Modified 之间的时间差值, 取其值的10%作为缓存时间周期`；详见[13.2.4 Expiration Calculations](https://tools.ietf.org/html/rfc2616#section-13.2.4)。
 
 之前也专门测试过过期时间
 
-![启发式缓存图2](../../.imgs/http-cache-heuristic02.jpg)
+![启发式缓存图2](../../../.imgs/http-cache-heuristic02.jpg)
 
 ## CDN缓存
 
@@ -157,7 +157,7 @@ CDN的概念指路本章节末尾的Reference：CDN与缓存的归纳理解。
 
 这里记录下使用[七牛云CDN](https://developer.qiniu.com/)感受：
 
-为了优化[个人站点](https://vfa25.cn/antd/)的加载速度。`webpack拆分commonChunk`→`gzip压缩`→`限制单文件大小，并借助HTTP2的多工Multiplexing`→`尝试HTTP2的推送`，但渲染速度仍不理想，loading事件触发时间在10秒+。
+为了优化[个人站点](https://www.vfa25.cn/antd/#/home)的加载速度。`webpack拆分commonChunk`→`gzip压缩`→`限制单文件大小，并借助HTTP2的多工Multiplexing`→`尝试HTTP2的推送`，但渲染速度仍不理想，loading事件触发时间在10秒+。
 
 Cache CDN
 
