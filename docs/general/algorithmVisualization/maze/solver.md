@@ -5,7 +5,7 @@ date: "2019-11-22"
 
 ## 图的深度优先遍历
 
-<video src="http://q1h9i27q2.bkt.clouddn.com/%E8%BF%B7%E5%AE%AB%E6%B1%82%E8%A7%A3%E9%97%AE%E9%A2%98.mov" controls="controls" muted></video>
+<video poster="http://q1h9i27q2.bkt.clouddn.com/maze-resolve-img.0c2b3399.png" width="100%" src="http://q1h9i27q2.bkt.clouddn.com/maze-resolve-video.mov" controls="controls" muted></video>
 
 对于任意一点(x, y)
 
@@ -48,7 +48,7 @@ function run() {
   setData（-1, -1, false）
 }
 
-var dirction = [[-1,0], [0,1], [1,0], [0,-1]]
+var dirction = [[0,-1], [1,0], [0,1], [-1,0]]
 
 function go(int x, int y) {
   if 'maze[x][y]越界' then throw new Error();
