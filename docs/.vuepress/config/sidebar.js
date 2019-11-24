@@ -144,11 +144,22 @@ const algorithm = [
     ]
   },
 ];
+const algorithmVisualization = [
+  ['', 'Introduction'],
+  {
+    title: '迷宫问题',
+    collapsable: false,
+    children: [
+      'maze/solver',
+    ]
+  },
+]
 
 module.exports = {
   '/frontEnd/base/': frontEndBase,
   '/frontEnd/other/': frontEndOther,
   '/serverSide/': serverSide,
   '/general/dataStructure/': dataStructure,
-  '/general/algorithm/': algorithm
+  '/general/algorithm/': algorithm,
+  '/general/algorithmVisualization/': algorithmVisualization
 }

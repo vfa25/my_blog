@@ -22,7 +22,9 @@ module.exports = {
       items: [
         { text: 'What?Why?', link: '/general/nav/' },
         { text: '数据结构', link: '/general/dataStructure/' },
-        { text: '算法', link: '/general/algorithm/' }
+        { text: '算法', link: '/general/algorithm/' },
+        { text: '算法可视化', link: '/general/algorithmVisualization/' }
+
       ]
     }
   ]

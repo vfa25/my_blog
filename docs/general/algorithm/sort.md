@@ -82,7 +82,7 @@
 
 ## 插入排序(Insertion Sort)
 
-<font color=purple size=4>一句话概括：遍历未排序区间，取其第一个索引结点，并再度遍历已排序区间，以将前者结点“插入”到后者合适的位置（插入排序是可以提前终止内层循环的，所以它将会在一些复杂的排序算法中，作为子过程优化）。</font>
+<font color=purple size=4>一句话概括：遍历未排序区间，取其第一个索引结点，并再度遍历已排序区间，以将前者结点“插入”到后者合适的位置（插入排序是可以提前终止内层循环的，即最好情况时间复杂度为$O(n)$，所以它将会在一些复杂的排序算法中，作为子过程优化）。</font>
 
 ![插入排序示意](./imgs/insertion-sort-overview.png)
 
@@ -90,7 +90,7 @@
 
 初始已排序区间只有一个元素，就是数组的第一个元素。插入算法的核心思想是 ***取未排序区间中的元素，在已排序区间中找到合适的插入位置将其插入，并保证已排序区间数据一直有序***。重复这个过程，直到未排序区间中元素为空，算法结束。
 
-[插入排序(Java)](https://github.com/vfa25/dataStructure-algorithm/blob/master/algorithms/src/sort/InsertionSort.java)
+[插入排序（Java）](https://github.com/vfa25/dataStructure-algorithm/blob/master/algorithms/src/sort/InsertionSort.java)
 
 ```py
 def insertionSort(a, n):
@@ -128,7 +128,7 @@ if __name__ == '__main__':
 
 ![希尔排序示意图](./imgs/shell-sort-overview.png)
 
-[希尔排序：缩小增量的分组原则，每次对增量倍数的分组进行插入排序(Java)](https://github.com/vfa25/dataStructure-algorithm/blob/master/algorithms/src/sort/ShellSort.java)
+[希尔排序：缩小增量的分组原则，每次对增量倍数的分组进行插入排序（Java）](https://github.com/vfa25/dataStructure-algorithm/blob/master/algorithms/src/sort/ShellSort.java)
 
 ## 选择排序(Selection Sort)
 
@@ -138,7 +138,7 @@ if __name__ == '__main__':
 
 ![](../../.imgs/selection_sort.png)
 
-[选择排序：泛型参数(Java)](https://github.com/vfa25/dataStructure-algorithm/blob/master/algorithms/src/sort/SelectionSort.java)
+[选择排序：泛型参数（Java）](https://github.com/vfa25/dataStructure-algorithm/blob/master/algorithms/src/sort/SelectionSort.java)
 
 - 选择排序是原地排序算法吗？
 
@@ -180,7 +180,8 @@ p >= r 不用再继续分解
   // 递归调用函数
   merge_sort_c(A, p, r) {
     // 递归终止条件
-    if p > r return
+    // ① 这里依然可以作为优化点；if (r - p <= 15) { return insertionSort(A, p, r)}
+    if p >= r return
 
     // 取 p 到 r 的中点值
     q = (p + r) / 2
@@ -188,6 +189,7 @@ p >= r 不用再继续分解
     merge_sort_c(A, p, q)
     merge_sort_c(A, q+1, r)
     // 并。将 A[p, q] 和 A[q+1, r] 合并为 A[p, r]
+    // ② 这里可以作为优化点，出发点是对于原数组近乎有序的情况；if (A[q] > A[q+1]) 时，才执行下行
     merge(A[p…r], A[p…q], A[q+1, r])
   }
 ```
@@ -234,7 +236,7 @@ merge(A[p…r], A[p…q], A[q+1, r]) {
 
 随后，并的过程，_merge开始对子数组进行排序合并。
 
-[归并排序Python实现](https://github.com/vfa25/dataStructure-algorithm/blob/master/leetcode-notes/sort/merge_sort.py)
+[归并排序（Python）](https://github.com/vfa25/dataStructure-algorithm/blob/master/leetcode-notes/sort/merge_sort.py)、[部分优化（Java）](https://github.com/vfa25/dataStructure-algorithm/blob/master/algorithms/src/sort/MergeSort.java)
 
 - 归并排序是稳定的排序算法吗？
 
@@ -263,13 +265,43 @@ merge(A[p…r], A[p…q], A[q+1, r]) {
     不过在任意时刻，CPU 只会有一个函数在执行，也就只会有一个临时的内存空间在使用，并在函数调用栈出栈时，回收临时内存空间。
     所以，临时内存空间最大也就是 n 个数据的大小，空间复杂度为$O(n)$。
 
-## 大名鼎鼎的快排(Quick Sort)
+### 自底向上的归并排序实现
+
+上述归并排序，是自顶向下，通过逐步`递归`来实现的。那么通过自底线上，通过`迭代`的方式，也是一种实现思路。
+
+- 将数组，自左至右以某个合适数值（例如：2）分为若干个小段。
+- 迭代的过程，不断倍增该分段数值，最终实现整个数组的归并排序。
+
+```js
+function sort(arr) {
+  n := arr.length
+  // 外层循环：对进行merge的元素个数进行遍历。每次遍历变量 sz 将乘等于2，表示每轮归并，包含的元素个数倍增
+  for sz := 1 to <n AND sz *= 2 do {
+    // 内层循环：变量i 表示每轮归并，元素的起始位置；循环条件i + sz < n表示有效归并；并处理数组越界的边缘情况
+    for i := 0 to <n-sz AND i += sz*2 do {
+      // 对 arr[i...u+sz-1] 和 arr[i+sz...i+2*sz-1]进行归并
+      merge(arr, i, i+sz-1, Math.min(i+sz+sz-1, n-1))
+    }
+  }
+}
+```
+
+特性：
+
+- **由于没有使用数组随机访问的特性，因此自底向上的归并思想，可以对链表实现$O(nlogn)$的排序。**
+- 时间复杂度依然是$O(nlogn)$。同时，这是以循环层数来判断时间复杂度的反例。
+
+[自底向上，迭代方法实现归并排序（Java）](https://github.com/vfa25/dataStructure-algorithm/blob/master/algorithms/src/sort/MergeSortBU.java)
+
+## 20世纪对世界影响最大的算法之一——快排(Quick Sort)
 
 快排，利用**分治**和**分区**思想：
 
 如果要排序 数组中下标从 p 到 r 之间的一组数据，选择 p 到 r 之间的任意一个数据作为 pivot（分区点）。
 
 遍历 p 到 r 之间的数据，将小于 pivot 的放到左边，将大于 pivot 的放到右边，将 pivot 放到中间。经过这一步骤之后，数组 p 到 r 之间的数据就被分成了三个部分，前面 p 到 q-1 之间都是小于 pivot 的，中间是 pivot，后面的 q+1 到 r 之间是大于 pivot 的。
+
+![快排示意图](./imgs/quick_sort_overview.png)
 
 来看一下递推公式及终止条件：
 
@@ -306,6 +338,8 @@ partition() 分区函数。其实就是随机选择一个元素作为 pivot（�
 
 有点类似选择排序。通过游标 i 把 A[p…r-1] 分成两部分。A[p…i-1] 的元素都是小于 pivot 的，即“已处理区间”；而，A[i…r-1] 是“未处理区间”。每次都从未处理的区间 A[i…r-1] 中取一个元素 A[j]，与 pivot 对比，如果小于 pivot，则将其加入到已处理区间的尾部，也就是 A[i] 的位置。
 
+![快排分区示意图](./imgs/quick_sort_partition.png)
+
 来看一下伪代码：
 
 ```js
@@ -323,9 +357,9 @@ partition(A, p, r) {
 }
 ```
 
-[快速排序Python实现](https://github.com/vfa25/dataStructure-algorithm/blob/master/leetcode-notes/sort/quick_sort.py)
+[快速排序（Python）](https://github.com/vfa25/dataStructure-algorithm/blob/master/leetcode-notes/sort/quick_sort.py)
 
-直接上示意图：
+每轮循环游针示意图：
 
 ![](../../.imgs/quick_sort.jpg)
 
@@ -419,7 +453,7 @@ partition(A, p, r) {
 
     当扫描完数组A后，数组R内的数据就是按照分数从小到大排列的了。
 
-[计数排序Python实现](https://github.com/vfa25/dataStructure-algorithm/blob/master/leetcode-notes/sort/counting_sort.py)
+[计数排序（Python）](https://github.com/vfa25/dataStructure-algorithm/blob/master/leetcode-notes/sort/counting_sort.py)
 
 ## 基数排序(Radix Sort)
 
