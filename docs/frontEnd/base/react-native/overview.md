@@ -46,7 +46,7 @@ title: "源码初识概览"
 
 ### ReactNative系统框架示意
 
-![ReactNative系统框架图](./imgs/react_native_system_strcuture.png)
+![ReactNative系统框架图](../../../.imgs/react_native_system_strcuture.png)
 
 注：JSCore，即JavaScriptCore，JS解析的核心部分，IOS使用的是内置的JavaScriptCore，Android上使用的是webkit.org官方开源的jsc.so。
 

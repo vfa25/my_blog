@@ -1,11 +1,12 @@
 ---
 title: "启动流程"
 date: "2019-11-20"
+sidebarDepth: 3
 ---
 
 React Native(V0.61.4)
 
-## 一.应用初始化流程
+## 一. 应用初始化流程
 
 将以/react-natve/template的Demo为例，从外部JS代码起步，了解内部的逻辑。
 
@@ -15,7 +16,7 @@ React Native(V0.61.4)
 "@react-native-community/cli-platform-ios": "^2.9.0",
 ```
 
-![Demo截屏](./imgs/react_native_demo_screenshots.jpg)
+![Demo截屏](../../../.imgs/react_native_demo_screenshots.jpg)
 
 1. 首先会在应用的 MainApplication 里做RN的初始化操作。
 
@@ -157,3 +158,108 @@ React Native(V0.61.4)
     // 注册组件名，JS与Java格子各自维护了一个注册表
     AppRegistry.registerComponent('HelloWorld', () => App);
     ```
+
+## 二. 应用启动流程
+
+> 一句话概括启动流程：先是应用终端启动并创建应用上下文，应用上下文启动JS Runtime，进行布局，再由应用终端进行渲染，最后将渲染的View添加到ReactRootView上，最终呈现在用户面前。
+
+![应用启动流程概览](../../../.imgs/react_native_start_flow_structure.png)
+
+<p style="background-color:cyan;line-height:50px;text-align:center;border-radius:5px;" height="50px">即将进入Java层</p>
+
+首先，从ReactActivity入手。ReactActivity基于Activity，并实现了它的生命周期方法。且所有的功能都由它的委托类 ReactActivityDelegate 来完成。
+
+所以主要来关注 ReactActivityDelegate 的实现。先来看看 ReactActivityDelegate 的 onCreate() 方法。
+
+### 2.1 ReactActivityDelegate.onCreate(Bundle savedInstanceState)
+
+```java
+public class ReactActivityDelegate {
+
+  private final @Nullable Activity mActivity;
+  private final @Nullable String mMainComponentName;
+
+  private ReactDelegate mReactDelegate;
+
+  // 构造函数
+  public ReactActivityDelegate(ReactActivity activity, @Nullable String mainComponentName) {
+    mActivity = activity;
+    mMainComponentName = mainComponentName;
+  }
+
+  protected void onCreate(Bundle savedInstanceState) {
+    // 返回 this.mMainComponentName（可能会被重写）
+    String mainComponentName = getMainComponentName();
+    mReactDelegate =
+        new ReactDelegate(
+          // 返回构建函数时传入的上下文 this.mActivity
+          getPlainActivity(),
+          getReactNativeHost(),
+          mainComponentName,
+          getLaunchOptions()
+        ) {
+          @Override
+          protected ReactRootView createRootView() {
+            return ReactActivityDelegate.this.createRootView();
+          }
+        };
+
+    // mMainComponentName：实例化时传递的组件名
+    if (mMainComponentName != null) {
+      // 载入app页面
+      loadApp(mainComponentName);
+    }
+  }
+
+  protected void loadApp(String appKey) {
+    mReactDelegate.loadApp(appKey);
+    // Activity的setContentView()方法
+    getPlainActivity().setContentView(mReactDelegate.getReactRootView());
+  }
+}
+```
+
+```java
+public class ReactDelegate {
+
+  private ReactRootView mReactRootView;
+  @Nullable private final String mMainComponentName;
+
+  public ReactRootView getReactRootView() {
+    return mReactRootView;
+  }
+
+  public void loadApp() {
+    loadApp(mMainComponentName);
+  }
+
+  public void loadApp(String appKey) {
+    if (mReactRootView != null) {
+      throw new IllegalStateException("Cannot loadApp while app is already running.");
+    }
+    // 创建ReactRootView作为根视图,它本质上是一个FrameLayout
+    mReactRootView = createRootView();
+    // 启动RN应用
+    mReactRootView.startReactApplication(
+        getReactNativeHost().getReactInstanceManager(), appKey, mLaunchOptions);
+  }
+
+  protected ReactRootView createRootView() {
+    return new ReactRootView(mActivity);
+  }
+}
+```
+
+可以发现ReactActivityDelegate在创建时主要做了以下事情：
+
+```md
+1. 创建ReactRootView作为应用的容器，它本质上是一个FrameLayout（安卓布局之帧布局）。
+2. 调用ReactRootView.startReactApplication()进一步执行应用启动流程。
+3. 调用Activity.setContentView()将创建的ReactRootView作为ReactActivity的content view。
+```
+
+**RN真正核心的地方就在于ReactRootView，它就是一个View，可以像用其他UI组件那样把它用在Android应用的任何地方。**
+
+来进一步去ReactRootView看启动流程。
+
+### 2.2 startReactApplication(ReactInstanceManager reactInstanceManager,String moduleName,@Nullable Bundle initialProperties,@Nullable String initialUITemplate)

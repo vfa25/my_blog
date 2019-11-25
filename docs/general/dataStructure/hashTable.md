@@ -45,7 +45,7 @@
 
   How？如图示，橙色表示已有数据。
 
-  ![线性探测示意图](./imgs/hash-table-hash-conflict-search-address.png)
+  ![线性探测示意图](../../.imgs/hash-table-hash-conflict-search-address.png)
 
   1. 线性探测（Linear Probing）
 
@@ -88,7 +88,7 @@
 
   如下图示，在散列表中，每个`桶（bucket）`或者`槽（slot）`会对应一条链表，所有散列值相同的元素都放到相同槽位对应的链表中。
 
-  ![链表法解决散列冲突示意](./imgs/hash-table-hash-conflict-chaining.png)
+  ![链表法解决散列冲突示意](../../.imgs/hash-table-hash-conflict-chaining.png)
 
   - 当插入元素时，通过散列函数计算出对应的散列槽位，将其插入到对应链表中即可。时间复杂度是$O(1)$。
   - 当查找或删除时，同样通过散列函数计算出对应的槽，然后遍历链表查找或者删除。时间复杂度是$O(k)$，其中k为链表的长度。
@@ -190,7 +190,7 @@
 - 当有新数据要插入时，将新数据插入新散列表中，并且从老的散列表中拿出一个数据放入到新散列表。
 - 随着这个过程重复执行之后，老的散列表中的数据就逐渐全部搬移到新散列表中了，那么时间复杂度恒为$O(1)$。
 
-![散列表扩容操作分批](./imgs/hash-table-expansion-in-batch.png)
+![散列表扩容操作分批](../../.imgs/hash-table-expansion-in-batch.png)
 
 ### 3. 选择合适的散列冲突解决方法
 

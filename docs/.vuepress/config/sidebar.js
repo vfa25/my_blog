@@ -41,6 +41,7 @@ const frontEndOther = [
     title: '网络',
     collapsable: false,
     children: [
+      'internet/shake-hands',
       'internet/http-cache',
       'internet/cors',
     ]

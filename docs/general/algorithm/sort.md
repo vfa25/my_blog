@@ -84,7 +84,7 @@
 
 <font color=purple size=4>一句话概括：遍历未排序区间，取其第一个索引结点，并再度遍历已排序区间，以将前者结点“插入”到后者合适的位置（插入排序是可以提前终止内层循环的，即最好情况时间复杂度为$O(n)$，所以它将会在一些复杂的排序算法中，作为子过程优化）。</font>
 
-![插入排序示意](./imgs/insertion-sort-overview.png)
+![插入排序示意](../../.imgs/insertion-sort-overview.png)
 
 首先，将数组中的数据分为两个区间，**已排序区间**和**未排序区间**。
 
@@ -126,7 +126,7 @@ if __name__ == '__main__':
 
 [希尔排序维基百科](https://zh.wikipedia.org/wiki/%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F)
 
-![希尔排序示意图](./imgs/shell-sort-overview.png)
+![希尔排序示意图](../../.imgs/shell-sort-overview.png)
 
 [希尔排序：缩小增量的分组原则，每次对增量倍数的分组进行插入排序（Java）](https://github.com/vfa25/dataStructure-algorithm/blob/master/algorithms/src/sort/ShellSort.java)
 
@@ -301,7 +301,7 @@ function sort(arr) {
 
 遍历 p 到 r 之间的数据，将小于 pivot 的放到左边，将大于 pivot 的放到右边，将 pivot 放到中间。经过这一步骤之后，数组 p 到 r 之间的数据就被分成了三个部分，前面 p 到 q-1 之间都是小于 pivot 的，中间是 pivot，后面的 q+1 到 r 之间是大于 pivot 的。
 
-![快排示意图](./imgs/quick_sort_overview.png)
+![快排示意图](../../.imgs/quick_sort_overview.png)
 
 来看一下递推公式及终止条件：
 
@@ -338,7 +338,7 @@ partition() 分区函数。其实就是随机选择一个元素作为 pivot（�
 
 有点类似选择排序。通过游标 i 把 A[p…r-1] 分成两部分。A[p…i-1] 的元素都是小于 pivot 的，即“已处理区间”；而，A[i…r-1] 是“未处理区间”。每次都从未处理的区间 A[i…r-1] 中取一个元素 A[j]，与 pivot 对比，如果小于 pivot，则将其加入到已处理区间的尾部，也就是 A[i] 的位置。
 
-![快排分区示意图](./imgs/quick_sort_partition.png)
+![快排分区示意图](../../.imgs/quick_sort_partition.png)
 
 来看一下伪代码：
 
