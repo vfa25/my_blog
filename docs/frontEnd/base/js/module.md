@@ -201,6 +201,40 @@ function makeRequireFunction(mod) {
 }
 ```
 
+### module.exports的循环引用问题
+
+来看一下这个[issues](https://github.com/nodejs/node/issues/2923)。
+
+根据[Node文档/Cycles](https://nodejs.org/api/modules.html#modules_cycles)描述中，提及的**unfinished copy**。
+
+那么，当index.js加载Test.js时，Test.js依次加载Test2.js。这时，Test2.js试图加载Test.js。
+为了防止无限循环，将Test.js导出对象的`unfinished copy(未完成拷贝)`（该例中，即`{}`）返回给Test2.js模块。
+然后Test2.js完成加载，并将其导出对象提供给Test.js模块。
+
+**注：`module.exports.oneFunction`与`exports.oneFunction`完全等价。**
+
+```js
+// index.js文件：
+var test = require('./Test');
+test.oneFunction(' from index ');
+
+// Test.js文件：
+var two = require('./Test2');
+module.exports.oneFunction = function(from) {
+    two.twoFunction(' one ');
+    console.log('function two from '+from);
+}
+
+// Test2.js文件：
+var one = require('./Test');
+/* 此时，one依然是个空对象 */
+module.exports.twoFunction = function(from) {
+    /* 函数调用时，one已然不是空对象了 */
+    one.oneFunction(' two ');
+    console.log('function one from '+from);
+};
+```
+
 ### 为什么说CommonJS模块是按值拷贝
 
 现象：依赖于同一模块，其中一个的数据更改，会影响其他模块。
@@ -299,6 +333,9 @@ module.exports = {
 ```
 
 故，Commonjs 模块导出，其实只是对`新module.exports空对象`进行了`赋值（exports）`或称`导出对象的浅拷贝（module.exports）`。
+
+
+
 
 ## ESModule
 
