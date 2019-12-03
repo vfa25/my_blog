@@ -47,6 +47,13 @@ const frontEndOther = [
     ]
   },
   {
+    title: '实用小例',
+    collapsable: false,
+    children: [
+      'demo/checkin'
+    ]
+  },
+  {
     title: 'Web 安全',
     children: [
       'webSafe/xsrf',
