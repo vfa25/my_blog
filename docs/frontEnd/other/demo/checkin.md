@@ -87,7 +87,7 @@ class Checkin:
         options.add_experimental_option('prefs', prefs)
 
         # options.binary_location = "/usr/bin/google-chrome"
-        # chrome_driver_binary = './chromedriver'
+        # chrome_driver_binary = '/home/xxx/test_py/chromedriver'
         options.binary_location = "/Users/nsky/Desktop/Google Chrome.app/Contents/MacOS/Google Chrome"
         chrome_driver_binary = './chromedriver'
         self.driver = webdriver.Chrome(
@@ -214,8 +214,8 @@ crontab -e
 # 
 # m h  dom mon dow   command
 
-# 意为每年每月每天09:00 执行./myfile/checkin.py文件，并将print的控制台打印，以标准输出，追加到./myfile/checkin.log文件
-00 09 * * * python3 myfile/checkin.py 0 >> myfile/checkin.log
+# 意为每年每月每天08:00 执行/home/xx/myfile/checkin.py文件，并将print的控制台打印，以标准输出，追加到/home/xx/myfile/checkin.log文件
+00 08 * * * python3 /home/xx/myfile/checkin.py 0 >> /home/xx/myfile/checkin.log
 ```
 
 ## Reference
