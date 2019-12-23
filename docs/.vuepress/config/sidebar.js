@@ -67,35 +67,37 @@ const serverSide = [
   ['', 'Introduction'],
   {
     title: 'Python3',
+    collapsable: false,
     children: [
       'python3/base',
       'python3/prdConfig',
     ]
   },
   {
-    title: 'Java',
+    title: 'Python爬虫框架——Scrapy',
+    collapsable: false,
     children: [
-      'java/class',
+      'scrapy/base',
+      'scrapy/policy',
+      'scrapy/selenium'
     ]
   },
   {
     title: 'Django',
-    collapsable: false,
     children: [
       'django/base',
       'django/rest_framework',
       'django/loginStatus',
     ]
   },
-  {
-    title: 'Scrapy',
-    children: [
-      'scrapy/base'
-    ]
-  },
+  // {
+  //   title: 'Java',
+  //   children: [
+  //     'java/class',
+  //   ]
+  // },
   {
     title: 'Nginx',
-    collapsable: false,
     children: [
       'nginx/base',
       'nginx/syntax',

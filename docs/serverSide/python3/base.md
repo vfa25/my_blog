@@ -1,6 +1,8 @@
-# Python基础
+---
+title: 'Python基础'
+---
 
-***注：该笔记均默认python3.6虚拟环境下。另外，如果不是python3的老司机，强烈建议安装python3.6，因为诸如`tensorflow`或`django-rest-framework-jwt`目前只全面支持到该版本。***
+***注：该笔记均默认python3.6虚拟环境下。***
 
 ## Reference
 
