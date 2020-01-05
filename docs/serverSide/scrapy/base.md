@@ -2,6 +2,8 @@
 title: 'Scrapy基础'
 ---
 
+- [官方文档](https://doc.scrapy.org/en/latest/)、[中文文档](https://www.osgeo.cn/scrapy/)
+
 - 安装框架依赖`pip install -i https://pypi.douban.com/simple/ scrapy`
 
     注意：其依赖中如[lxml](https://www.lfd.uci.edu/~gohlke/pythonlibs/#lxml)、
@@ -15,8 +17,10 @@ title: 'Scrapy基础'
 ```sh
 scrapy startproject GithubTrending
 cd GithubTrending
+# 新建spider基础命令（即基于basic模板，可通过参数"-t basic"选择模板）
 scrapy genspider github_app(任务名) https://github.com/trending(目标域名)
-
+# 查看spider模板
+scrapy genspider --list
 ```
 
 - 调试
@@ -40,6 +44,9 @@ scrapy genspider github_app(任务名) https://github.com/trending(目标域名)
 
   ```sh
   scrapy shell 目标域名
+
+  # 设置请求头
+  scrapy shell -s USER_AGENT="xx" 目标域名
   ```
 
   - 源码查看

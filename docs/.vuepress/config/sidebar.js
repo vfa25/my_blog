@@ -79,7 +79,8 @@ const serverSide = [
     children: [
       'scrapy/base',
       'scrapy/policy',
-      'scrapy/selenium'
+      'scrapy/selenium',
+      'scrapy/crawlSpider'
     ]
   },
   {
