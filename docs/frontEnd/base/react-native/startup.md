@@ -20,7 +20,7 @@ React Native(V0.61.4)
 
 ### 1.1. 首先会在应用的 MainApplication 里做RN的初始化操作
 
-MainApplication 里继承 Application 实现了 ReactApplication 接口，该接口要求创建一个ReactNativeHost对象，后者持有ReactInstanceManager实例，并做了一些初始化操作。
+MainApplication 里继承 Application 实现了 ReactApplication 接口，该接口要求创建一个ReactNativeHost对象，后者持有`ReactInstanceManager`（ReactNative应用总的管理类，这个单词将贯穿始终）实例，并做了一些初始化操作。
 
 ```java
 public interface ReactApplication {
@@ -77,7 +77,7 @@ public class MainApplication extends Application implements ReactApplication {
 }
 ```
 
-ReactNativeHost主要的工作就是创建了ReactInstanceManager，它将一些信息传递给了ReactInstanceManager。
+ReactNativeHost主要的工作就是`创建ReactInstanceManager`，它将一些信息传递给了后者。
 
 ```java
 public abstract class ReactNativeHost {
@@ -86,19 +86,20 @@ public abstract class ReactNativeHost {
     ReactInstanceManagerBuilder builder =
       // new ReactInstanceManager(...)
       ReactInstanceManager.builder()
-        // 应用上下文，Application instance
+        // mApplication：应用上下文，Application instance
         .setApplication(mApplication)
-        // setJSMainModulePath 传递url以从打包服务器拉取js Bundle的js应用入口
+        // mJSMainModulePath：setJSMainModulePath 传递url以从打包服务器拉取js Bundle的js应用入口
         // 仅在dev模式下有效，一般都是默认的"index"
         .setJSMainModulePath(getJSMainModuleName())
-        // 是否开启dev模式
+        // mUseDeveloperSupport：是否开启dev模式
         .setUseDeveloperSupport(getUseDeveloperSupport())
-        // 红盒的回调
+        // mRedBoxHandler：红盒的回调
         .setRedBoxHandler(getRedBoxHandler())
-        // 自定义JSExecutor，忽略
+        // mJavaScriptExecutorFactory：自定义JSExecutor
         .setJavaScriptExecutorFactory(getJavaScriptExecutorFactory())
-        // 自定义UI实现机制，忽略
+        // mUIImplementationProvider：自定义UI实现机制
         .setUIImplementationProvider(getUIImplementationProvider())
+        // mJSIModulesPackage
         .setJSIModulesPackage(getJSIModulePackage())
         .setInitialLifecycleState(LifecycleState.BEFORE_CREATE);
 
@@ -107,11 +108,21 @@ public abstract class ReactNativeHost {
       builder.addPackage(reactPackage);
     }
 
-    //获取js Bundle的加载路径
+    // 可以自定义js Bundle的加载路径，默认会走入else逻辑，即为Android assets
     String jsBundleFile = getJSBundleFile();
     if (jsBundleFile != null) {
       builder.setJSBundleFile(jsBundleFile);
     } else {
+      /**
+        protected @Nullable String getBundleAssetName() {
+          return "index.android.bundle";
+        }
+        public ReactInstanceManagerBuilder setBundleAssetName(String bundleAssetName) {
+          mJSBundleAssetUrl = (bundleAssetName == null ? null : "assets://" + bundleAssetName);
+          mJSBundleLoader = null;
+          return this;
+        }
+      */
       builder.setBundleAssetName(Assertions.assertNotNull(getBundleAssetName()));
     }
     ReactInstanceManager reactInstanceManager = builder.build();
@@ -230,6 +241,17 @@ public class ReactDelegate {
   private ReactRootView mReactRootView;
   @Nullable private final String mMainComponentName;
 
+  public ReactDelegate(
+      Activity activity,
+      ReactNativeHost reactNativeHost,
+      @Nullable String appKey,
+      @Nullable Bundle launchOptions) {
+    mActivity = activity;
+    mMainComponentName = appKey;
+    mLaunchOptions = launchOptions;
+    mReactNativeHost = reactNativeHost;
+  }
+
   public ReactRootView getReactRootView() {
     return mReactRootView;
   }
@@ -273,9 +295,9 @@ public class ReactDelegate {
 四个参数分别为
 
 - ReactInstanceManager reactInstanceManager：React实例总的管理类
-- String moduleName：模块的名字，对应`ReactActivity.getMainComponentName()`（Java）与`AppRegistry.registerComponent()`（JS)。
-- @Nullable Bundle initialProperties：Bundle类型的数据，如果不继承ReactActivity而是自己实现页面容器，可以通过这个参数在startActivity()时传递参数到JS层。
-- Nullable String initialUITemplate：初始化UI模版。
+- String moduleName：模块的名字，对应`ReactActivity.getMainComponentName()`（Java）与`AppRegistry.registerComponent()`（JS)；本例为"HelloWorld"。
+- @Nullable Bundle initialProperties：Bundle类型的数据，如果不继承ReactActivity而是自己实现页面容器，可以通过这个参数在startActivity()时传递参数到JS层；启动配置选项，本例为默认的null。
+- Nullable String initialUITemplate：初始化UI模版；本例此处为null。
 
 ```java
 import android.os.Bundle;
@@ -323,7 +345,7 @@ public class ReactRootView extends FrameLayout implements RootView, ReactRoot {
 }
 ```
 
-### 2.3 创建RN应用的上下文：ReactInstanceManager.createReactContextInBackground()
+### 2.3 创建RN应用的上下文的准备工作：ReactInstanceManager.createReactContextInBackground()
 
 ```java
 
@@ -369,16 +391,22 @@ public class ReactInstanceManager {
         .logMessage(ReactDebugOverlayTags.RN_CORE, "RNCore: recreateReactContextInBackground");
     UiThreadUtil.assertOnUiThread();
 
-    // 仅开发模式。实现在线更新Bundle，晃动弹出调试菜单等功能，这一部分属于调试功能流程。
+    // 仅开发模式，会走入该if逻辑。实现在线更新Bundle，晃动弹出调试菜单等功能，这一部分属于调试功能流程。
     // mUseDeveloperSupport 被赋值是在实例化时方法调用：setUseDeveloperSupport(getUseDeveloperSupport())
     // mJSMainModulePath 被赋值是在实例化时方法调用：setJSMainModulePath(getJSMainModuleName())
     if (mUseDeveloperSupport && mJSMainModulePath != null) {
       final DeveloperSettings devSettings = mDevSupportManager.getDevSettings();
 
       if (!Systrace.isTracing(TRACE_TAG_REACT_APPS | TRACE_TAG_REACT_JS_VM_CALLS)) {
-        // 若if条件成立，则从文件中获取
-        // ReactInstanceManagerBuilder.setJSBundleLoader
         if (mBundleLoader == null) {
+          // 若if条件成立（其实，我没有找到成立的场景），则从文件中获取，mBundleLoader在ReactInstanceManager实例化时传入
+          /**
+          (mJSBundleLoader == null && mJSBundleAssetUrl != null)
+            ? JSBundleLoader.createAssetLoader(
+                mApplication, mJSBundleAssetUrl, false)
+            : mJSBundleLoader
+          没有找到 mBundleLoader == null 成立的场景，因为 mJSBundleLoader 和 mJSBundleAssetUrl 没有全为null的场景
+           */
           mDevSupportManager.handleReloadJS();
         } else {
           mDevSupportManager.isPackagerRunning(
@@ -392,7 +420,6 @@ public class ReactInstanceManager {
                           if (packagerIsRunning) {
                             mDevSupportManager.handleReloadJS();
                           } else if (mDevSupportManager.hasUpToDateJSBundleInCache()
-                              // 尝试从Dev Server中获取JSBundle
                               && !devSettings.isRemoteJSDebugEnabled()) {
                             // If there is a up-to-date bundle downloaded from server,
                             // with remote JS debugging disabled, always use that.
@@ -421,8 +448,8 @@ public class ReactInstanceManager {
         "ReactInstanceManager.recreateReactContextInBackgroundFromBundleLoader()");
     PrinterHolder.getPrinter()
         .logMessage(ReactDebugOverlayTags.RN_CORE, "RNCore: load from BundleLoader");
-    // setJavaScriptExecutorFactory可以在ReactNativeHost创建ReactInstanceManager时，setJavaScriptExecutorFactory方法进行配置
-    // 其默认为 new JSCExecutorFactory(mApplication.getPackageName(), getFriendlyDeviceName()); 参数分别为应用程序和设备的名称
+
+    // setJavaScriptExecutorFactory默认为 new JSCExecutorFactory(mApplication.getPackageName(), getFriendlyDeviceName()); 参数分别为应用程序和设备的名称
     // JSCExecutorFactory的create方法，使其拥有一个 JSCExecutor 实例，后者通过 extends JavaScriptExecutor 的 native方法
     // {@code private static native HybridData initHybrid(ReadableNativeMap jscConfig)} 传递到 C++ 层。
     /* @code
@@ -447,13 +474,7 @@ public class ReactInstanceManager {
     final ReactContextInitParams initParams =
         new ReactContextInitParams(jsExecutorFactory, jsBundleLoader);
     if (mCreateReactContextThread == null) {
-      // 初始化一个异步任务，创建reactApplicationContext，关键逻辑如下
-      /* {@code
-        final ReactApplicationContext reactApplicationContext =
-            createReactContext(
-                initParams.getJsExecutorFactory().create(),
-                mJsBundleLoader);}
-      */
+      // 初始化一个异步任务，创建reactApplicationContext
       runCreateReactContextOnNewThread(initParams);
     } else {
       // 创建ReactContext的后台任务已经开启，缓存initParams在队列中等待重新创建ReactContext
@@ -470,3 +491,259 @@ ReactInstanceManager.createReactContextInBackground()
 ->ReactInstanceManager.runCreateReactContextOnNewThread(initParams)
 
 该方法runCreateReactContextOnNewThread，启动了一个异步线程去执行ReactApplicationContext的创建。
+
+### 2.4 开启异步线程去执行创建上下文：ReactInstanceManager.runCreateReactContextOnNewThread(final ReactContextInitParams initParams)
+
+```java
+public class ReactInstanceManager {
+  @ThreadConfined(UI)
+  private void runCreateReactContextOnNewThread(final ReactContextInitParams initParams) {
+    Log.d(ReactConstants.TAG, "ReactInstanceManager.runCreateReactContextOnNewThread()");
+    UiThreadUtil.assertOnUiThread();
+    synchronized (mAttachedReactRoots) {
+      synchronized (mReactContextLock) {
+        if (mCurrentReactContext != null) {
+          tearDownReactContext(mCurrentReactContext);
+          mCurrentReactContext = null;
+        }
+      }
+    }
+
+    mCreateReactContextThread =
+        new Thread(
+            null,
+            new Runnable() {
+              @Override
+              public void run() {
+                ReactMarker.logMarker(REACT_CONTEXT_THREAD_END);
+                synchronized (ReactInstanceManager.this.mHasStartedDestroying) {
+                  while (ReactInstanceManager.this.mHasStartedDestroying) {
+                    try {
+                      ReactInstanceManager.this.mHasStartedDestroying.wait();
+                    } catch (InterruptedException e) {
+                      continue;
+                    }
+                  }
+                }
+                // As destroy() may have run and set this to false, ensure that it is true before we
+                // create
+                mHasStartedCreatingInitialContext = true;
+
+                try {
+                  Process.setThreadPriority(Process.THREAD_PRIORITY_DISPLAY);
+                  ReactMarker.logMarker(VM_INIT);
+                  final ReactApplicationContext reactApplicationContext =
+                      // 异步执行的createReactContext()方法，真正执行创建ReactContext
+                      // 这两个参数重点说明一下，请看下文。
+                      createReactContext(
+                          initParams.getJsExecutorFactory().create(),
+                          initParams.getJsBundleLoader());
+
+                  mCreateReactContextThread = null;
+                  ReactMarker.logMarker(PRE_SETUP_REACT_CONTEXT_START);
+                  final Runnable maybeRecreateReactContextRunnable =
+                      new Runnable() {
+                        @Override
+                        public void run() {
+                          if (mPendingReactContextInitParams != null) {
+                            runCreateReactContextOnNewThread(mPendingReactContextInitParams);
+                            mPendingReactContextInitParams = null;
+                          }
+                        }
+                      };
+                  Runnable setupReactContextRunnable =
+                      new Runnable() {
+                        @Override
+                        public void run() {
+                          try {
+                            setupReactContext(reactApplicationContext);
+                          } catch (Exception e) {
+                            mDevSupportManager.handleException(e);
+                          }
+                        }
+                      };
+
+                  reactApplicationContext.runOnNativeModulesQueueThread(setupReactContextRunnable);
+                  UiThreadUtil.runOnUiThread(maybeRecreateReactContextRunnable);
+                } catch (Exception e) {
+                  mDevSupportManager.handleException(e);
+                }
+              }
+            },
+            "create_react_context");
+    ReactMarker.logMarker(REACT_CONTEXT_THREAD_START);
+    mCreateReactContextThread.start();
+  }
+}
+```
+
+重点来看看传入ReactInstanceManager.createReactContext()的2个参数：
+
+- JavaScriptExecutor jsExecutor：执行JS
+
+    JSCExecutor 继承于 JavaScriptExecutor（@本篇2.3 的`recreateReactContextInBackgroundFromBundleLoader`方法提及了），
+    当该类被加载时，它会自动去加载"reactnativejnifb.so"库（`SoLoader.loadLibrary("jscexecutor");`，可以理解为浏览器内核的JS引擎），
+    并会调用native方法`initHybrid()`初始化C++层RN与JSC（JSCore，即JavaScriptCore，JS解析的核心部分）通信的框架。
+
+- JSBundleLoader jsBundleLoader：加载JS
+
+    缓存了JSBundle的信息，封装了上层加载JSBundle的相关接口，CatalystInstance（三端通信总管理类）通过其调用ReactBridge去加载JS文件，
+    不同的场景会创建不同的加载器，具体可以查看类JSBundleLoader。
+
+接下来调用ReactInstanceManager.createReactContext()，真正开始创建ReactContext。
+
+### 2.5 真正开始创建ReactContext：ReactInstanceManager.createReactContext(JavaScriptExecutor jsExecutor, JSBundleLoader jsBundleLoader)
+
+```java
+public class ReactInstanceManager {
+  /** @return instance of {@link ReactContext} configured a {@link CatalystInstance} set */
+  private ReactApplicationContext createReactContext(
+      JavaScriptExecutor jsExecutor, JSBundleLoader jsBundleLoader) {
+    Log.d(ReactConstants.TAG, "ReactInstanceManager.createReactContext()");
+    ReactMarker.logMarker(CREATE_REACT_CONTEXT_START, jsExecutor.getName());
+
+    // ReactApplicationContext是ReactContext的包装类
+    final ReactApplicationContext reactContext = new ReactApplicationContext(mApplicationContext);
+
+    // 若未自定义则使用默认的{@link DevSupportManager}，在dev模式下为红盒（弹出红框，提示错误），在prod模式下rethrows（应用程序崩溃）
+    NativeModuleCallExceptionHandler exceptionHandler =
+        mNativeModuleCallExceptionHandler != null
+            ? mNativeModuleCallExceptionHandler
+            : mDevSupportManager;
+    reactContext.setNativeModuleCallExceptionHandler(exceptionHandler);
+
+    /*
+    // 该处注释：在ReactInstanceManager实例化时执行
+    // 加锁、创建CoreModulesPackage实例，CoreModulesPackage里面封装了RN Framework核心功能，包括：通信、调试等。
+    synchronized (mPackages) {
+      PrinterHolder.getPrinter()
+          .logMessage(ReactDebugOverlayTags.RN_CORE, "RNCore: Use Split Packages");
+      mPackages.add(
+          new CoreModulesPackage(
+              this,
+              new DefaultHardwareBackBtnHandler() {
+                @Override
+                public void invokeDefaultOnBackPressed() {
+                  ReactInstanceManager.this.invokeDefaultOnBackPressed();
+                }
+              },
+              mUIImplementationProvider,
+              lazyViewManagersEnabled,
+              minTimeLeftInFrameForNonBatchedOperationMs));
+      if (mUseDeveloperSupport) {
+        mPackages.add(new DebugCorePackage());
+      }
+      mPackages.addAll(packages);
+    }
+    */
+    // 该过程，用于处理CoreModulesPackage 和 Application里注入的ReactPackage（@本篇1.1）
+    // 把JavaModule添加到注册表中，返回注册表，该函数收起在下文
+    NativeModuleRegistry nativeModuleRegistry = processPackages(reactContext, mPackages, false);
+
+    // jsExecutor、nativeModuleRegistry、jsBundleLoader等各种参数处理好之后，开始构建CatalystInstanceImpl实例。
+    CatalystInstanceImpl.Builder catalystInstanceBuilder =
+        new CatalystInstanceImpl.Builder()
+            .setReactQueueConfigurationSpec(ReactQueueConfigurationSpec.createDefault())
+            .setJSExecutor(jsExecutor) // jsExecutor：执行JS（@本篇2.4）
+            .setRegistry(nativeModuleRegistry) // nativeModuleRegistry：JavaModule注册表
+            .setJSBundleLoader(jsBundleLoader) // jsBundleLoader：加载JS（@本篇2.4）
+            .setNativeModuleCallExceptionHandler(exceptionHandler);
+
+    ReactMarker.logMarker(CREATE_CATALYST_INSTANCE_START);
+    // CREATE_CATALYST_INSTANCE_END is in JSCExecutor.cpp
+    Systrace.beginSection(TRACE_TAG_REACT_JAVA_BRIDGE, "createCatalystInstance");
+    final CatalystInstance catalystInstance;
+    try {
+      catalystInstance = catalystInstanceBuilder.build();
+    } finally {
+      Systrace.endSection(TRACE_TAG_REACT_JAVA_BRIDGE);
+      ReactMarker.logMarker(CREATE_CATALYST_INSTANCE_END);
+    }
+    // 关联ReactContext与CatalystInstance
+    reactContext.initializeWithInstance(catalystInstance);
+
+    // （@本篇1）mJSIModulePackage默认为null。是在实例化ReactInstanceManagerBuilder后，
+    // 调用setJSIModulesPackage(getJSIModulePackage())设置的
+    if (mJSIModulePackage != null) {
+      catalystInstance.addJSIModules(
+          mJSIModulePackage.getJSIModules(
+              reactContext, catalystInstance.getJavaScriptContextHolder()));
+
+      if (ReactFeatureFlags.useTurboModules) {
+        catalystInstance.setTurboModuleManager(
+            catalystInstance.getJSIModule(JSIModuleType.TurboModuleManager));
+      }
+    }
+    if (mBridgeIdleDebugListener != null) {
+      catalystInstance.addBridgeIdleDebugListener(mBridgeIdleDebugListener);
+    }
+    if (Systrace.isTracing(TRACE_TAG_REACT_APPS | TRACE_TAG_REACT_JS_VM_CALLS)) {
+      // 调用CatalystInstanceImpl的Native方法，把Java Registry转换为Json，再由C++层传送到JS层。
+      catalystInstance.setGlobalVariable("__RCTProfileIsProfiling", "true");
+    }
+    ReactMarker.logMarker(ReactMarkerConstants.PRE_RUN_JS_BUNDLE_START);
+    Systrace.beginSection(TRACE_TAG_REACT_JAVA_BRIDGE, "runJSBundle");
+    // 通过CatalystInstance开始加载JS Bundle
+    catalystInstance.runJSBundle();
+    Systrace.endSection(TRACE_TAG_REACT_JAVA_BRIDGE);
+
+    return reactContext;
+  }
+}
+```
+
+<details>
+<summary>processPackages辅助函数：把JavaModule添加到注册表中。</summary>
+
+```java
+public class ReactInstanceManager {
+  private NativeModuleRegistry processPackages(
+      ReactApplicationContext reactContext,
+      List<ReactPackage> packages,
+      boolean checkAndUpdatePackageMembership) {
+
+    // 创建JavaModule注册表Builder，其build方法用来创建JavaModule注册表，
+    // 下一步，JavaModule注册表会将所有的JavaModule注册到CatalystInstance中。
+    NativeModuleRegistryBuilder nativeModuleRegistryBuilder =
+        new NativeModuleRegistryBuilder(reactContext, this);
+
+    ReactMarker.logMarker(PROCESS_PACKAGES_START);
+
+    // TODO(6818138): Solve use-case of native modules overriding
+    synchronized (mPackages) {
+      // 循环处理ReactPackage，处理的过程就是将其添加到注册表中
+      for (ReactPackage reactPackage : packages) {
+        if (checkAndUpdatePackageMembership && mPackages.contains(reactPackage)) {
+          continue;
+        }
+        Systrace.beginSection(TRACE_TAG_REACT_JAVA_BRIDGE, "createAndProcessCustomReactPackage");
+        try {
+          if (checkAndUpdatePackageMembership) {
+            mPackages.add(reactPackage);
+          }
+          processPackage(reactPackage, nativeModuleRegistryBuilder);
+        } finally {
+          Systrace.endSection(TRACE_TAG_REACT_JAVA_BRIDGE);
+        }
+      }
+    }
+    ReactMarker.logMarker(PROCESS_PACKAGES_END);
+
+    ReactMarker.logMarker(BUILD_NATIVE_MODULE_REGISTRY_START);
+    Systrace.beginSection(TRACE_TAG_REACT_JAVA_BRIDGE, "buildNativeModuleRegistry");
+    NativeModuleRegistry nativeModuleRegistry;
+    try {
+      // build方法调用，生成JavaModule注册表
+      nativeModuleRegistry = nativeModuleRegistryBuilder.build();
+    } finally {
+      Systrace.endSection(TRACE_TAG_REACT_JAVA_BRIDGE);
+      ReactMarker.logMarker(BUILD_NATIVE_MODULE_REGISTRY_END);
+    }
+
+    return nativeModuleRegistry;
+  }
+}
+```
+
+</details>
+

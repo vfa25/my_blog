@@ -36,7 +36,7 @@ title: "源码初识概览"
         │   │   │   ├── react （ReactNative源码的主要内容）
         │   │   │   ├── systrace （system trace，系统跟踪）
         │   │   │   └── yoga （前端布局引擎）
-        │   ├── jni （对Android平台特别封装）
+        │   ├── jni （Java Native Interface，对Android平台特别封装）
         │   ├── libraries
         │   ├── res
         │   └── third-party
@@ -48,7 +48,7 @@ title: "源码初识概览"
 
 ![ReactNative系统框架图](../../../.imgs/react_native_system_strcuture.png)
 
-注：JSCore，即JavaScriptCore，JS解析的核心部分，IOS使用的是内置的JavaScriptCore，Android上使用的是webkit.org官方开源的jsc.so。
+注：JSCore，即JavaScriptCore，JS解析的核心部分，IOS使用的是内置的JavaScriptCore，Android上使用的是webkit.org官方开源的libjsc.so。
 
 ### ReactNative源码的主线与支线
 
@@ -95,12 +95,16 @@ title: "源码初识概览"
 
     JavaScriptModule是JS Module，负责JS到Java的映射调用格式声明，由CatalystInstance统一管理。
 
-    NativeModule是ava Module，负责Java到Js的映射调用格式声明，由CatalystInstance统一管理。
+    NativeModule是Java Module，负责Java到Js的映射调用格式声明，由CatalystInstance统一管理。
 
     JavaScriptModule：JS暴露给Java调用的API集合，例如：AppRegistry、DeviceEventEmitter等。业务放可以通过继承JavaScriptModule接口类似自定义接口模块，声明 与JS相对应的方法即可。
 
-    NativeModule/UIManagerModule：NativeModule是Java暴露给JS调用的APU集合，例如：ToastModule、DialogModule等，UIManagerModule也是供JS调用的API集 合，它用来创建View。业务放可以通过实现NativeModule来自定义模块，通过getName()将模块名暴露给JS层，通过@ReactMethod注解将API暴露给JS层。
+    NativeModule/UIManagerModule：NativeModule是Java暴露给JS调用的API集合，例如：ToastModule、DialogModule等，UIManagerModule也是供JS调用的API集合，它用来创建View。业务放可以通过实现NativeModule来自定义模块，通过getName()将模块名暴露给JS层，通过@ReactMethod注解将API暴露给JS层。
 
 6. JavascriptModuleRegistry
 
-    JavascriptModuleRegistry是JS Module映射表，NativeModuleRegistry是Java Module映射表
+    JavascriptModuleRegistry是JS Module映射表，NativeModuleRegistry是Java Module映射表。
+
+7. JSCExecutor
+
+    JS脚本引擎，封装了Webkit的JavaScriptCore，负责解析执行JS代码。

@@ -108,6 +108,8 @@ title: 'Python基础'
 
   **文件读取：转换为unicode编码(decode)，文件保存：转换为utf-8编码(encode)**。
 
+  [不要在MySQL中使用UTF-8](https://mp.weixin.qq.com/s/lnbkyJbPW5NIczum_5mlTg)
+
   `Python2`中`中文字符串`，在window是gb2312，在linux是utf-8；该环境下，下方例子会报错。
 
   ``` py
