@@ -5,7 +5,7 @@
 选择阿里云解析或[DNSPod](https://www.dnspod.cn/)，如果是阿里云买的域名，建议就用阿里云解析，
 因为可以免费申请一个SSL证书。
 
-![阿里云DNS服务器地址](../../.imgs/DNS-server.png)
+![阿里云DNS服务器地址](../../../.imgs/DNS-server.png)
 
 ## 域名 A 记录和 CNAME 如何配置解析
 

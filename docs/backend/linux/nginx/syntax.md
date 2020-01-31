@@ -12,7 +12,7 @@
 
 ## http配置的指令块
 
-![http配置指令块](../../.imgs/http-direct-block.png)
+![http配置指令块](../../../.imgs/http-direct-block.png)
 
 - http：均由`http模块`去解析执行。
 - upstream：上游服务，当需要与其他Web服务交互时。

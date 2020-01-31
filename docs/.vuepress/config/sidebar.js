@@ -1,4 +1,4 @@
-const frontEndBase = [
+const frontendBase = [
   ['', 'Introduction'],
   {
     title: 'JS',
@@ -10,7 +10,6 @@ const frontEndBase = [
   },
   {
     title: 'ReactNative',
-    collapsable: false,
     children: [
       'react-native/nav',
       'react-native/startup',
@@ -20,10 +19,11 @@ const frontEndBase = [
     ]
   },
   {
-    title: 'Node',
+    title: '前端性能优化',
+    collapsable: false,
     children: [
-      'node/base',
-      'node/event-loop',
+      'optimize/nav',
+      'optimize/01staticAsset',
     ]
   },
   {
@@ -35,8 +35,18 @@ const frontEndBase = [
     ]
   }
 ];
-const frontEndOther = [
-  ['', 'Introduction'],
+const reactList = [
+  ['', '首页'],
+  {
+    title: '基础',
+    collapsable: false,
+    children: [
+      'base/reactAPI',
+    ]
+  },
+];
+const frontendOther = [
+  ['', '首页'],
   {
     title: '网络',
     collapsable: false,
@@ -63,14 +73,26 @@ const frontEndOther = [
     ]
   }
 ];
-const serverSide = [
-  ['', 'Introduction'],
+const nodeList = [
+  ['', '首页'],
   {
-    title: 'Python3',
+    title: '基础',
     collapsable: false,
     children: [
-      'python3/base',
-      'python3/prdConfig',
+      'base/base',
+      'base/common-js',
+      'base/event-loop',
+    ]
+  },
+];
+const pythonList = [
+  ['', '首页'],
+  {
+    title: '基础',
+    collapsable: false,
+    children: [
+      'base/base',
+      'base/prdConfig',
     ]
   },
   {
@@ -85,20 +107,19 @@ const serverSide = [
   },
   {
     title: 'Django',
+    collapsable: false,
     children: [
       'django/base',
       'django/rest_framework',
       'django/loginStatus',
     ]
-  },
-  // {
-  //   title: 'Java',
-  //   children: [
-  //     'java/class',
-  //   ]
-  // },
+  }
+];
+const linuxList = [
+  ['', '首页'],
   {
     title: 'Nginx',
+    collapsable: false,
     children: [
       'nginx/base',
       'nginx/syntax',
@@ -106,6 +127,7 @@ const serverSide = [
   },
   {
     title: '服务器配置（操作系统Ubuntu）',
+    collapsable: false,
     children: [
       'config/base',
       'config/account',
@@ -167,9 +189,12 @@ const algorithmVisualization = [
 ]
 
 module.exports = {
-  '/frontEnd/base/': frontEndBase,
-  '/frontEnd/other/': frontEndOther,
-  '/serverSide/': serverSide,
+  '/frontend/base/': frontendBase,
+  '/frontend/other/': frontendOther,
+  '/frontend/react/': reactList,
+  '/backend/node/': nodeList,
+  '/backend/python/': pythonList,
+  '/backend/linux/': linuxList,
   '/general/dataStructure/': dataStructure,
   '/general/algorithm/': algorithm,
   '/general/algorithmVisualization/': algorithmVisualization

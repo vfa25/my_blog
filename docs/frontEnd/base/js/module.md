@@ -9,8 +9,8 @@ sidebarDepth: 3
 
 ### `exports`和`module.exports`的区别
 
-结论：**module.exports才是真正的模块导出接口**，只不过变量`exports`与其指向了同一块内存。
-基于这个原理，开发者应该知道什么情况下可以修改这二者的引用。
+结论：**module.exports才是真正的模块导出接口**，只不过变量`exports`与其指向了同一块内存，即`浅拷贝`。
+那么，开发者应该知道什么情况下可以修改这二者的引用。
 
 来一探这部分的nodejs源码吧（node-v10.16.3）
 
@@ -98,9 +98,9 @@ const { compileFunction } = internalBinding('contextify');
 Module.prototype._compile = function(content, filename) {
   content = stripShebang(content); // 边界情况
   let compiledWrapper;
-  // 全局变量patched是根据是否有改写wrapper包裹函数，一般不会改写，即此处为false，所以这个判断会进入else逻辑，
-  // 但是！compileFunction函数是C++暴露的接口，我看不懂吖--https://github.com/nodejs/node/blob/master/src/node_contextify.h
-  // 所以直接看if逻辑效果更佳，wrap辅助函数索性直接注释在这里了
+  // 全局变量patched是根据是否有改写wrapper包裹函数，一般不会改写，即此处为false，那么这个判断会进入else逻辑，
+  // 不过，compileFunction函数是C++暴露的接口！--https://github.com/nodejs/node/blob/master/src/node_contextify.h
+  // 所以转而直接看if逻辑，wrap辅助函数索性直接注释在这里了
   if (patched) {
     // let wrap = function(script) {
     //   return Module.wrapper[0] + script + Module.wrapper[1];

@@ -30,6 +30,8 @@ Scrapy V1.8.0
       <summary>LinkExtractor类</summary>
 
       ```py
+      # Top-level imports
+      # from .lxmlhtml import LxmlLinkExtractor as LinkExtractor
       class LxmlLinkExtractor(FilteringLinkExtractor):
           def __init__(self, allow=(), deny=(), allow_domains=(), deny_domains=(), restrict_xpaths=(),
                       tags=('a', 'area'), attrs=('href',), canonicalize=False,
@@ -54,7 +56,9 @@ Scrapy V1.8.0
                                                       restrict_text=restrict_text)
 
           def extract_links(self, response):
+              # get_base_url函数中，会调用urllib.parse.urljoin拼接（域名+路径）
               base_url = get_base_url(response)
+              # 若传入restrict_xpaths，只扫描由这些xpath选择的文本中的链接
               if self.restrict_xpaths:
                   docs = [subdoc
                           for x in self.restrict_xpaths
@@ -157,7 +161,7 @@ class CrawlSpider(Spider):
             for requests_or_item in iterate_spider_output(cb_res):
                 yield requests_or_item
         # 核心逻辑
-        if follow and self._follow_links:
+        if follow and self._follow_links: # follow：满足rule的link是否继续跟踪
             for request_or_item in self._requests_to_follow(response):
                 yield request_or_item
 
