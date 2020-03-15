@@ -1,4 +1,7 @@
-# 开场白
+---
+title: '开场白'
+---
+
 
 <font color=purple size=5>any application that can be written in JavaScript, will eventually be written in JavaScript.</font>
 
