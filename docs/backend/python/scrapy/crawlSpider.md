@@ -27,7 +27,7 @@ Scrapy V1.8.0
       并将`response`交给`LinkExtractor实例（可以根据传入的参数，做预处理）`，后者调用`extract_links`抽取全部`link`，在对每个link`yield Request()`时添加`_response_downloaded`回调参数。
 
       <details>
-      <summary>LinkExtractor类</summary>
+      mmary>LinkExtractor类</summary>
 
       ```py
       # Top-level imports

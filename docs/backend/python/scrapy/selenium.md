@@ -5,6 +5,9 @@ date: '2019-12-22'
 
 ## selenium模拟登陆
 
+出发点：1.现在很多网站是动态网站（即数据通过JS动态加载），这时仅分析`.html`文件就不再适用了；2.
+若大量请求只请求html，我们要绕过因之的反爬策略；那么通过`selenium`或`phantomjs`完全模拟浏览器操作可以满足爬虫需求。
+
 - [Chrome驱动下载](http://chromedriver.storage.googleapis.com/index.html)
 
   <details>

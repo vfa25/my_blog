@@ -9,7 +9,10 @@ sidebarDepth: 3
 
 ### `exports`和`module.exports`的区别
 
-结论：**module.exports才是真正的模块导出接口**，只不过变量`exports`与其指向了同一块内存，即`浅拷贝`。
+结论：**module.exports才是真正的模块导出接口**。只不过默认情况下，变量`exports`与其指向了同一块内存。
+
+- 若只对module.exports重新赋值，那么二者分别指向了不同内存。对于引用者caller来说，写（词法）在赋值时，前面的所有exports.xxx将被覆盖。
+
 那么，开发者应该知道什么情况下可以修改这二者的引用。
 
 来一探这部分的nodejs源码吧（node-v10.16.3）
@@ -237,7 +240,7 @@ module.exports.twoFunction = function(from) {
 
 ### 为什么说CommonJS模块是按值拷贝
 
-现象：依赖于同一模块，其中一个的数据更改，会影响其他模块。
+现象：依赖于同一模块，其中一个的数据更改，会影响其他模块，好像并非值拷贝吖。
 
 ```js
 // a.js
@@ -288,19 +291,28 @@ var a = require('./a')
 console.log('a-in-test', a.getName())
 ```
 
-使用webpack@3（必须，v4.+有默认插件干扰）打包：
+使用webpack打包：`webpack --devtool none --mode development --target node test.js`，
+打包后的文件，保留核心逻辑，如下：
 
 ```js
 /******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
 /******/ 	// The require function
 /******/ 	function __webpack_require__(moduleId) {
+/******/ 		// Check if module is in cache // 缓存策略
+/******/ 		if(installedModules[moduleId]) {
+/******/ 			return installedModules[moduleId].exports;
+/******/ 		}
 /******/ 		// Create a new module (and put it into the cache)
+ // --------------------标记①--------------------
 /******/ 		var module = installedModules[moduleId] = {
 /******/ 			i: moduleId,
 /******/ 			l: false,
-/******/ 			exports: {} // 初始化了一个空对象
+/******/ 			exports: {} // 关键！初始化了一个空对象
 /******/ 		};
 /******/ 		// Execute the module function
+ // --------------------标记②--------------------
 /******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
 /******/ 		// Flag the module as loaded
 /******/ 		module.l = true;
@@ -312,6 +324,7 @@ console.log('a-in-test', a.getName())
 /******/ })
 /******/ ([
 /* 0 */
+ // --------------------标记③--------------------
 /***/ (function(module, exports, __webpack_require__) {
 var a = __webpack_require__(1)
 console.log('a-in-test', a.getName())
@@ -325,6 +338,7 @@ var originObj = {
   }
 }
 exports.getName = getName
+// 其实就是新创建了个module对象，对其exports属性赋值
 module.exports = {
   getName: originObj.getName
 }
@@ -332,10 +346,15 @@ module.exports = {
 /******/ ]);
 ```
 
-故，Commonjs 模块导出，其实只是对`新module.exports空对象`进行了`赋值（exports）`或称`导出对象的浅拷贝（module.exports）`。
+故，Commonjs 模块导出（姑且默认为导出的是对象）
 
-
-
+- 在Acorn（Webpack解析器）的打包实现上：
+  - 各模块独立作用域：每个模块的代码逻辑，都会是一个module function的函数体（标记③处，该函数通过`__webpack_require__函数`间接调用）。
+  - 模块导出的本质：是对标记①处，`新创建的module.exports对象的属性`进行了`赋值`。
+  - `module.exports`和`exports`，仅在前者未被业务逻辑重新赋值时，指向同一内存（标记②处）。
+- 引申：
+  - 在语义上，这种纷纷为导出对象属性赋值的方式，可以看做`对module.exports各属性的浅拷贝`。
+  - 引用者（caller）对导入对象的属性修改，会影响到原模块（callee）本身的`module.exports`对象，二者根本就是一块内存，但是变量`exports`未必。
 
 ## ESModule
 
