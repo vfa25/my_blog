@@ -22,7 +22,7 @@ Demo场景：某VPN应用每日签到领取流量。
 
 ## 效果图
 
-![邮件接收效果图](./imgs/py-demo-checkin.png)
+![邮件接收效果图](../../../.imgs/py-demo-checkin.png)
 
 ## python实现
 

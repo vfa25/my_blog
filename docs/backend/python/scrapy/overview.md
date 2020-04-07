@@ -5,7 +5,7 @@ date: '2020-03-14'
 
 ## Scrapy架构图
 
-![scrapy架构图](./imgs/scrapy_architecture_02.png)
+![scrapy架构图](../../../.imgs/scrapy_architecture_02.png)
 [图片来源自官网](https://docs.scrapy.org/en/latest/topics/architecture.html#)
 
 ## 源码看数据流

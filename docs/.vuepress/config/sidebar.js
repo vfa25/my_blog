@@ -12,8 +12,8 @@ const frontendBase = [
     title: 'ReactNative',
     children: [
       'react-native/nav',
-      'react-native/startup',
       'react-native/hybrid',
+      'react-native/startup',
       'react-native/overview',
       // 'react-native/dispatch',
     ]
@@ -23,7 +23,7 @@ const frontendBase = [
     collapsable: false,
     children: [
       'optimize/nav',
-      'optimize/01staticAsset',
+      'optimize/image',
     ]
   },
   {

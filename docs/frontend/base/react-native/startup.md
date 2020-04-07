@@ -4,7 +4,7 @@ date: "2019-11-20"
 sidebarDepth: 3
 ---
 
-React Native(V0.61.4)
+React Native(V0.62.1)
 
 ## 1. 应用初始化流程
 
