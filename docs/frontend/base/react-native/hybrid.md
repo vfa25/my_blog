@@ -8,6 +8,10 @@ date: '2020-4-7'
 高亮对比效果图如下（右图为高亮）
 ![高亮对比](../../../.imgs/react_native_brightenScreen_constract.png)
 
+- 准备
+
+  IED：Android Studio
+
 ## 1. 编写Nation Module
 
 创建一个新的Java类并命名为`UtilModule.java`，放置到`android/app/src/main/java/com/your-app-name/`目录下，其具体代码如下：

@@ -33,8 +33,8 @@ deploy:
     port: '12345'
     # git分支名
     ref: origin/master
-    # 私有仓库添加"[loginname]:[password]@"
-    repo: https://[loginname]:[password]@github.com/vfa25/node-blog-express.git
+    # 私有仓库添加"loginname:password@"
+    repo: https://loginname:password@github.com/vfa25/node-blog-express.git
     # 服务器上项目部署的目录，会在/www/node-blog-express下初始化一个production文件夹
     # 配置文件会自动从git上面拉取静态网站代码到此路径
     path: /www/node-blog-express/production

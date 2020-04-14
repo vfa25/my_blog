@@ -81,7 +81,6 @@ const nodeList = [
     children: [
       'base/base',
       'base/system',
-      'base/event-loop',
     ]
   },
   // {

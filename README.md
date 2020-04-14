@@ -33,7 +33,7 @@ deploy:
     port: '22'
     # 自己的 git 分支
     ref: origin/master
-    # 自己的 git 地址，私人仓库格式如https://[username]:[password]@github.com/vfa25/my_doc.git
+    # 自己的 git 地址，私人仓库格式如https://username:password@github.com/vfa25/my_doc.git
     repo: https://github.com/vfa25/my_doc.git
     # 服务端目录
     path: /自定义/path/production
