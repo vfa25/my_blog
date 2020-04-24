@@ -9,13 +9,12 @@ const frontendBase = [
     ]
   },
   {
-    title: 'ReactNative',
+    title: '浏览器工作原理（Chrome）',
+    collapsable: false,
     children: [
-      'react-native/nav',
-      'react-native/hybrid',
-      'react-native/startup',
-      'react-native/overview',
-      // 'react-native/dispatch',
+      'browser/01nav',
+      'browser/02multi-process',
+      'browser/03technological-process',
     ]
   },
   {
@@ -24,6 +23,26 @@ const frontendBase = [
     children: [
       'optimize/nav',
       'optimize/image',
+    ]
+  },
+  {
+    title: '网络',
+    collapsable: false,
+    children: [
+      'internet/internet-protocol',
+      'internet/http-cache',
+      'internet/cors',
+    ]
+  },
+  {
+    title: 'ReactNative',
+    children: [
+      'react-native/nav',
+      'react-native/startup',
+      'react-native/hybrid',
+      'react-native/overview',
+      'react-native/case',
+      // 'react-native/dispatch',
     ]
   },
   {
@@ -47,15 +66,6 @@ const reactList = [
 ];
 const frontendOther = [
   ['', '首页'],
-  {
-    title: '网络',
-    collapsable: false,
-    children: [
-      'internet/shake-hands',
-      'internet/http-cache',
-      'internet/cors',
-    ]
-  },
   {
     title: '实用小例',
     collapsable: false,

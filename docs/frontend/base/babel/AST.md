@@ -1,7 +1,6 @@
 ---
 title: "Acorn 和 AST"
 date: "2019-06-23"
-comment: false
 ---
 
 `AST`即`Abstract Syntax Tree`，汉译为`抽象语法树`。
