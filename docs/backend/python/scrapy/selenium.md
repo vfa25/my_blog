@@ -36,6 +36,8 @@ date: '2019-12-22'
       [附Mac Chrome历史版本](https://www.applex.net/downloads/google-chrome-for-mac.25/history)
 
       ```sh
+      # Chrome版本查看
+      google-chrome --version
       # 禁止Chrome的自动更新
       cd ~/Library/Google
       sudo chown root:wheel GoogleSoftwareUpdate

@@ -2,7 +2,7 @@ const frontendBase = [
   ['', 'Introduction'],
   {
     title: 'JS',
-    collapsable: false,
+    collapsable: true,
     children: [
       'js/parse',
       'js/module',
@@ -10,7 +10,7 @@ const frontendBase = [
   },
   {
     title: '浏览器工作原理（Chrome）',
-    collapsable: false,
+    collapsable: true,
     children: [
       'browser/01nav',
       'browser/02multi-process',
@@ -19,7 +19,7 @@ const frontendBase = [
   },
   {
     title: '前端性能优化',
-    collapsable: false,
+    collapsable: true,
     children: [
       'optimize/nav',
       'optimize/image',
@@ -27,7 +27,7 @@ const frontendBase = [
   },
   {
     title: '网络',
-    collapsable: false,
+    collapsable: true,
     children: [
       'internet/internet-protocol',
       'internet/http-cache',
@@ -58,7 +58,7 @@ const reactList = [
   ['', '首页'],
   {
     title: '基础',
-    collapsable: false,
+    collapsable: true,
     children: [
       'base/reactAPI',
     ]
@@ -68,7 +68,7 @@ const frontendOther = [
   ['', '首页'],
   {
     title: '实用小例',
-    collapsable: false,
+    collapsable: true,
     children: [
       'demo/checkin'
     ]
@@ -87,15 +87,16 @@ const nodeList = [
   ['', '首页'],
   {
     title: '基础',
-    collapsable: false,
+    collapsable: true,
     children: [
       'base/base',
       'base/system',
+      'base/express-and-koa'
     ]
   },
   // {
   //   title: '模块化',
-  //   collapsable: false,
+  //   collapsable: true,
   //   children: [
   //     'module/built-in-modules',
   //   ]
@@ -105,7 +106,7 @@ const pythonList = [
   ['', '首页'],
   {
     title: '基础',
-    collapsable: false,
+    collapsable: true,
     children: [
       'base/base',
       'base/prdConfig',
@@ -113,7 +114,7 @@ const pythonList = [
   },
   {
     title: 'Python爬虫框架——Scrapy',
-    collapsable: false,
+    collapsable: true,
     children: [
       'scrapy/base',
       'scrapy/overview',
@@ -124,7 +125,7 @@ const pythonList = [
   },
   {
     title: 'Django',
-    collapsable: false,
+    collapsable: true,
     children: [
       'django/base',
       'django/rest_framework',
@@ -136,7 +137,7 @@ const linuxList = [
   ['', '首页'],
   {
     title: 'Nginx',
-    collapsable: false,
+    collapsable: true,
     children: [
       'nginx/base',
       'nginx/syntax',
@@ -144,7 +145,7 @@ const linuxList = [
   },
   {
     title: '服务器配置（操作系统Ubuntu）',
-    collapsable: false,
+    collapsable: true,
     children: [
       'config/base',
       'config/account',
@@ -160,7 +161,7 @@ const linuxList = [
 const dataStructure = [
   {
     title: '数据结构',
-    collapsable: false,
+    collapsable: true,
     children: [
       ['', 'Introduction'],
       'array',
@@ -184,7 +185,7 @@ const dataStructure = [
 const algorithm = [
   {
     title: '算法',
-    collapsable: false,
+    collapsable: true,
     children: [
       ['', 'Introduction'],
       'recursion',
@@ -198,7 +199,7 @@ const algorithmVisualization = [
   ['', 'Introduction'],
   {
     title: '迷宫问题',
-    collapsable: false,
+    collapsable: true,
     children: [
       'maze/solver',
     ]

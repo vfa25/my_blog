@@ -59,6 +59,16 @@ Error: fail*/
     - （冻结态）如果回调函数最终是return（或return undefined），该Promise是resolved状态。
     - （叠加态）如果回调函数最终return了新的Promise，这个新的Promise将完全替代该Promise。
 
+### 异步编程-async/await
+
+- async function是Promise的语法糖封装
+- 异步编程的最终解决方案——以同步的方式写异步
+  - await关键字可以“暂停”async function的执行
+  - await关键字可以以同步的写法获取Promise的执行结果
+  - try-catch可以捕获await所得到的错误
+  - async的并行异步，函数体中以`await Promise.all`即可
+- 一个穿越事件循环存在的function
+
 ## 事件循环
 
 ```c
