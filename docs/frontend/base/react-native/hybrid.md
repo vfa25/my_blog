@@ -149,3 +149,15 @@ const UtilModule = NativeModules.UtilModule;
 UtilModule.brightenScreen();
 UtilModule.restoreBrightness();
 ```
+
+## 调试
+
+```sh
+# 以下命令行为/bin/bash下
+# 日志及正则匹配
+adb logcat | grep ======
+# 清空日志
+adb logcat -c
+# 日志输出文件
+adb logcat > logcat.log
+```

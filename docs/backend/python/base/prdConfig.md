@@ -2,6 +2,15 @@
 
 不要用root用户发布Web应用，且下级用户至少赋予sudo权限。
 
+## pm2可以守护python进程
+
+[pm2参考（本站跳转）](../../linux/config/pm2.html)
+
+```sh
+# python项目启动
+pm2 start simple_server.py -i 2 -x --interpreter python
+```
+
 ## Nginx基础命令
 
 ```sh

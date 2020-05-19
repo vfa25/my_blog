@@ -65,7 +65,7 @@
     ```sh
     # 启动
     pm2 start app.js
-    # 多线程（CPU多核）
+    # 多线程（是线程，所以CPU单核也行）
     pm2 start app.js -i 2
     # 扩容
     pm2 scale app +1

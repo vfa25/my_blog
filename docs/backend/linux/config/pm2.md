@@ -2,11 +2,10 @@
 
 [PM2文档](https://pm2.io/doc/en/runtime/quick-start/?utm_source=pm2&utm_medium=website&utm_campaign=rebranding)
 
-首先，明确一下，该章节所有的命令行操作，基本都是在本地执行，除非如防火墙配置等在服务端。
-
 ## 部署项目目录
 
-当然通过命令行`scp`或者登陆服务端`git`拉取代码也可以，但没必要。
+当然通过命令行`scp`或者登陆服务端`git`拉取代码也可以，但太麻烦；
+这里通过pm2实现、以本地配置文件进行服务端部署。
 
 [Easy Deploy with SSH](https://pm2.io/doc/en/runtime/guide/easy-deploy-with-ssh/)
 
@@ -125,15 +124,22 @@ source 是 clone 下来的源码，shared 里面是日志文件和 pid 之类，
 
   - pm2 startup（添加一个systemd条目，开机之后就可以去读取当前用户更目录的下面存储的配置文件）
 
-  会出现以下提示，直接将`sudo env PATH=$PATH:...`执行即可。
+  会出现以下提示，直接复制粘贴将`sudo env PATH=$PATH:...`执行即可。
 
-  ```sh
+  ```md
   [PM2] Init System found: systemd
   [PM2] To setup the Startup Script, copy/paste the following command:
   sudo env PATH=$PATH:...
   ```
 
-  - pm2 save（配置现在运行的程序开机启动，保存在用户目录下）
+  - pm2 save（配置现在运行的程序开机启动，保存在用户目录下，开机启动会读取该文件并启动应用），执行后会提示
+
+  ```md
+  [PM2] Saving current process list...
+  [PM2] Successfully saved in /home/user1/.pm2/dump.pm2
+  ```
+
+  - systemctl status pm2-user1.service（查看配置是否开启）
   - pm2 unstartup systemd（如果需要取消开机启动条目）
 
 ***报错解决***
