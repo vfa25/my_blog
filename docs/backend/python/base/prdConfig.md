@@ -1,6 +1,8 @@
 # Ubuntu线上环境：Nginx + uwsgi
 
-不要用root用户发布Web应用，且下级用户至少赋予sudo权限。
+- 不要用root用户发布Web应用，且下级用户一般至少赋予sudo权限。
+- uwsgi需要项目暴露`application`，可参考[Another Do-It-Yourself Framework](https://docs.pylonsproject.org/projects/webob/en/latest/do-it-yourself.html)、[WSGI规范：Python Web Server Gateway Interface](https://www.python.org/dev/peps/pep-0333/)、[python WSGI框架详解
+ ](https://www.cnblogs.com/-wenli/p/10884168.html)。
 
 ## pm2可以守护python进程
 
@@ -56,7 +58,7 @@ mkvirtualenv -p /usr/bin/python3 django_py36
 - 安装`pip install uwsgi`。
 - 测试：项目目录下`uwsgi --http :8000 --module djangoServer.wsgi`
 
-新建uwsgi.ini 配置文件， 内容如下：
+新建uwsgi.ini 配置文件，路径随意，内容如下：
 
 ```md
     # mysite_uwsgi.ini file

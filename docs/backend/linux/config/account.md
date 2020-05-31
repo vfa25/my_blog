@@ -37,11 +37,17 @@ Enter the new value, or press ENTER for the default
 Is the information correct? [Y/n] y
 ```
 
-简单的提权配置，即通过`gpasswd`让该用户以`sudo`方式调用系统命令。
+- 简单的提权配置，即通过`gpasswd`让该用户以`sudo`方式调用系统命令。
 
-```sh
-gpasswd -a my_manager sudo
-```
+    ```sh
+    gpasswd -a my_manager sudo
+    ```
+
+- 赋予ubuntu:ubuntu用户、对某文件夹的所有权
+
+    ```sh
+    sudo chown -R ubuntu:ubuntu /var/www/demoapp/
+    ```
 
 ## 账号授权提权
 

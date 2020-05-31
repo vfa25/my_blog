@@ -21,6 +21,23 @@ date: '2019-11-30'
 - 失控的爬虫：某些情况下，忘记或无法关闭的爬虫；
 - 商业竞争对手。
 
+### 爬虫攻防
+
+#### 随机user-agent
+
+- 对Request统一设置请求头的`User-Agent`字段，可通过`scrapy.downloadermiddlewares.useragent.UserAgentMiddleware`中间件、且setting中设置`USER_AGENT`字段的方式实现，其[源码](https://github.com/scrapy/scrapy/blob/master/scrapy/downloadermiddlewares/useragent.py)也很简洁。
+- 随机`User-Agent`，可参考[fake-useragent(github)](https://github.com/hellysmile/fake-useragent)，
+其维护了一个[User-Agent备选列表](https://fake-useragent.herokuapp.com/browsers/0.1.11)。
+
+#### IP代理池
+
+编写`downloadMiddleware`，定制`process_request`，对`request.mate['proxy']`字段动态设置值，
+可选值通过IP代理池随机获取。
+
+- [代理池建表、及随机获取可用的代理URL（github）](https://github.com/vfa25/scrapy_internet_worm/blob/master/tools/crawl_xici_ip.py)
+- [西刺免费代理IP_高匿（官网）](https://www.xicidaili.com/nn)
+- [scrapy-proxies（github）](https://github.com/aivarsk/scrapy-proxies)
+
 ## url去重策略
 
 1. 数据库存储：将访问过的url保存在数据库中（逻辑简单的同时，缺点是效率低）。

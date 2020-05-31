@@ -25,7 +25,7 @@ Demo场景：某VPN应用每日签到领取流量。
 
 ## 效果图
 
-![邮件接收效果图](../../../.imgs/py-demo-checkin.png)
+<img width="300" src="../../../.imgs/py-demo-checkin.jpeg" />
 
 ## python实现
 
@@ -70,7 +70,7 @@ class Checkin:
         self.user = 'heermosi39@163.com'  # 登录账号
         self.pw = my_password['email']  # 登录密码
         self.sender = 'heermosi39@163.com'  # 邮件发送账号
-        self.receive = 'heermosi39@163.com'  # 邮件接收账号
+        self.receive = ['heermosi39@163.com', 'xxx']  # 邮件接收账号
         self.msg = '提示信息'  # 邮件内容
         self.chaoxi_username = "xxx@163.com"  # 潮汐账号
         self.send_status = 0
@@ -98,8 +98,9 @@ class Checkin:
         options.add_argument('user-agent=%s' % user_agent)
 
         options.binary_location = "/usr/bin/google-chrome"
+        chrome_driver_binary = '/home/xxx/py_checkin/chromedriver'
         # options.binary_location = "~/Desktop/Google Chrome.app/Contents/MacOS/Google Chrome"
-        chrome_driver_binary = './chromedriver'
+        # chrome_driver_binary = './chromedriver'
         self.browser = webdriver.Chrome(
             executable_path=chrome_driver_binary, chrome_options=options)
 
@@ -325,7 +326,7 @@ class Checkin:
         msg = MIMEMultipart(_subtype='mixed')
         msg['Subject'] = 'VPN签到'
         msg['From'] = self.sender
-        msg['To'] = self.receive
+        msg['To'] = ','.join(self.receive)
         text = MIMEText(
             '<html><p>{}<p></html>'.format(self.msg), 'html', 'utf-8')
         msg.attach(text)
