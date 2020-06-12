@@ -14,7 +14,8 @@ const frontendBase = [
     children: [
       'browser/01nav',
       'browser/02multi-process',
-      'browser/03technological-process',
+      'browser/03navigation-process',
+      'browser/04render-process',
     ]
   },
   {

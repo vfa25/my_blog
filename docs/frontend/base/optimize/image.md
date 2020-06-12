@@ -94,7 +94,7 @@ date: '2020-01-20'
 
   唯一的缺点就是`兼容性`，图示是截止2020年3月的浏览器支持情况（[来源链接](https://developers.google.com/speed/webp/faq#which_web_browsers_natively_support_webp)）
   ![webp浏览器支持](../../../.imgs/webp-browser-support.png)
-  尽管如此，由于Chrome稳定的高市场占有率（[netmarketshare链接](https://netmarketshare.com)），它依然是图片优化的优选。
+  尽管如此，由于Chrome稳定的高市场占有率（[statcounter链接](https://gs.statcounter.com/)），它依然是图片优化的优选。
   ![浏览器市场占有率](../../../.imgs/browser-market-share.png)
 
   Polyfill的方案：以淘宝页面的webp链接为例、如下所示
