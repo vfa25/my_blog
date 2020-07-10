@@ -27,7 +27,7 @@ date: "2019-12-02"
 计算机的地址即IP（Internet Protocol）地址，访问任何网站实际上只是一个计算机向另外一台计算机请求信息。
 这里以HTTP协议（应用层）、TCP协议（传输层）为例（二者同是TCP/IP协议簇的子集）。
 
-![HTTP/TCP数据传输流程](./imgs/transmission-process.png)
+![HTTP/TCP数据传输流程](../../../.imgs/transmission-process.png)
 
 请求方要发送的数据包，需要经过一个通道，即`TCP连接`。一个完整的TCP连接的生命周期包括了`建立连接`、`传输数据`和`断开连接`三个阶段。
 所以在HTTP工作开始之前，请求方需要通过TCP与应答方建立连接，

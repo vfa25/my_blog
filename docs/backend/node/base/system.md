@@ -5,7 +5,7 @@ sidebarDepth: 3
 ---
 
 Node.js系统架构如下（[图片来源于网络](https://blog.csdn.net/flying_rat_/article/details/81673558)）：
-![The Node.js System](./imgs/the-nodejs-system.png)
+![The Node.js System](../../../.imgs/the-nodejs-system.png)
 
 - 图左（APP/V8/Node API）：Node.js 是一个基于 Chrome V8 引擎的 JavaScript 运行环境。
 - 图右（libuv）：Node.js 使用了一个**事件驱动**、**非阻塞式I/O**的模型。
@@ -48,7 +48,7 @@ Error: fail*/
 ```
 
 这是因为，setTimeout API将开启一个异步线程、且在满足条件（如500ms）时，这个回调函数将被推入`Task Queues`，`Event Loop`机制会不断轮询`Task Queues`并取队头执行，这个callback将成为新的事件循环调用栈的底部。那么，Error只会抛向全局。
-![异步API下的Error调用栈——Demo](./imgs/async-error-demo.png)
+![异步API下的Error调用栈——Demo](../../../.imgs/async-error-demo.png)
 
 ### 异步编程-Promise
 

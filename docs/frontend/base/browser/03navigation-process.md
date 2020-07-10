@@ -6,15 +6,15 @@ date: '2020-3-24'
 地址栏输入地址回车后，浏览器做了什么？（本章仅关注前端向，[本题的原始出处指路☞](http://fex.baidu.com/blog/2014/05/what-happen/)）
 
 > 注：图示，`关键事件节点`可通过`window.performance.timing`API查看或打开控制台`Performance -> Event Log`更具象。
-![performance.timing](./imgs/performance-timing.png)
+![performance.timing](../../../.imgs/performance-timing.png)
 
 1. 解析地址栏
     - <font color=red>Browser浏览器进程（主控进程）</font>处理用户输入，开始解析URL，组装协议。
     - 在导航开始之前，可以通过[`beforeunload`](https://developer.mozilla.org/zh-CN/docs/Web/Events/beforeunload)事件取消导航，让浏览器不再执行任何后续工作。
 
-    ![beforeunload](./imgs/browser-beforeunload.png)
+    ![beforeunload](../../../.imgs/browser-beforeunload.png)
     - **导航（即用户发出URL请求到页面开始解析的整个过程）** 开始（`navigationStart`）；
-    ![navigationStart](./imgs/browser-navigation-start.png)
+    ![navigationStart](../../../.imgs/browser-navigation-start.png)
 
         - 在表现上，标签页的图标便进入了Loading状态。
         - 页面显示依然是之前打开的页面内容，因为要到`提交文档`阶段，<font color=red>Browser进程</font>才会移除旧的页面内容。
@@ -35,7 +35,7 @@ date: '2020-3-24'
     1. 等待TCP队列
 
     对同一个域名的请求，Chrome默认最多同时建立6个TCP连接。如果超过，多出的请求会进入队列；否则，会直接建立TCP连接。
-    ![tcp队列示意](./imgs/tcp-queue.png)
+    ![tcp队列示意](../../../.imgs/tcp-queue.png)
     2. 建立TCP连接
 
     [数据传输流程（本站跳转）](../internet/internet-protocol.html#数据传输流程)（`connectStart`、`connectEnd`）。
@@ -49,11 +49,11 @@ date: '2020-3-24'
     ```
 
     - 在浏览器发送请求行命令之后，还要以请求头（另如POST、还有请求体）形式发送一些其他信息。
-    ![请求头](./imgs/http-request-header.png)
+    ![请求头](../../../.imgs/http-request-header.png)
 
 6. 处理HTTP相应
 
-    ![响应头](./imgs/http-response-header.png)
+    ![响应头](../../../.imgs/http-response-header.png)
 
     - 首先服务器会返回响应行，而发送完响应头后，服务器就可以继续发送响应体的数据了。
     - **响应头数据解析**： <font color=red>NetWork进程</font>解析响应头数据。
@@ -68,7 +68,7 @@ date: '2020-3-24'
     - **响应体数据解析**
         1. 准备渲染进程
 
-            ![process-per-site-instance](./imgs/browser-process-per-site-instance.png)
+            ![process-per-site-instance](../../../.imgs/browser-process-per-site-instance.png)
 
             渲染进程策略：`process-per-site-instance`
             - 通常情况下，打开新的页面都会使用单独的渲染进程；
@@ -80,7 +80,7 @@ date: '2020-3-24'
             - 等文档数据传输完成后， <font color=red>Render进程</font>返回`确认提交文档`的消息给<font color=red>Browser进程</font>；
             - <font color=red>Browser进程</font>在收到`确认提交文档`的消息后，会移除之前的旧的文档、更新浏览器界面状态，包括：安全状态、地址栏URL、前进后退的历史状态，并置空Web页面。
 
-            ![ensure-commit-navigation](./imgs/browser-ensure-commit-navigation.png)
+            ![ensure-commit-navigation](../../../.imgs/browser-ensure-commit-navigation.png)
 
         **至此，导航结束，其涵盖了从用户发起URL请求到提交文档给渲染进程的中间所有阶段。**
 

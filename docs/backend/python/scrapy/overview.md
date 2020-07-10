@@ -125,10 +125,10 @@ execute(['scrapy', 'crawl', 'lagou'])
       > 先来关注下`scrapy.core.engine.ExecutionEngine`逻辑
 
       `_next_request`函数体内调用，流程进入`self._next_request_from_scheduler`，首次时如下：
-      ![_next_request_from_scheduler首次进入](./imgs/scrapy_system_init_request_01.png)
+      ![_next_request_from_scheduler首次进入](../../../.imgs/scrapy_system_init_request_01.png)
       因为此时并无Request，随后`_next_request`函数体内执行`request = next(slot.start_requests)`，
       这也是`Spider.start_requests方法`要`yield Request`的原因，
-      ![准备进入schedule逻辑](./imgs/scrapy_system_init_request_02.png)
+      ![准备进入schedule逻辑](../../../.imgs/scrapy_system_init_request_02.png)
       取到`Request`实例，并随后进入`self.crawl(request, spider)`，执行`self.schedule(request, spider)`
 
     </details>
