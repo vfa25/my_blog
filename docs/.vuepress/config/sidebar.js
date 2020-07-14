@@ -16,6 +16,7 @@ const frontendBase = [
       'browser/02multi-process',
       'browser/03navigation-process',
       'browser/04render-process',
+      'browser/05render-block',
     ]
   },
   {

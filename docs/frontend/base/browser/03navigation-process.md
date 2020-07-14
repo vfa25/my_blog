@@ -42,7 +42,7 @@ date: '2020-3-24'
 5. 构建及发送HTTP请求
 
     一旦建立了TCP连接，浏览器就可以和服务器进行通信了。而HTTP中的数据正是在这个通信过程中传输的（`requestStart`）。
-    - 首先，浏览器构建请求行信息，构建好后，浏览器准备发起网络请求。
+    - 首先，浏览器构建请求行信息（请求方法、请求地址和协议版本，以CRLF结尾），构建好后，浏览器准备发起网络请求。
 
     ```md
     GET /index.html HTTP1.1
@@ -50,6 +50,18 @@ date: '2020-3-24'
 
     - 在浏览器发送请求行命令之后，还要以请求头（另如POST、还有请求体）形式发送一些其他信息。
     ![请求头](../../../.imgs/http-request-header.png)
+    - get和post的区别
+
+        get和post虽然本质都是tcp/ip，但两者除了在http层面外，在tcp/ip层面也有区别。
+
+        get会产生一个tcp数据包，post两个
+
+        具体就是：
+
+        - get请求时，浏览器会把headers和data一起发送出去，服务器响应200（返回数据）。
+        - post请求时，浏览器先发送headers，服务器响应100 continue，浏览器再发送data，服务器响应200（返回数据）。
+
+        这里的区别是specification（规范）层面，而不是implementation（对规范的实现）。参考[rfc2616第8.2.3部分](https://tools.ietf.org/html/rfc2616#section-8.2.3)
 
 6. 处理HTTP相应
 

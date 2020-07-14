@@ -1,5 +1,5 @@
 ---
-title: '渲染流程：解析与阻塞'
+title: '渲染流程：解析'
 date: '2020-6-1'
 sidebarDepth: 3
 ---
@@ -83,9 +83,25 @@ sidebarDepth: 3
 
 3. 计算出`DOM树`中每个节点的具体样式
 
-    ![样式计算](../../../.imgs/browser-css-recalculate-style.png)
+    ![样式计算](./imgs/browser-css-recalculate-style.png)
 
 - 样式计算阶段的目的：计算出DOM节点中每个元素的具体样式，并遵守`CSS`的**继承**和**层叠**两个规则。
 - 该阶段最终输出的内容是每个DOM节点的样式，并被保存在`ComputedStyle`结构内；打开Chrome的“开发者工具”，如下图所示（图示红框中即`/html/body/p`标签的`ComputedStyle`的值）：
 
     ![Chrome-devTool-element-computed](../../../.imgs/browser-chrome-devTool-element-computed.png)
+
+### 布局阶段（Layout）
+
+- 从`DOM树`根节点递归调用，计算每一个元素的大小、几何位置等，给每个节点所应该出现在屏幕上的精确坐标，
+这个过程即`布局`。
+- Chrome在布局阶段需要完成两个任务：`创建布局树`和`布局计算`。
+
+1. 创建布局树
+
+    在显示之前，依据前文中的`DOM树`和`ComputedStyle`，将额外地构建一棵只包含`可见元素布局树`。
+
+    即：**深度优先遍历`DOM树`中的所有可见节点，并把这些节点加到布局树中**。
+
+    ![布局树示意](./imgs/browser-layout-tree.png)
+
+2. 布局计算
