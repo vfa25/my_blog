@@ -40,7 +40,9 @@ deploy:
     
     ssh_options: StrictHostKeyChecking=no
     pre-deploy: git fetch --all
-    post-deploy: cnpm install && npm run build
+    # post-deploy: cnpm install && npm run build
+    # CPU积分耗尽，优化发布
+    post-deploy: rm -rf ./dist && unzip -o ./dist.zip -d .
     env:
       NODE_ENV: production
 ```
