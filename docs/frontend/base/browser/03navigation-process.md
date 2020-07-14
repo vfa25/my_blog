@@ -48,20 +48,14 @@ date: '2020-3-24'
     GET /index.html HTTP1.1
     ```
 
-    - 在浏览器发送请求行命令之后，还要以请求头（另如POST、还有请求体）形式发送一些其他信息。
+    - 浏览器除发送请求行命令，还要以请求头（另如POST、还有请求体）形式发送一些其他信息。
     ![请求头](../../../.imgs/http-request-header.png)
-    - get和post的区别
 
-        get和post虽然本质都是tcp/ip，但两者除了在http层面外，在tcp/ip层面也有区别。
+    这里分别截取了POST请求、和GET请求的抓包。二者均是一次HTTP请求发送了这个整体
 
-        get会产生一个tcp数据包，post两个
+    ![POST请求抓包截图](../../../.imgs/browser-post-request.png)<center>POST请求截图</center>
 
-        具体就是：
-
-        - get请求时，浏览器会把headers和data一起发送出去，服务器响应200（返回数据）。
-        - post请求时，浏览器先发送headers，服务器响应100 continue，浏览器再发送data，服务器响应200（返回数据）。
-
-        这里的区别是specification（规范）层面，而不是implementation（对规范的实现）。参考[rfc2616第8.2.3部分](https://tools.ietf.org/html/rfc2616#section-8.2.3)
+    ![GET请求抓包截图](../../../.imgs/browser-get-request.png)<center>GET请求截图</center>
 
 6. 处理HTTP相应
 

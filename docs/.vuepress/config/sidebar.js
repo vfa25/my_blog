@@ -56,13 +56,13 @@ const frontendBase = [
     ]
   }
 ];
-const reactList = [
+const originCodeList = [
   ['', '首页'],
   {
-    title: '基础',
-    collapsable: true,
+    title: 'React',
+    // collapsable: true,
     children: [
-      'base/reactAPI',
+      'react/update',
     ]
   },
 ];
@@ -211,7 +211,7 @@ const algorithmVisualization = [
 module.exports = {
   '/frontend/base/': frontendBase,
   '/frontend/other/': frontendOther,
-  '/frontend/react/': reactList,
+  '/frontend/origin-code/': originCodeList,
   '/backend/node/': nodeList,
   '/backend/python/': pythonList,
   '/backend/linux/': linuxList,

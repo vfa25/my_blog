@@ -14,7 +14,7 @@ module.exports = {
       text: '偏前端',
       items: [
         { text: '日常总结', link: '/frontend/base/' },
-        // { text: 'React源码笔记', link: '/frontend/react/' },
+        { text: '源码笔记', link: '/frontend/origin-code/' },
         { text: '前端杂谈', link: '/frontend/other/' }
       ]
     },

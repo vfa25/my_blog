@@ -121,7 +121,10 @@ title: 'Python基础'
   
   `Python3`中所有字符已经全内置为unicode了。
 
-## 函数的多态
+## 特性
 
-- [Design Pattern: Not Just Mixin Pattern](http://www.cnblogs.com/fsjohnhuang/p/4634039.html)
-- [关于python中多态的理解](https://www.cnblogs.com/opw3n/p/8035297.html)
+- 多继承与菱形问题
+  - super的调用顺序之[MRO算法](https://blog.csdn.net/paopaohll/article/details/83058300)
+  - [Design Pattern: Not Just Mixin Pattern](http://www.cnblogs.com/fsjohnhuang/p/4634039.html)
+- 多态
+  - [关于python中多态的理解](https://www.cnblogs.com/opw3n/p/8035297.html)
