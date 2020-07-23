@@ -9,6 +9,7 @@ date: '2019-12-22'
 若大量请求只请求html，我们要绕过因之的反爬策略；那么通过`selenium`或`phantomjs`完全模拟浏览器操作可以满足爬虫需求。
 
 - [Chrome驱动下载](http://chromedriver.storage.googleapis.com/index.html)
+- [WebDriver API](https://selenium-python.readthedocs.io/api.html?highlight=execute_script#)
 
   <details>
   <summary>selenium模拟登陆知乎接口异常——解决方案</summary>
