@@ -2,9 +2,9 @@ const frontendBase = [
   ['', 'Introduction'],
   {
     title: 'JS',
-    collapsable: true,
+    collapsable: false,
     children: [
-      'js/parse',
+      'js/execution',
       'js/module',
     ]
   },
@@ -21,6 +21,7 @@ const frontendBase = [
   },
   {
     title: 'ReactNative',
+    collapsable: true,
     children: [
       'react-native/hybrid',
       'react-native/push',
@@ -30,7 +31,6 @@ const frontendBase = [
     title: '前端性能优化',
     collapsable: true,
     children: [
-      'optimize/nav',
       'optimize/image',
     ]
   },

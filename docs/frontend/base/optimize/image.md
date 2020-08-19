@@ -122,3 +122,9 @@ date: '2020-01-20'
 - Web Font代替图片（阿里巴巴矢量图标库）
 - 使用Data URI代理图片（loader插件`url-loader`）
 - 采用 Image spriting（雪碧图）（loader插件`webpack-spritesmith`）
+
+## Reference
+
+- [从输入URL到页面加载的过程？如何由一道题完善自己的前端知识体系！](https://juejin.im/post/5aa5cb846fb9a028e25d2fb1)
+- [前端全链路性能优化实战（极客时间）](https://time.geekbang.org/course/detail/257-171522)
+- [前端性能优化原理与实践（掘金小册）](https://juejin.im/book/5b936540f265da0a9624b04b/section/5b936540f265da0aec223b5d)
