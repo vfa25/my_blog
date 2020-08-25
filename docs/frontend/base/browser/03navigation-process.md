@@ -93,3 +93,14 @@ date: '2020-3-24'
 7. 页面渲染
 
     <font color=red>Render进程</font>通过和<font color=red>NetWork进程</font>的数据通道，开始进行页面解析和子资源的加载，并在`window.loading`事件后，通知<font color=red>Browser进程</font>页面加载完成，后者接收到消息后，会停止标签图标上的loading动画。
+
+## Reference
+
+- [HTML、CSS和JavaScript，是如何变成页面的？（极客时间小册）](https://time.geekbang.org/column/article/118826)
+- [How browsers work（汉译）](https://www.cnblogs.com/lhb25/p/how-browsers-work.html)、[How browsers work（英文版）](http://taligarsiel.com/Projects/howbrowserswork1.htm)
+- [从输入URL到页面加载的过程？如何由一道题完善自己的前端知识体系！](https://juejin.im/post/5aa5cb846fb9a028e25d2fb1)
+- [浏览器的渲染原理简介（CoolShell）](https://coolshell.cn/articles/9666.html)
+- [从浏览器多进程到JS单线程，JS运行机制最全面的一次梳理](https://juejin.im/post/5a6547d0f265da3e283a1df7)
+- [知己知彼——解锁浏览器背后的运行机制](https://juejin.im/book/5b936540f265da0a9624b04b/section/5bac3a4df265da0aa81c043c)
+- [从 V8 中看 JS 性能优化](https://juejin.im/book/5bdc715fe51d454e755f75ef/section/5bdc72cbe51d450540286a9d)
+- [说说标准——CSS中非常重要的可视化格式模型(visual formatting model)简介](https://bbs.csdn.net/topics/340204423)

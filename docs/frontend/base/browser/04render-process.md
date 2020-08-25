@@ -156,9 +156,9 @@ DOM到屏幕，从概念上讲分为：
 
 在该图中，`区域1`就是`document`的绘制列表，拖动`区域2`中的进度条可以重现列表的绘制过程。
 
-### 栅格化（raster）操作
-
 `绘制列表`只是用来记录`绘制顺序`和`绘制指令`的列表，而实际上绘制操作是由渲染引擎中的`合成线程`来完成的。
+
+### 栅格化（raster）操作
 
 下面开始执行图层合成（Layer Compositor）。
 
@@ -243,5 +243,5 @@ DOM到屏幕，从概念上讲分为：
 
 ## Reference
 
-- [HTML、CSS和JavaScript，是如何变成页面的？](https://time.geekbang.org/column/article/118826)
+- [HTML、CSS和JavaScript，是如何变成页面的？（极客时间小册）](https://time.geekbang.org/column/article/118826)
 - [Accelerated Rendering in Chrome](https://www.html5rocks.com/zh/tutorials/speed/layers/)

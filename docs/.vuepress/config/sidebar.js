@@ -4,7 +4,8 @@ const frontendBase = [
     title: 'JS',
     collapsable: false,
     children: [
-      'js/execution',
+      'js/life-cycle',
+      'js/execution-rule',
       'js/module',
     ]
   },
@@ -12,11 +13,11 @@ const frontendBase = [
     title: '浏览器工作原理（Chrome）',
     collapsable: true,
     children: [
-      'browser/01nav',
       'browser/02multi-process',
       'browser/03navigation-process',
       'browser/04render-process',
       'browser/05render-block',
+      'browser/06event-loop',
     ]
   },
   {
