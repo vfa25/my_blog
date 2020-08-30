@@ -555,3 +555,61 @@ class MyNotificationManager {
 }
 
 ```
+
+- 当点击通知时，`MainActivity`类如何接收`Intent`。
+  - 一是创建时，即`onCreate`方法，通过系统方法`getIntent`获得；表示该`Activity`是通过哪个`Intent`触发而被创建。
+  - 二是`onNewIntent`方法。
+- 并`sendBroadcast`方法广播出去，待`PnModule`的广播私有类接收，再传递给JS层。
+- JS层在拿到负载数据后，执行JS路由跳转等操作。
+
+```java
+package com.mydemo.console;
+
+import android.content.Intent;
+import android.os.Bundle;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
+import com.facebook.react.ReactActivity;
+
+public class MainActivity extends ReactActivity {
+    /**
+     * Returns the name of the main component registered from JavaScript.
+     * This is used to schedule rendering of the component.
+     */
+    @Override
+    protected String getMainComponentName() {
+        return "MyDemoConsole";
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        handleIntent(getIntent());
+    }
+
+    @Override
+    public void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+
+        handleIntent(intent);
+    }
+
+    private void handleIntent(Intent intent) {
+        if (intent != null) {
+            String action = intent.getAction();
+            String pkgName = getPackageName();
+            if (action != null && action.equals(pkgName + ".MESSAGE_CLICKED")) {
+                int id = intent.getIntExtra("id", 0);
+                Intent it = new Intent(getApplicationContext(), PnModule.class);
+                it.setAction(PnReceiver.ACTION_MESSAGE_CLICKED);
+                it.setPackage(pkgName);
+                it.putExtra(PnReceiver.ACTION_DATA, id);
+                it.putExtra("target", intent.getStringExtra("target"));
+                LocalBroadcastManager.getInstance(this).sendBroadcast(it);
+            }
+        }
+    }
+}
+
+```

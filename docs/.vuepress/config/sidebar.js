@@ -57,9 +57,10 @@ const originCodeList = [
   ['', '首页'],
   {
     title: 'React',
-    // collapsable: true,
+    collapsable: true,
     children: [
       'react/update',
+      'react/data-structure'
     ]
   },
   {
