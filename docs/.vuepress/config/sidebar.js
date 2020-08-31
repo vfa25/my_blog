@@ -2,7 +2,7 @@ const frontendBase = [
   ['', 'Introduction'],
   {
     title: 'JS',
-    collapsable: false,
+    collapsable: true,
     children: [
       'js/life-cycle',
       'js/execution-rule',

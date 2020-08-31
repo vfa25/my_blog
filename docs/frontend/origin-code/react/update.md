@@ -6,9 +6,15 @@ sidebarDepth: 3
 
 > 本章基于react v16.13.1；并忽略断言、DEV环境代码，仅保留核心逻辑。
 
-## 我理解的Fiber
+## Fiber是什么
 
-Fiber是什么，个人认为类似于DOM，首先能通过树结构保存节点信息、以之作为渲染依据，同时暴露API来访问或修改自身结构。
+`Fiber`算法的全称是`Fiber reconciler`。
+
+已知`async/await`就是`协程(coroutine)`模式。参考了知乎的一篇文章[协程和纤程的区别？](https://www.zhihu.com/question/23955356)，或认为差别是每个`Fiber(纤程)`拥有自己的完整stack，而协程是共用线程的stack。
+
+我权且将`Fiber`和协程关联起来，本质就是在执行算法的过程中让出主线程。这样就解决了diff函数占用主线程时间过久，导致其他任务的等待，造成页面卡顿。
+
+**双缓存**模式，虚拟DOM`Fiber`被看作是DOM的一个buffer，在完成一次完整的操作之后，再把结果应用到DOM上。
 
 ## ReactDom.render入口
 

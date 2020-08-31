@@ -1,12 +1,14 @@
 ---
-title: '地址栏回车-导航流程'
+title: '从输入URL到页面加载完成的过程中都发生了什么事情'
 date: '2020-3-24'
 ---
 
-地址栏输入地址回车后，浏览器做了什么？（本章仅关注前端向，[本题的原始出处指路☞](http://fex.baidu.com/blog/2014/05/what-happen/)）
+## 导航流程
 
-> 注：图示，`关键事件节点`可通过`window.performance.timing`API查看或打开控制台`Performance -> Event Log`更具象。
+>本篇仅关注前端向，[☞本题的原始出处请跳转](http://fex.baidu.com/blog/2014/05/what-happen/)
+
 ![performance.timing](../../../.imgs/performance-timing.png)
+<center>关键事件节点API——window.performance.timing</center>
 
 1. 解析地址栏
     - <font color=red>Browser浏览器进程（主控进程）</font>处理用户输入，开始解析URL，组装协议。
@@ -16,13 +18,14 @@ date: '2020-3-24'
     - **导航（即用户发出URL请求到页面开始解析的整个过程）** 开始（`navigationStart`）；
     ![navigationStart](../../../.imgs/browser-navigation-start.png)
 
-        - 在表现上，标签页的图标便进入了Loading状态。
-        - 页面显示依然是之前打开的页面内容，因为要到`提交文档`阶段，<font color=red>Browser进程</font>才会移除旧的页面内容。
+				- 在表现上，标签页的图标便进入了Loading状态。
+				- 页面显示依然是之前打开的页面内容；因为要到`提交文档`阶段，<font color=red>Browser进程</font>才会移除旧的页面内容。
     - <font color=red>Browser进程</font>随即通过IPC（Inter-Process Communication）将该URL发给<font color=red>NetWork网络进程</font>；
-    - `Redirect`跳转节点（`redirectStart`、`redirectEnd`），即若资源被`301永久性转移`、`302暂时性转移`（***注意，这个时间节点应是被重定向后的第二次发起URL请求时候，在下文详述***）。
+    - `Redirect`跳转节点（`redirectStart`、`redirectEnd`），即若资源被`301永久性转移`或`302暂时性转移`（***注意：redirectStart、redirectEnd的时间节点是收到服务端的响应请求后，被Redirect后的第二次发起URL请求时候，若未曾重定向则值均为0***）。
 2. 查找缓存（App cache）
 
-    - 在真正发起网络请求之前，<font color=red>NetWork进程</font>会查找[浏览器缓存（本站跳转）](../internet/http-cache.html#http缓存)是否缓存了该资源。如果有缓存资源，那么直接返回资源给<font color=red>Browser进程</font>。
+    - 在真正发起网络请求之前，<font color=red>NetWork进程</font>会查找[浏览器缓存（本站跳转）](../internet/http-cache.html#http缓存)
+		是否缓存了该资源。如果有缓存资源，那么直接返回资源给<font color=red>Browser进程</font>。
     - 若缓存中没有找到资源，那么直接进入网络请求流程（`fetchStart`）。
 3. DNS查询得到IP
 
@@ -93,6 +96,27 @@ date: '2020-3-24'
 7. 页面渲染
 
     <font color=red>Render进程</font>通过和<font color=red>NetWork进程</font>的数据通道，开始进行页面解析和子资源的加载，并在`window.loading`事件后，通知<font color=red>Browser进程</font>页面加载完成，后者接收到消息后，会停止标签图标上的loading动画。
+
+## DevTools-Network-Timing面板
+
+![DevTools-Network-Timing面板示意图](./imgs/browser-devtools-network-timing.png)
+<center>单个文件的时间线</center>
+
+- **Resource Scheduling**
+  - **Queuing**：未立即执行的排队时间
+    - 优先级。如CSS、HTML、JS等页面中的核心文件，优先级最高；而图片、视频、音频等优先级较低。通常当后者遇到前者时，就需进入排队状态。
+    - TCP连接数限制。同一域名的TCP连接数默认最多6个，若在请求时均被占用，则需进入排队状态。
+    - 待网络进程为”前面的HTTP请求“数据分配磁盘空间结束。
+- **Connection Start**：进入发起连接的状态
+  - **Stalled**：停滞
+  - **Proxy negotiation**：代理协商阶段，即代理服务器连接协商所用的时间
+  - **DNS Lookup**：DNS查找阶段
+  - **Initial connection**：与服务器建立连接的阶段，包括且不仅于建立TCP连接所花费的时间（传输层）。
+  - **SSL**：HTTPS协议的SSL握手时间（应用层），以协商加密信息。
+- **Request/Response**：连接建立完毕，网络进程准备请求数据，将发送给服务端
+  - **Request sent**：将浏览器缓冲区的数据发送出去即可，并不需判断服务器是否接收到了。通常该阶段非常快，时间不到1毫秒。
+  - **Waiting(TTFB)**：即`第一字节时间`，是指数据发送出去后，接收服务器第一个字节的数据的等待时间。故TTFB是反映服务端响应速度的重要指标。
+  - **Content Download**：即从第一字节到全部响应数据的接收，所用的时间。
 
 ## Reference
 
