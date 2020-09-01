@@ -3,21 +3,19 @@ title: '前端模块化'
 sidebarDepth: 3
 ---
 
-重点关注`CommonJS模块规范`和`ESModule`。其余如`AMD`和`CMD`，因`Webpack`，俱往矣（虽然因异步加载，Webpack支持这些语法并转化）。
+重点关注`CommonJS模块规范`和`ESModule`。其余如`AMD`和`CMD`，由于`Webpack`的垄断，俱往矣（不过由于异步加载的优势，Webpack支持这些语法并转化）。
 
 ## CommonJS
 
-### `exports`和`module.exports`的区别
+### NodeJS源码看按值拷贝以及exports与module.exports的区别
 
-结论：**module.exports才是真正的模块导出接口**。只不过默认情况下，变量`exports`与其指向了同一块内存。
+先说结论：**module.exports才是真正的模块导出API**。只不过默认情况下，变量`exports`与其指向了同一块内存。
 
-- 若只对module.exports重新赋值，那么二者分别指向了不同内存。对于引用者caller来说，写（词法）在赋值时，前面的所有exports.xxx将被覆盖。
+若仅且对`module.exports`的重新赋值，对于引用者caller来说，此前种种对`exports`的属性修改都是无意义的。因为 `exports`和`module.exports`二者已然分别指向了不同内存。
 
 那么，开发者应该知道什么情况下可以修改这二者的引用。
 
-来一探这部分的nodejs源码吧（node-v10.16.3）
-
-JS源码部分在/lib/internal/modules/cjs/loader.js，以下仅保留关键逻辑。
+NodeJS（v10.16.3）JS源码部分在[/lib/internal/modules/cjs/loader.js(Github)](https://github.com/nodejs/node/blob/v10.x/lib/internal/modules/cjs/loader.js)。
 
 ```js
 // module构造器
@@ -93,6 +91,7 @@ Module._extensions['.js'] = function(module, filename) {
 JS解析，核心逻辑登场
 
 ```js
+const vm = require('vm');
 const { compileFunction } = internalBinding('contextify');
 // Run the file contents in the correct scope or sandbox. Expose
 // the correct helper variables (require, module, exports) to
@@ -103,18 +102,18 @@ Module.prototype._compile = function(content, filename) {
   let compiledWrapper;
   // 全局变量patched是根据是否有改写wrapper包裹函数，一般不会改写，即此处为false，那么这个判断会进入else逻辑，
   // 不过，compileFunction函数是C++暴露的接口！--https://github.com/nodejs/node/blob/master/src/node_contextify.h
-  // 所以转而直接看if逻辑，wrap辅助函数索性直接注释在这里了
+  // 为方便分析，暂且进入该处的if逻辑。
   if (patched) {
-    // let wrap = function(script) {
-    //   return Module.wrapper[0] + script + Module.wrapper[1];
-    // };
-
-    // const wrapper = [
-    //   '(function (exports, require, module, __filename, __dirname) { ',
-    //   '\n});'
-    // ];
-
     // nodejs在加载用户自定义模块文件时，会将后者包裹在一个函数字符串里，并在vm.runInThisContext时执行
+    /**
+     *let wrap = function(script) {
+        return Module.wrapper[0] + script + Module.wrapper[1];
+      };
+      const wrapper = [
+        '(function (exports, require, module, __filename, __dirname) { ',
+        '\n});'
+      ];
+    */
     const wrapper = Module.wrap(content);
     compiledWrapper = vm.runInThisContext(wrapper, {
       filename,
@@ -144,6 +143,7 @@ Module.prototype._compile = function(content, filename) {
         '__dirname',
       ]
     );
+  }
   var dirname = path.dirname(filename);
   // 带有上下文的require，该辅助函数在下文
   var require = makeRequireFunction(this);
@@ -155,13 +155,8 @@ Module.prototype._compile = function(content, filename) {
 };
 ```
 
-根据Module.prototype._compile，可知
-
-- 模块文件在载入时，其实是被wrap函数包裹了一下。
-- compiledWrapper.call时，变量exports默认与module.exports指向同一内存，若前者更改指向且后者未显式赋值，则无法正常导出数据。
-- 模块文件在载入时会缓存，因此不会多次重复载入。
-- module.exports是字符串转对象，即所谓的按值拷贝；在构造器中，module.exports = {}，
-即导出总是指向一块内存，若在不同文件中修改其导出值，是会互相影响的。
+<details>
+<summary>makeRequireFunction辅助函数</summary>
 
 ```js
 // 辅助函数：带有上下文的require
@@ -204,43 +199,21 @@ function makeRequireFunction(mod) {
 }
 ```
 
-### module.exports的循环引用问题
+</details>
 
-来看一下这个[issues](https://github.com/nodejs/node/issues/2923)。
+根据Module.prototype._compile，可得出以下结论。
 
-根据[Node文档/Cycles](https://nodejs.org/api/modules.html#modules_cycles)描述中，提及的**unfinished copy**。
+- 模块文件在载入时，整个文件代码、其实是被wrap函数包裹了一下，前者成为后者的函数体。这也是可以直接访问`module.exports`和`exports`的原因。
+- compiledWrapper函数，形参exports与形参module的exports属性默认指向同一内存。若业务代码里，前者更改指向且后者未显式赋值，则无法正常导出数据。
+- 模块文件在载入时会缓存（`Module._cache[filename] = module;`），因此不会多次重复载入。
+- **按值拷贝**。
+  - 对Module的实例化module.exports = {}，该值作为实参传入compiledWrapper，并在后者的函数体里添加了前者的属性并进行赋值。
+  - 对于基本类型来说，赋值即值拷贝；对于引用类型来说，赋值即值引用。所以`CommonJS规范的模块化`的导出，应当认为是一种浅拷贝。
+  - 即假如导出的属性为基本类型，模块内部的变化不会影响到该导出值。
 
-那么，当index.js加载Test.js时，Test.js依次加载Test2.js。这时，Test2.js试图加载Test.js。
-为了防止无限循环，将Test.js导出对象的`unfinished copy(未完成拷贝)`（该例中，即`{}`）返回给Test2.js模块。
-然后Test2.js完成加载，并将其导出对象提供给Test.js模块。
+### 从Webpack打包看按值拷贝
 
-**注：`module.exports.oneFunction`与`exports.oneFunction`完全等价。**
-
-```js
-// index.js文件：
-var test = require('./Test');
-test.oneFunction(' from index ');
-
-// Test.js文件：
-var two = require('./Test2');
-module.exports.oneFunction = function(from) {
-    two.twoFunction(' one ');
-    console.log('function two from '+from);
-}
-
-// Test2.js文件：
-var one = require('./Test');
-/* 此时，one依然是个空对象 */
-module.exports.twoFunction = function(from) {
-    /* 函数调用时，one已然不是空对象了 */
-    one.oneFunction(' two ');
-    console.log('function one from '+from);
-};
-```
-
-### 为什么说CommonJS模块是按值拷贝
-
-现象：依赖于同一模块，其中一个的数据更改，会影响其他模块，好像并非值拷贝吖。
+问题现象：依赖于同一模块，其中一个的数据更改，会影响其他模块，好像并非值拷贝吖？
 
 ```js
 // a.js
@@ -353,8 +326,44 @@ module.exports = {
   - 模块导出的本质：是对标记①处，`新创建的module.exports对象的属性`进行了`赋值`。
   - `module.exports`和`exports`，仅在前者未被业务逻辑重新赋值时，指向同一内存（标记②处）。
 - 引申：
-  - 在语义上，这种纷纷为导出对象属性赋值的方式，可以看做`对module.exports各属性的浅拷贝`。
+  - 为导出对象属性`module.exports`赋值（对于基本类型来说，赋值即值拷贝；对于引用类型来说，赋值即值引用），可以看做`对module.exports各属性的浅拷贝`。
   - 引用者（caller）对导入对象的属性修改，会影响到原模块（callee）本身的`module.exports`对象，二者根本就是一块内存，但是变量`exports`未必。
+
+### module.exports的循环引用问题
+
+来看一下这个[issues](https://github.com/nodejs/node/issues/2923)。
+
+根据[Node文档/Cycles](https://nodejs.org/api/modules.html#modules_cycles)描述中，提及的**unfinished copy**。
+
+那么，当index.js加载Test.js时，Test.js依次加载Test2.js。这时，Test2.js试图加载Test.js。
+为了防止无限循环，将Test.js导出对象的`unfinished copy(未完成拷贝)`（该例中，即`{}`）返回给Test2.js模块。
+然后Test2.js完成加载，并将其`exports`对象提供给Test.js模块。
+
+注意：是**exports**，而不是`module.exports`！
+
+所以这样写，就不会报`TypeError: test.oneFunction is not a function`了，而是期望的`RangeError: Maximum call stack size exceeded`。
+
+```js
+// index.js文件：
+var test = require('./Test');
+test.oneFunction(' from index ');
+
+// Test.js文件：
+var two = require('./Test2');
+module.exports.oneFunction = function(from) {
+    two.twoFunction(' one ');
+    console.log('function two from '+from);
+}
+
+// Test2.js文件：
+var one = require('./Test');
+/* 此时，one依然是个空对象 */
+module.exports.twoFunction = function(from) {
+    /* 函数调用时，one已然不是空对象了 */
+    one.oneFunction(' two ');
+    console.log('function one from '+from);
+};
+```
 
 ## ESModule
 
@@ -423,3 +432,4 @@ module.exports = Perosn
 ## Reference
 
 - [深入浅出 Node.js（三）：深入 Node.js 的模块机制](https://www.infoq.cn/article/nodejs-module-mechanism)
+- [如何正确证明 Commonjs 模块导出是值的拷贝，而 ES module 是值的引用？](https://www.jianshu.com/p/1cfc5673e61d)

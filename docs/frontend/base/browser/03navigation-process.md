@@ -81,7 +81,8 @@ date: '2020-3-24'
 
             渲染进程策略：`process-per-site-instance`
             - 通常情况下，打开新的页面都会使用单独的渲染进程；
-            - 但如果从A页面打开B页面，且A和B都属于**同一站点（same-site，相同的协议名和根域名）**，那么B页面会复用A页面的渲染进程。
+            - 但如果从A页面打开B页面（即在同一个`浏览上下文组(browsing context group)`），且A和B都属于**同一站点（same-site，相同的协议名和根域名）**，那么B页面默认会复用A页面的渲染进程。
+            如果不希望这个默认规则，可通过设置属性`rel="noopener noreferrer"`。
         2. 提交文档
 
             即<font color=red>Browser进程</font>将<font color=red>NetWork进程</font>接收到的`响应体数据`提交给<font color=red>Render进程</font>，流程如下：
