@@ -347,11 +347,11 @@ date: '2020-8-21'
 - **默认**：创建默认消息队列，用来存放如资源加载、页面解析、JS脚本执行和定时器回调等事件。
 - **空闲**：创建一个空闲消息队列，用来存放V8的垃圾自动回收、`window.requestIdleCallback`的回调任务等实时性不高的事件。
 
-![交互阶段队列优先级示意](./imgs/browser-event-loop-priority-when-user-interaction.png)
+![交互阶段队列优先级示意](../../../.imgs/browser-event-loop-priority-when-user-interaction.png)
 
 但是这种静态优先级策略会带来新的问题：在页面加载阶段，优先执行用户交互和合成页面，会把页面的解析速度将会被拖慢。因此引入——**动态调度策略**。
 
-![动态调度策略](./imgs/browser-event-loop-priority-with-dynamic.png)
+![动态调度策略](../../../.imgs/browser-event-loop-priority-with-dynamic.png)
 
 <center>动态调度策略</center>
 

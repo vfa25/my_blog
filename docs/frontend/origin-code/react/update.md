@@ -12,7 +12,45 @@ sidebarDepth: 3
 
 已知`async/await`就是`协程(coroutine)`模式。参考了知乎的一篇文章[协程和纤程的区别？](https://www.zhihu.com/question/23955356)，或认为差别是每个`Fiber(纤程)`拥有自己的完整stack，而协程是共用线程的stack。
 
-我权且将`Fiber`和协程关联起来，本质就是在执行算法的过程中让出主线程。这样就解决了diff函数占用主线程时间过久，导致其他任务的等待，造成页面卡顿。
+<details>
+<summary>协程共用线程的调用栈应该怎么理解呢？以该代码为例。</summary>
+
+```js
+function* genDemo() {
+    console.log("开始执行第一段")
+    yield 'generator 1'
+    console.log("执行结束")
+    return 'generator 2'
+}
+console.log('main 0')
+let gen = genDemo()
+console.log(gen.next().value)
+console.log('main 1')
+console.log(gen.next().value)
+console.log('main 2')
+// main 0
+// 开始执行第一段
+// generator 1
+// main 1
+// 执行结束
+// generator 2
+// main 2
+```
+
+1. 通过调用生成器函数genDemo来创建一个协程gen，创建之后，gen协程并没有立即执行。
+2. 要让gen协程执行，需要通过调用gen.next。
+3. 当gen协程正在执行的时候，可以通过yield关键字来暂停gen协程的执行，并返回主要信息给父协程。
+4. 如果协程在执行期间，遇到了return关键字，那么会结束当前协程，并将return后面的内容返回给父协程。
+
+- 当在gen协程中调用了yield方法时，JS引擎会保存gen协程当前的调用栈信息，并恢复父协程的调用栈信息。
+- 同样，当在父协程中执行gen.next时，JS引擎会保存父协程的调用栈信息，并恢复gen协程的调用栈信息。
+
+![协程demo示意图](./imgs/react-coroutine-demo-with-call-stack.png)
+
+</details>
+
+- 这里权且将`Fiber`和协程关联起来，本质就是在执行算法的过程中让出主线程。这样就解决了diff函数占用主线程时间过久，导致其他任务的等待，造成页面卡顿。
+- Fiber如何借助`空闲时间`，参考[VSync与空闲时间（本站跳转）](../../base/browser/04render-process.html#chromium是如何保证不卡顿或丢帧的)。
 
 **双缓存**模式，虚拟DOM`Fiber`被看作是DOM的一个buffer，在完成一次完整的操作之后，再把结果应用到DOM上。
 

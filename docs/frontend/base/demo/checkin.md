@@ -25,7 +25,7 @@ Demo场景：某VPN应用每日签到领取流量。
 
 ## 效果图
 
-<img width="300" src="../../../.imgs/py-demo-checkin.jpeg" />
+<img width="300" src="../../../.imgs/demo-with-py-for-checkin.jpeg" />
 
 ## python实现
 

@@ -4,10 +4,6 @@
 
 前端开发最常用的就是Nginx配置正向代理，[这儿是一个Cookie跨域Node反向代理例子，仅学习用](http://case.vfa25.cn/cors/)。
 
-## Reference
-
-[ajax跨域，这应该是最全的解决方案了](https://segmentfault.com/a/1190000012469713#articleHeader10)
-
 ## 由来
 
 在浏览器`同源策略`下，会有如下限制：
@@ -100,3 +96,7 @@ CORS是一个W3C标准，全称是"跨域资源共享"（Cross-origin resource s
 CORS与JSONP的使用目的相同，但是比JSONP更强大。
 
 JSONP只支持GET请求，CORS支持所有类型的HTTP请求。JSONP的优势在于支持老式浏览器，以及可以向不支持CORS的网站请求数据。
+
+## Reference
+
+[ajax跨域，这应该是最全的解决方案了](https://segmentfault.com/a/1190000012469713#articleHeader10)

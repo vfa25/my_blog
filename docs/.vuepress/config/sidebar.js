@@ -51,6 +51,21 @@ const frontendBase = [
       'babel/AST',
       'babel/plugin',
     ]
+  },
+  {
+    title: '实用小例',
+    children: [
+      'demo/checkin'
+    ]
+  },
+  {
+    title: 'Web 安全',
+    children: [
+      'webSafe/xsrf',
+      'webSafe/xss',
+      'webSafe/sqlInject',
+      'webSafe/other'
+    ]
   }
 ];
 const originCodeList = [
@@ -71,25 +86,6 @@ const originCodeList = [
       // 'react-native/dispatch',
     ]
   },
-];
-const frontendOther = [
-  ['', '首页'],
-  {
-    title: '实用小例',
-    collapsable: true,
-    children: [
-      'demo/checkin'
-    ]
-  },
-  {
-    title: 'Web 安全',
-    children: [
-      'webSafe/xsrf',
-      'webSafe/xss',
-      'webSafe/sqlInject',
-      'webSafe/other'
-    ]
-  }
 ];
 const nodeList = [
   ['', '首页'],
@@ -216,7 +212,6 @@ const algorithmVisualization = [
 
 module.exports = {
   '/frontend/base/': frontendBase,
-  '/frontend/other/': frontendOther,
   '/frontend/origin-code/': originCodeList,
   '/backend/node/': nodeList,
   '/backend/python/': pythonList,

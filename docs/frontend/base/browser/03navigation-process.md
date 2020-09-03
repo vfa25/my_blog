@@ -100,7 +100,7 @@ date: '2020-3-24'
 
 ## DevTools-Network-Timing面板
 
-![DevTools-Network-Timing面板示意图](./imgs/browser-devtools-network-timing.png)
+![DevTools-Network-Timing面板示意图](../../../.imgs/browser-devtools-network-timing.png)
 <center>单个文件的时间线</center>
 
 - **Resource Scheduling**

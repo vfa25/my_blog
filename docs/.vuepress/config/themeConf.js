@@ -14,14 +14,13 @@ module.exports = {
       text: '偏前端',
       items: [
         { text: '日常总结', link: '/frontend/base/' },
-        { text: '源码笔记', link: '/frontend/origin-code/' },
-        { text: '前端杂谈', link: '/frontend/other/' }
+        { text: '源码笔记', link: '/frontend/origin-code/' }
       ]
     },
     { text: 'Server',
       items: [
         { text: 'Python3', link: '/backend/python/' },
-        { text: 'Node', link: '/backend/node/' },
+        // { text: 'Node', link: '/backend/node/' },
         { text: 'Linux', link: '/backend/linux/' }
       ]
     },
