@@ -7,6 +7,7 @@ const frontendBase = [
       'js/life-cycle',
       'js/execution-rule',
       'js/module',
+      'js/promise',
     ]
   },
   {
