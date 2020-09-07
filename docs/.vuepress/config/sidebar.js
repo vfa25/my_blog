@@ -8,6 +8,7 @@ const frontendBase = [
       'js/execution-rule',
       'js/module',
       'js/promise',
+      'js/async-await-and-coroutine'
     ]
   },
   {
@@ -73,10 +74,11 @@ const originCodeList = [
   ['', '首页'],
   {
     title: 'React',
-    collapsable: true,
+    collapsable: false,
     children: [
       'react/update',
-      'react/data-structure'
+      'react/data-structure',
+      'react/fiber-scheduler'
     ]
   },
   {

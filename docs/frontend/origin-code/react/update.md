@@ -1,6 +1,6 @@
 ---
 title: "更新流程"
-date: "2020-06-01"
+date: "2020-6-1"
 sidebarDepth: 3
 ---
 
@@ -10,49 +10,9 @@ sidebarDepth: 3
 
 `Fiber`算法的全称是`Fiber reconciler`。
 
-已知`async/await`就是`协程(coroutine)`模式。参考了知乎的一篇文章[协程和纤程的区别？](https://www.zhihu.com/question/23955356)，或认为差别是每个`Fiber(纤程)`拥有自己的完整stack，而协程是共用线程的stack。
-
-<details>
-<summary>协程共用线程的调用栈应该怎么理解呢？以该代码为例。</summary>
-
-```js
-function* genDemo() {
-    console.log("开始执行第一段")
-    yield 'generator 1'
-    console.log("执行结束")
-    return 'generator 2'
-}
-console.log('main 0')
-let gen = genDemo()
-console.log(gen.next().value)
-console.log('main 1')
-console.log(gen.next().value)
-console.log('main 2')
-// main 0
-// 开始执行第一段
-// generator 1
-// main 1
-// 执行结束
-// generator 2
-// main 2
-```
-
-1. 通过调用生成器函数genDemo来创建一个协程gen，创建之后，gen协程并没有立即执行。
-2. 要让gen协程执行，需要通过调用gen.next。
-3. 当gen协程正在执行的时候，可以通过yield关键字来暂停gen协程的执行，并返回主要信息给父协程。
-4. 如果协程在执行期间，遇到了return关键字，那么会结束当前协程，并将return后面的内容返回给父协程。
-
-- 当在gen协程中调用了yield方法时，JS引擎会保存gen协程当前的调用栈信息，并恢复父协程的调用栈信息。
-- 同样，当在父协程中执行gen.next时，JS引擎会保存父协程的调用栈信息，并恢复gen协程的调用栈信息。
-
-![协程demo示意图](./imgs/react-coroutine-demo-with-call-stack.png)
-
-</details>
-
-- 这里权且将`Fiber`和协程关联起来，本质就是在执行算法的过程中让出主线程。这样就解决了diff函数占用主线程时间过久，导致其他任务的等待，造成页面卡顿。
-- Fiber如何借助`空闲时间`，参考[VSync与空闲时间（本站跳转）](../../base/browser/04render-process.html#chromium是如何保证不卡顿或丢帧的)。
-
-**双缓存**模式，虚拟DOM`Fiber`被看作是DOM的一个buffer，在完成一次完整的操作之后，再把结果应用到DOM上。
+- 在这篇文章介绍了[JS基础-协程(coroutine)](../../base/js/async-await-and-coroutine.html)的概念，`Fiber`和协程差不多。使用`window.requestIdleCallback`，在浏览器的空闲时期，去执行回调，并且设置`deadline`，在该时间前可执行，在该时间之后，则将执行权交还给主线程，且在下一次空闲时期被强制执行。
+- `Fiber`如何借助`空闲时间`，请看[事件循环和任务队列-空闲时间](../../base/browser/06event-loop.html#chromium是如何保证不卡顿或丢帧的)。
+- **双缓存**模式，虚拟DOM`Fiber`被看作是DOM的一个buffer，在完成一次完整的操作之后，再把结果应用到DOM上。
 
 ## ReactDom.render入口
 
@@ -334,12 +294,12 @@ function FiberRootNode(containerInfo, tag, hydrate) {
 
 在`ReactDom.render`代码块中，`legacyCreateRootFromDOMContainer`方法用于返回一个对象`ReactRoot root`，该对象有两个原型方法`render`和`unmount`，一个实例属性`_internalRoot`、即`FiberRoot`实例。
 
-- 重点来了——那么什么是`FiberRoot`（数据结构👉[FiberRoot](./data-structure.html#fiberroot)）?
+- 重点来了——那么什么是`FiberRoot`（👉[React中的数据结构-FiberRoot](./data-structure.html#fiberroot)）?
   - 整个应用的起点
   - 包含应用挂载的目标DOM节点：即下文中`react-reconciler/inline.dom`的`createContainer`创建方法的第一参数`containerInfo: Container`
   - 最重要的是：记录整个应用更新过程的各种信息
 
-那么`Fiber`（数据结构👉[Fiber](./data-structure.html#fiber)）如何串联起整个应用。如下图示，其中：
+那么`Fiber`（👉[React中的数据结构-Fiber](./data-structure.html#fiber)）如何串联起整个应用。如下图示，其中：
 
 - return属性值: 指向父节点，用于对当前处理完的节点的向上返回
 - child属性值: 指向第一个子节点
@@ -383,7 +343,6 @@ export function unbatchedUpdates<A, R>(fn: (a: A) => R, a: A): R {
   try {
     return fn(a);
   } finally {
-    // 这里逻辑进不来
     executionContext = prevExecutionContext;
     if (executionContext === NoContext) {
       // Flush the immediate callbacks that were scheduled during this batch
@@ -398,7 +357,7 @@ export function unbatchedUpdates<A, R>(fn: (a: A) => R, a: A): R {
 重点来啦：`react-reconciler/inline.dom`的`updateContainer`方法。
 
 - 首先计算了个时间：`expirationTime`，即超时时间；
-- 创建`update`（数据结构👉[react-update 和 updateQueue](./data-structure.html#react-update-和-updatequeue)），用于标记应用中需要更新的节点；
+- 创建`update`（👉[React中的数据结构-react-update和updateQueue](./data-structure.html#react-update-和-updatequeue)），用于标记应用中需要更新的节点；
 - 每个Fiber节点维护一个循环链表结构的更新队列`fiber.updateQueue`，执行`update`入队；
 - 调度更新。
 
@@ -494,8 +453,9 @@ export function enqueueUpdate<State>(fiber: Fiber, update: Update<State>) {
 
 ### expirationTime
 
-即过期时间。已知React的API诸如`setState`会进行异步渲染；那么通过计算`expirationTime`设置过期时间，
-防止一些低优先级任务被一直打断而无法执行，且当到达`expirationTime`时会强制执行。
+即过期时间。那么通过计算`expirationTime`设置过期时间，防止一些低优先级任务被一直打断而无法执行，且当到达`expirationTime`时会强制执行。
+
+优先级越高，expirationTime越大。
 
 #### 1. expirationTime种类
 
@@ -707,11 +667,11 @@ export const IdlePriority = 5;
 
     该代码段中函数`computeInteractiveExpiration`和`computeAsyncExpiration`代码如下。
     - 这两个的唯一区别是传入内部函数`computeExpirationBucket`的实参是不一样的；即前者是高优先级，后者是低优先级。
-    - 来看一下`ceiling`函数
+    - 来看一下`ceiling`函数，该函数作用是对一定区间的值取ceil。
       - 第一实参`MAGIC_NUMBER_OFFSET - currentTime + expirationInMs / UNIT_SIZE`
 
         其中currentTime是计算得来的`currentTime =  MAGIC_NUMBER_OFFSET - ((ms / UNIT_SIZE) | 0);`
-        那么这个第一实参即`((now() + expirationInMs) / UNIT_SIZE) | 0`
+        那么这个第一实参即`((now() + expirationInMs) / 10) | 0`
       - 函数体`(((num / precision) | 0) + 1) * precision;`
 
         这个逻辑是用来抹平`precision`数值大小的差值，比如当`precision=25`时，对于当`100<num<124`，返回值均为`125`。这样、可以使得调用时间点较接近的两次`setState`得到相同的`expirationTime`，以便在一次更新中完成。
@@ -783,11 +743,10 @@ export const IdlePriority = 5;
 
 ## 结论
 
-React的创建方法`React.render`或组件方法`this.setState(this.updater.enqueueSetState)`的更新流程都是基于`Fiber树`，
-唯一的区别是前者基于整体的应用级，后者基于组件级。
+React的创建方法`React.render`或组件方法`this.setState(this.updater.enqueueSetState)`的更新流程都是基于`FiberRoot`（需注意的是，尽管setState只是组件方法，但实际放入调度的依然是`FiberRoot`）。
 
-1. 创建Fiber（`createFiberRoot`）或获取Fiber（`getInstance`）；
+1. 创建FiberRoot（`createFiberRoot`）或获取Fiber（`getInstance`）；
 2. 计算`expirationTime`（`computeExpirationForFiber`）；
 3. 创建`update`（`createUpdate`），添加属性或方法`update.payload = payload;`、`update.callback = callback;`；
 4. `update`入队`enqueueUpdate(fiber, update);`；
-5. 执行调度`scheduleWork(fiber, expirationTime);`。
+5. 执行调度`scheduleWork(fiber, expirationTime);`（该函数里有个while逻辑查找`FiberRoot`）。

@@ -12,7 +12,166 @@ Demo场景：某VPN应用每日签到领取流量。
 ## 案例分析
 
 1. 191202初版实现：是通过登录接口分析，在登陆成功后获取服务端响应头`set-cookie`字段，通过获取cookie并缓存，在签到接口配置请求头`cookie`字段，实现签到功能。
-    - 模仿请求头。可以将请求头`Accept-Encoding`字段去掉，否则服务端会返回gzip格式。
+
+    模仿请求头。可以将请求头`Accept-Encoding`字段去掉，否则服务端会返回gzip格式。
+
+    <details>
+    <summary>第一版（无滑动验证码）</summary>
+
+    ```py
+    import time
+    import json
+
+    import smtplib
+    from io import BytesIO
+    from PIL import Image
+    from email.mime.text import MIMEText
+    from email.mime.multipart import MIMEMultipart
+    from email.mime.image import MIMEImage
+    from selenium import webdriver
+    from selenium.webdriver.chrome.options import Options
+    import requests
+    from requests.cookies import RequestsCookieJar
+
+
+    class Checkin:
+        def __init__(self):
+            self.smtp_server = 'smtp.163.com' # smtp服务
+            self.smtp_port = 587 # SSl协议下的端口号
+            self.user = 'heermosi39@163.com' # 登录账号
+            self.pw = 'xxx' # 登录密码
+            self.sender = 'heermosi39@163.com'  # 邮件发送账号
+            self.receive = 'heermosi39@163.com' # 邮件接收账号
+            self.msg = '提示信息' # 邮件内容
+            self.send_status = 0
+
+            self.login_url = 'https://chaoxi.website/auth/login'
+            self.checkin_url = 'https://chaoxi.website/user/checkin'
+            self.login_headers = {'accept': 'application/json, text/javascript, */*; q=0.01', 'accept-language': 'zh-CN,zh;q=0.9', 'cache-control': 'no-cache', 'content-length': '0', 'content-type': 'application/x-www-form-urlencoded; charset=UTF-8', 'origin': 'https://chaoxi.website', 'pragma': 'no-cache',
+                                  'referer': 'https://chaoxi.website/auth/login', 'sec-fetch-mode': 'cors', 'sec-fetch-site': 'same-origin', 'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 'x-requested-with': 'XMLHttpRequest'}
+            self.checkin_headers = {'accept': 'application/json, text/javascript, */*; q=0.01', 'accept-language': 'zh-CN,zh;q=0.9', 'cache-control': 'no-cache', 'content-length': '0', 'origin': 'https://chaoxi.website', 'pragma': 'no-cache', 'referer': 'https://chaoxi.website/auth/login',
+                                    'sec-fetch-mode': 'cors', 'sec-fetch-site': 'same-origin', 'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 'x-requested-with': 'XMLHttpRequest'}
+
+
+        def generalDriver(self):
+            '''
+            配置Chrome选项
+            '''
+            options = Options()
+            options.add_argument('--no-sandbox')
+            options.add_argument('--headless')
+            options.add_argument('--kiosk')
+            options.add_argument('--disable-gpu')
+            options.add_argument('--disable-dev-shm-usage')
+            options.add_argument('disable-infobars')
+            options.add_argument('window-size=1366x1800')
+            options.add_argument('lang=zh_CN.UTF-8')
+            user_agent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36'
+            options.add_argument('user-agent=%s'%user_agent)
+            prefs = {
+                'profile.default_content_setting_values': {
+                    'images': 2
+                }
+            }
+            options.add_experimental_option('prefs', prefs)
+
+            # options.binary_location = "/usr/bin/google-chrome"
+            # chrome_driver_binary = '/home/xxx/test_py/chromedriver'
+            options.binary_location = "/Users/nsky/Desktop/Google Chrome.app/Contents/MacOS/Google Chrome"
+            chrome_driver_binary = './chromedriver'
+            self.driver = webdriver.Chrome(
+                executable_path=chrome_driver_binary, chrome_options=options)
+
+        def loginAndCheckin(self):
+            '''
+            登录及签到接口调用
+            '''
+            payload = {'email': self.user, 'passwd': 'xxx', 'code': ''}
+            login_res = requests.post(
+                url=self.login_url, data=payload, headers=self.login_headers)
+            cookie_jar = RequestsCookieJar()
+            resd = requests.utils.dict_from_cookiejar(login_res.cookies)
+
+            self.driver.get("https://chaoxi.website/auth/login")
+            # cookie写入
+            for key in resd:
+                self.driver.add_cookie(
+                    cookie_dict={'name': key,
+                                'value': resd[key],
+                                'domain': 'chaoxi.website'}
+                )
+                cookie_jar.set(key, resd[key], domain='chaoxi.website')
+
+            checkin_res = requests.post(
+                url=self.checkin_url, headers=self.checkin_headers, cookies=cookie_jar)
+            status = checkin_res.status_code
+            message = json.loads(checkin_res.text)['msg']
+            status_msg = '成功' if status == 200 else '失败'
+            self.msg = '接口调用{}，状态码{}，提示信息：{}'.format(status_msg, status, message)
+
+        def screen(self):
+            '''
+            截屏
+            '''
+            self.driver.execute_script('window.location.href="https://chaoxi.website/user";')
+            self.driver.maximize_window()
+            time.sleep(2)
+            try:
+                picture_url = self.driver.get_screenshot_as_png()
+                print('截图成功！！！')
+            except BaseException as msg:
+                print(msg)
+            self.driver.quit()
+            return picture_url
+
+        def setMessage(self, pic):
+            '''
+            拼接邮件的提示内容及截图附件
+            '''
+            msg = MIMEMultipart(_subtype='mixed')
+            msg['Subject'] = 'VPN签到'
+            msg['From'] = self.sender
+            msg['To'] = self.receive
+            text = MIMEText(
+                '<html><p>{}<p></html>'.format(self.msg), 'html', 'utf-8')
+            msg.attach(text)
+            pic = BytesIO(pic).getvalue()
+            img = MIMEImage(pic)
+            img['Content-Disposition'] = 'attachment; filename="detail.png"'
+            msg.attach(img)
+            return msg.as_string()
+
+        def sendEmail(self, msg):
+            '''
+            发送邮件
+            '''
+            try:
+                smtp = smtplib.SMTP_SSL(self.smtp_server, self.smtp_port)
+                smtp.ehlo()
+                smtp.login(self.user, self.pw)
+                self.send_status = smtp.sendmail(self.sender, self.receive, msg)
+                smtp.quit()
+            except BaseException as msg:
+                print(msg)
+
+
+    if __name__ == '__main__':
+        print()
+        print(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()))
+        try:
+            checkin = Checkin()
+            checkin.generalDriver()
+            checkin.loginAndCheckin()
+            frame = checkin.screen()
+            message = checkin.setMessage(frame)
+            checkin.sendEmail(message)
+            print('邮件发送成功')
+        except BaseException as msg:
+            print(msg)
+    ```
+
+    </details>
+
 2. 200510新版实现：直接selenium模拟用户登录，且增加对滑动验证码的处理，诸如：
     - 获取canvas图片
     - 像素对比，确定滑动验证码图片缺失位置的像素点
@@ -374,163 +533,6 @@ if __name__ == '__main__':
         print(msg)
 
 ```
-
-<details>
-<summary>第一版（无滑动验证码）</summary>
-
-```py
-import time
-import json
-
-import smtplib
-from io import BytesIO
-from PIL import Image
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
-from email.mime.image import MIMEImage
-from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
-import requests
-from requests.cookies import RequestsCookieJar
-
-
-class Checkin:
-    def __init__(self):
-        self.smtp_server = 'smtp.163.com' # smtp服务
-        self.smtp_port = 587 # SSl协议下的端口号
-        self.user = 'heermosi39@163.com' # 登录账号
-        self.pw = 'xxx' # 登录密码
-        self.sender = 'heermosi39@163.com'  # 邮件发送账号
-        self.receive = 'heermosi39@163.com' # 邮件接收账号
-        self.msg = '提示信息' # 邮件内容
-        self.send_status = 0
-
-        self.login_url = 'https://chaoxi.website/auth/login'
-        self.checkin_url = 'https://chaoxi.website/user/checkin'
-        self.login_headers = {'accept': 'application/json, text/javascript, */*; q=0.01', 'accept-language': 'zh-CN,zh;q=0.9', 'cache-control': 'no-cache', 'content-length': '0', 'content-type': 'application/x-www-form-urlencoded; charset=UTF-8', 'origin': 'https://chaoxi.website', 'pragma': 'no-cache',
-                              'referer': 'https://chaoxi.website/auth/login', 'sec-fetch-mode': 'cors', 'sec-fetch-site': 'same-origin', 'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 'x-requested-with': 'XMLHttpRequest'}
-        self.checkin_headers = {'accept': 'application/json, text/javascript, */*; q=0.01', 'accept-language': 'zh-CN,zh;q=0.9', 'cache-control': 'no-cache', 'content-length': '0', 'origin': 'https://chaoxi.website', 'pragma': 'no-cache', 'referer': 'https://chaoxi.website/auth/login',
-                                'sec-fetch-mode': 'cors', 'sec-fetch-site': 'same-origin', 'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 'x-requested-with': 'XMLHttpRequest'}
-
-
-    def generalDriver(self):
-        '''
-        配置Chrome选项
-        '''
-        options = Options()
-        options.add_argument('--no-sandbox')
-        options.add_argument('--headless')
-        options.add_argument('--kiosk')
-        options.add_argument('--disable-gpu')
-        options.add_argument('--disable-dev-shm-usage')
-        options.add_argument('disable-infobars')
-        options.add_argument('window-size=1366x1800')
-        options.add_argument('lang=zh_CN.UTF-8')
-        user_agent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36'
-        options.add_argument('user-agent=%s'%user_agent)
-        prefs = {
-            'profile.default_content_setting_values': {
-                'images': 2
-            }
-        }
-        options.add_experimental_option('prefs', prefs)
-
-        # options.binary_location = "/usr/bin/google-chrome"
-        # chrome_driver_binary = '/home/xxx/test_py/chromedriver'
-        options.binary_location = "/Users/nsky/Desktop/Google Chrome.app/Contents/MacOS/Google Chrome"
-        chrome_driver_binary = './chromedriver'
-        self.driver = webdriver.Chrome(
-            executable_path=chrome_driver_binary, chrome_options=options)
-
-    def loginAndCheckin(self):
-        '''
-        登录及签到接口调用
-        '''
-        payload = {'email': self.user, 'passwd': 'xxx', 'code': ''}
-        login_res = requests.post(
-            url=self.login_url, data=payload, headers=self.login_headers)
-        cookie_jar = RequestsCookieJar()
-        resd = requests.utils.dict_from_cookiejar(login_res.cookies)
-
-        self.driver.get("https://chaoxi.website/auth/login")
-        # cookie写入
-        for key in resd:
-            self.driver.add_cookie(
-                cookie_dict={'name': key,
-                             'value': resd[key],
-                             'domain': 'chaoxi.website'}
-            )
-            cookie_jar.set(key, resd[key], domain='chaoxi.website')
-
-        checkin_res = requests.post(
-            url=self.checkin_url, headers=self.checkin_headers, cookies=cookie_jar)
-        status = checkin_res.status_code
-        message = json.loads(checkin_res.text)['msg']
-        status_msg = '成功' if status == 200 else '失败'
-        self.msg = '接口调用{}，状态码{}，提示信息：{}'.format(status_msg, status, message)
-
-    def screen(self):
-        '''
-        截屏
-        '''
-        self.driver.execute_script('window.location.href="https://chaoxi.website/user";')
-        self.driver.maximize_window()
-        time.sleep(2)
-        try:
-            picture_url = self.driver.get_screenshot_as_png()
-            print('截图成功！！！')
-        except BaseException as msg:
-            print(msg)
-        self.driver.quit()
-        return picture_url
-
-    def setMessage(self, pic):
-        '''
-        拼接邮件的提示内容及截图附件
-        '''
-        msg = MIMEMultipart(_subtype='mixed')
-        msg['Subject'] = 'VPN签到'
-        msg['From'] = self.sender
-        msg['To'] = self.receive
-        text = MIMEText(
-            '<html><p>{}<p></html>'.format(self.msg), 'html', 'utf-8')
-        msg.attach(text)
-        pic = BytesIO(pic).getvalue()
-        img = MIMEImage(pic)
-        img['Content-Disposition'] = 'attachment; filename="detail.png"'
-        msg.attach(img)
-        return msg.as_string()
-
-    def sendEmail(self, msg):
-        '''
-        发送邮件
-        '''
-        try:
-            smtp = smtplib.SMTP_SSL(self.smtp_server, self.smtp_port)
-            smtp.ehlo()
-            smtp.login(self.user, self.pw)
-            self.send_status = smtp.sendmail(self.sender, self.receive, msg)
-            smtp.quit()
-        except BaseException as msg:
-            print(msg)
-
-
-if __name__ == '__main__':
-    print()
-    print(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()))
-    try:
-        checkin = Checkin()
-        checkin.generalDriver()
-        checkin.loginAndCheckin()
-        frame = checkin.screen()
-        message = checkin.setMessage(frame)
-        checkin.sendEmail(message)
-        print('邮件发送成功')
-    except BaseException as msg:
-        print(msg)
-```
-
-</details>
 
 ## Linux定时任务
 

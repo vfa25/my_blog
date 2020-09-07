@@ -1,6 +1,7 @@
 ---
-title: '手写Promise/A+'
+title: 'Promise/A+规范及手写'
 sidebarDepth: 3
+date: '2020-9-4'
 ---
 
 ## Promise出现的背景

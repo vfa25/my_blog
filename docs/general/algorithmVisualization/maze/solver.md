@@ -5,7 +5,7 @@ date: "2019-11-22"
 
 ## 图的深度优先遍历
 
-<video poster="http://q1h9i27q2.bkt.clouddn.com/maze-resolve-img.0c2b3399.png" width="100%" src="http://q1h9i27q2.bkt.clouddn.com/maze-resolve-video.mov" controls="controls" muted></video>
+<video poster="http://static.vfa25.cn/maze-resolve-img.0c2b3399.png" width="100%" src="http://static.vfa25.cn/maze-resolve-video.mov" controls="controls" muted></video>
 
 对于任意一点(x, y)
 
