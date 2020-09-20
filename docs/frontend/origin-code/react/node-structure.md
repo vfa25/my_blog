@@ -117,11 +117,14 @@ export type Fiber = {|
   // alternate versions of the tree. We put this on a single object for now to
   // minimize the number of objects created during the initial render.
 
-  // 标识不同的组件类型（23种）
+  // 标识不同的组件类型（23种）—— /packages/shared/ReactWorkTags.js
+  // 定义 fiber 的类型. 它在 reconciliation 算法中用来确定需要完成的工作.
+  // work 的种类取决于 React element 的类型.
+  // createFiberFromTypeAndProps 函数将React element 映射到相关的 fiber 节点类型.
   // Tag identifying the type of fiber.
   tag: WorkTag,
 
-  // ReactElement里面的key
+  // ReactElement里面的key，一组子元素中的唯一标识
   // Unique identifier of this child.
   key: null | string,
 
@@ -130,12 +133,13 @@ export type Fiber = {|
   // reconciliation of this child.
   elementType: any,
 
-  // 异步组件resolved之后返回的内容，一般是`function`或者`class`
+  // 相关联的 fiber 类型, 函数或是类；
+  // 对于class组件, 指向构造函数；对于DOM元素则为HTML标签名
   // The resolved function/class/ associated with this fiber.
   type: any,
 
   // 与当前Fiber相关的本地状态
-  // ClassComp的new实例、DOM组件的DOM节点、Fun Comp则为null
+  // ClassComp的new实例、DOM组件的DOM节点、Fun Comp则为null，HostFiber则为FiberRoot
   // The local state associated with this fiber.
   stateNode: any,
 
@@ -208,14 +212,13 @@ export type Fiber = {|
   // before its child fibers are created.
   mode: TypeOfMode,
 
-  // 用来记录Side Effect
+  // 用来记录Side Effect，即除了更新之外的 effects
   // Effect
   effectTag: SideEffectTag,
 
   // 单链表用来快速查找下一个side effect
   // Singly linked list fast path to the next fiber with side-effects.
   nextEffect: Fiber | null,
-
   // The first and last fiber with side-effect within this subtree. This allows
   // us to reuse a slice of the linked list when we reuse the work done within
   // this fiber.
@@ -234,7 +237,7 @@ export type Fiber = {|
   // This is used to quickly determine if a subtree has no pending changes.
   childExpirationTime: ExpirationTime,
 
-  // 在Fiber树（current）更新的过程中，每个Fiber都会有一个跟其对应的Fiber（workInProgress）
+  // 当前的fiber 和 处于工作中的fiber（workInProgress），二者的alternate分别指向彼此
   // 在渲染完成之后他们会交换位置
   // This is a pooled version of a Fiber. Every fiber that gets updated will
   // eventually have a pair. There are cases when we can clean up pairs to save

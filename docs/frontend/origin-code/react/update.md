@@ -10,8 +10,8 @@ sidebarDepth: 3
 
 `Fiber`算法的全称是`Fiber reconciler`。
 
-- 在这篇文章介绍了[JS基础-协程(coroutine)](../../base/js/async-await-and-coroutine.html)的概念，`Fiber`和协程差不多。使用`window.requestIdleCallback`，在浏览器的空闲时期，去执行回调，并且设置`deadline`，在该时间前可执行，在该时间之后，则将执行权交还给主线程，且在下一次空闲时期被强制执行。
-- `Fiber`如何借助`空闲时间`，请看[事件循环和任务队列-空闲时间](../../base/browser/06event-loop.html#chromium是如何保证不卡顿或丢帧的)。
+- 在这篇文章介绍了[JS基础-协程(coroutine)](../../base/js/async-await-and-coroutine.html)的概念，`Fiber`和协程差不多。模拟了`window.requestIdleCallback`，在浏览器的空闲时期，去执行回调，并且设置`deadline`，在该时间前可执行，在该时间之后，则将执行权交还给主线程，且在下一次空闲时期被强制执行。
+- `Fiber`如何借助`空闲时间`，请看[事件循环和任务队列-空闲时间](../../base/browser/04render-process.html#chromium是如何保证不掉帧或跳帧的)。
 - **双缓存**模式，虚拟DOM`Fiber`被看作是DOM的一个buffer，在完成一次完整的操作之后，再把结果应用到DOM上。
 
 ## ReactDom.render入口
@@ -37,11 +37,11 @@ export function render(
 }
 ```
 
-下面来看一下`legacyRenderSubtreeIntoContainer`方法，主要做了这些事
+下面来看一下`legacyRenderSubtreeIntoContainer`方法，主要做了这些事：
 
-1. 首次渲染调用`legacyCreateRootFromDOMContainer`方法，以创建`ReactRoot root`、这是react应用的root实例；
-2. 同时，后者承建了`FiberRoot`，即Fiber树的根节点；`Fiber`是React创建和更新的重要依据。
-3. 随后，同步的进行创建、调度更新`updateContainer`，同步是由于初次渲染要尽快完成。
+1. 首次渲染调用`legacyCreateRootFromDOMContainer`方法，以创建`ReactRoot root`、这是react应用的root实例。
+2. 同时，`ReactRoot`承建了`FiberRoot`，后者通过current属性保存了fiber树的引用；`Fiber`是React创建和更新的重要依据。
+3. 随后，同步的（由于初次渲染要尽快完成）进行创建、调度更新`updateContainer`。
 
 接下来，1和2步骤请看[创建ReactRoot和FiberRoot节点](#创建reactroot和fiberroot节点)，3步骤请看[创建、调度更新](#创建、调度更新)。代码如下：
 
@@ -294,12 +294,16 @@ function FiberRootNode(containerInfo, tag, hydrate) {
 
 在`ReactDom.render`代码块中，`legacyCreateRootFromDOMContainer`方法用于返回一个对象`ReactRoot root`，该对象有两个原型方法`render`和`unmount`，一个实例属性`_internalRoot`、即`FiberRoot`实例。
 
-- 重点来了——那么什么是`FiberRoot`（👉[React中的数据结构-FiberRoot](./data-structure.html#fiberroot)）?
-  - 整个应用的起点
-  - 包含应用挂载的目标DOM节点：即下文中`react-reconciler/inline.dom`的`createContainer`创建方法的第一参数`containerInfo: Container`
-  - 最重要的是：记录整个应用更新过程的各种信息
+> 可以通过`document.querySelector('#root')._reactRootContainer`或`单个组件实例compInstance._reactInternalFiber`访问到`ReactRoot`。
 
-那么`Fiber`（👉[React中的数据结构-Fiber](./data-structure.html#fiber)）如何串联起整个应用。如下图示，其中：
+- 重点来了——那么什么是`FiberRoot`（👉[React中的数据结构-FiberRoot](./node-structure.html#fiberroot)）?
+  - 整个应用的起点。`current`属性保存着`Fiber`树的引用，另外、后者的第一个节点有个特殊的类型：`HostRoot（容器元素）`；
+  - 包含应用挂载的目标DOM节点——`containerInfo`属性；
+  - 最重要的是：记录整个应用更新过程的各种信息。
+
+### Root of the fiber tree
+
+那么`Fiber`树（👉[React中的数据结构-Fiber](./node-structure.html#fiber)）如何串联起整个应用。如下图示，其中：
 
 - return属性值: 指向父节点，用于对当前处理完的节点的向上返回
 - child属性值: 指向第一个子节点
@@ -357,7 +361,7 @@ export function unbatchedUpdates<A, R>(fn: (a: A) => R, a: A): R {
 重点来啦：`react-reconciler/inline.dom`的`updateContainer`方法。
 
 - 首先计算了个时间：`expirationTime`，即超时时间；
-- 创建`update`（👉[React中的数据结构-react-update和updateQueue](./data-structure.html#react-update-和-updatequeue)），用于标记应用中需要更新的节点；
+- 创建`update`（👉[React中的数据结构-react-update和updateQueue](./node-structure.html#react-update-和-updatequeue)），用于标记应用中需要更新的节点；
 - 每个Fiber节点维护一个循环链表结构的更新队列`fiber.updateQueue`，执行`update`入队；
 - 调度更新。
 
@@ -455,7 +459,7 @@ export function enqueueUpdate<State>(fiber: Fiber, update: Update<State>) {
 
 即过期时间。那么通过计算`expirationTime`设置过期时间，防止一些低优先级任务被一直打断而无法执行，且当到达`expirationTime`时会强制执行。
 
-优先级越高，expirationTime越大。
+优先级越高，expirationTime越大。不过真正的`timeout = expirationTimeToMs(expirationTime) - now()`，即expirationTime越大，超时时间timeout越小，当然这是后话了。
 
 #### 1. expirationTime种类
 
@@ -741,7 +745,7 @@ export const IdlePriority = 5;
 
     </details>
 
-## 结论
+<!-- ## 结论
 
 React的创建方法`React.render`或组件方法`this.setState(this.updater.enqueueSetState)`的更新流程都是基于`FiberRoot`（需注意的是，尽管setState只是组件方法，但实际放入调度的依然是`FiberRoot`）。
 
@@ -749,4 +753,8 @@ React的创建方法`React.render`或组件方法`this.setState(this.updater.enq
 2. 计算`expirationTime`（`computeExpirationForFiber`）；
 3. 创建`update`（`createUpdate`），添加属性或方法`update.payload = payload;`、`update.callback = callback;`；
 4. `update`入队`enqueueUpdate(fiber, update);`；
-5. 执行调度`scheduleWork(fiber, expirationTime);`（该函数里有个while逻辑查找`FiberRoot`）。
+5. 执行调度`scheduleWork(fiber, expirationTime);`（该函数里有个while逻辑查找`FiberRoot`）。 -->
+
+## Reference
+
+- [Fiber 内部: 深入理解 React 的新 reconciliation 算法](https://zhuanlan.zhihu.com/p/59055212)

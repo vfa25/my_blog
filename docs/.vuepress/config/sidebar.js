@@ -74,11 +74,22 @@ const originCodeList = [
   ['', '首页'],
   {
     title: 'React',
-    collapsable: false,
+    collapsable: true,
     children: [
-      'react/update',
-      'react/data-structure',
-      'react/fiber-scheduler'
+      {
+        title: '理念',
+        children: [
+          'react/idea',
+        ]
+      },
+      // {
+      //   title: '源码流程',
+      //   children: [
+      //     'react/update',
+      //     'react/node-structure',
+      //     'react/fiber-scheduler'
+      //   ]
+      // }
     ]
   },
   {

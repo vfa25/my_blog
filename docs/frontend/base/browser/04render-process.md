@@ -12,7 +12,32 @@ sidebarDepth: 3
 - 现代浏览器内核一般是这四种：Trident（IE）、Gecko（火狐）、Blink（Chrome、Opera）、Webkit（Safari）。
 - Chrome内核`Blink`是基于`Webkit`衍生而来的。
 
-## 浏览器渲染过程解析
+## 一图胜千言
+
+![帧剖析示意概览](../../../.imgs/browser-anatomy-of-a-frame.png)
+
+::: warning 注
+
+该图来自于[The Anatomy of a Frame | 2016.2.15 LAST UPDATED](https://aerotwist.com/blog/the-anatomy-of-a-frame/)
+
+对于图中最后一步的`发送帧`：Chromium新的合成器架构`OOP-D（进程外Display Compositor）`，已不再由`GPU线程`完成了，而是迁移到了`Viz`进程的`VizCompositor`线程（也就是以前的GPU进程。另外，在单进程架构下，Browser进程可以兼做Viz进程）。
+
+> 该结论参考自[Chromium Viz 浅析 - 合成器架构篇](https://zhuanlan.zhihu.com/p/62076419)。
+
+:::
+
+## 参与渲染的进程与其中的线程
+
+- **渲染进程（Renderer Process）**。一般一个标签页就是一个渲染进程，渲染进程策略请看[这里](./03navigation-process.html#响应体数据解析)。
+  - **合成线程（Compositor Thread）**。这是最先被告知`垂直同步事件（vsync event，操作系统告知浏览器刷新一帧图像的信号）`的线程。它接收所有的输入事件。如果可能，合成线程会避免进入主线程，自己尝试将输入的事件（比如滚动）转换为屏幕的移动。它会更新图层的位置，并经由`GPU线程`直接向`GPU`提交帧来完成这个操作。如果输入事件需要进行处理，或者有其他的显示工作，它将无法直接完成该过程，这就需要主线程了。
+  - **主线程**。在这里浏览器执行：JS、样式、布局和绘制等。
+  - **合成图块栅格化线程（Compositor Tile Worker）**。由`合成线程`派生的包含一个或多个线程的线程池，用于调度栅格化任务，用以将分好的`图块（tiles）`传往`GPU线程`生成`位图`。
+- **GPU进程**
+  - 这是一个单一的进程，为所有标签页和浏览器周边进程服务。
+  - GPU进程包含**GPU线程**（用于合成位图）、可能存在的**VizCompositor线程**（用于显式合成，因为它也可能在`浏览器进程`里）。
+- **浏览器进程（Browser Process）**。主控进程，整个浏览器仅且有一个。
+
+## 渲染过程解析
 
 浏览器器内核拿到内容后，渲染大概可以划分成以下几个步骤：
 **构建DOM树、样式计算、布局阶段、分层、绘制、分块、光栅化和合成**。
@@ -116,6 +141,8 @@ sidebarDepth: 3
     ![布局树示意](../../../.imgs/browser-layout-tree.png)
 
 2. 布局计算
+
+    计算每个可见元素的几何信息（每个元素的位置和大小）。一般作用于整个文档，计算成本通常和DOM的大小（DOM size）成正比。
 
 ### 分层（Layers）
 
@@ -232,14 +259,12 @@ DOM到屏幕，从概念上讲分为：
 
 2. 图块栅格化
 
-    ![栅格化示意概览](../../../.imgs/browser-raster-overview.png)
-
     **栅格化即指将图块转换为位图。`合成线程`按照视口附近的图块来优先（通过raster task）生成位图。**
 
     - `合成线程`通过光栅化线程池将`图层`提交给GPU进程。且`图块`是栅格化执行的最小单位。
     - `渲染进程`维护了一个栅格化的线程池，所有的`图块栅格化`都是在线程池内，按优先级执行的。
     - GPU加速
-      - 通常，栅格化过程都会使用GPU来加速生成，即`快速栅格化`（或称`GPU栅格化`）。
+      - 通常，栅格化过程都会使用GPU（注：也可以使用CPU栅格化）来加速生成，即`快速栅格化`（或称`GPU栅格化`）。
       - 这是个跨进程通信的过程：`渲染进程`把生成位图的指令发送给`GPU进程`，在GPU中`图块`被生成为`位图`，后者保存在GPU内存中。
       - 光栅化操作执行完成后，`GPU进程`再将结果返回给`渲染进程`的`合成线程`，执行合成图层操作。
       - **纹理上传**：由于渲染进程向GPU进程的跨进程通信，从计算机内存上传到GPU内存的操作会比较慢。因此在首次显示页面内容时，先使用低质量图像作为占位，待正常分辨率的位图生成后，再替换前者。（这种逐步加载的方式也被用于前端的[图片加载优化-逐步加载](../optimize/image.html#图片加载优化-逐步加载)）
@@ -248,9 +273,42 @@ DOM到屏幕，从概念上讲分为：
 
 > 合成操作是在合成线程上完成的，故在执行合成操作时，不会影响到主线程执行。反之亦成立，如果主线程卡住了，但是CSS动画依然能执行。
 
-一旦所有图块都被光栅化，`合成线程`发送绘制图块命令`DrawQuad`，然后将各图层提交给`浏览器进程`。
+一旦所有图块都被光栅化，`合成线程`发送`DrawQuad`命令（绘制图块的命令），然后将各图层提交给`浏览器进程`。
 
 `浏览器进程`的`viz`组件，接收到`合成线程`的`DrawQuad`命令后，`浏览器进程`执行`显示合成`（Display Compositor，也就是将所有的图层合成为可以显示的页面图片），最后再将绘制在内存中的页面内容显示在屏幕上。
+
+## Chromium是如何保证不掉帧或跳帧的
+
+- 已知显示器展示图片流程
+
+  1. 发送帧：浏览器的`浏览器进程`在显示合成图片后，会将该新生成的图片提交到`显卡`（包括GPU、显存等）的`后缓冲区`。
+  2. 提交完成之后，GPU会将`后缓冲区`和`前缓冲区`互换位置；即前缓冲区变成了后缓冲区，后缓冲区变成了前缓冲区，保证了显示器每次都能读取到GPU中最新的图片。
+  3. 显示器按照一定的频率（通常为60Hz，即1/60秒）来读取显卡的`前缓冲区`，并将前缓冲区中的图像显示在显示器上。
+
+- 产生疑问
+  - 若渲染进程生成的帧速率比屏幕的刷新频率慢，这就会造成`掉帧`现象，如动画卡顿；
+  - 若渲染进程生成的帧速率比屏幕的刷新频率快，GPU所渲染的图像并非全都被显示出来，这就会造成`跳帧（或称丢帧）`现象；
+  - 就算渲染进程生成的帧速率和屏幕的刷新频率一样，由于它们是两个不同的系统，也很难同步起来，造成不连贯现象。
+- 解决之道
+  - 当显示器将一帧画面绘制完成后，并在准备读取下一帧之前，显示器会发出一个 **垂直同步信号(vertical synchronization)** 给GPU，简称 VSync。
+  - 具体的讲，当GPU接收到VSync信号后，会将VSync信号同步给浏览器进程，浏览器进程再将其同步到对应的渲染进程，渲染进程接收到VSync信号之后，就可以准备绘制新的一帧了。详细可参考[Improved vsync scheduling for Chrome on Android](https://docs.google.com/document/d/16822du6DLKDZ1vQVNWI3gDVYoSqCSezgEmWZ0arvkP8/edit)。
+
+![VSync示意图](./imgs/browser-vertical-sync-overview.png)
+
+### 空闲时间
+
+W3C关于空闲时间的介绍请看这里：[Cooperative Scheduling of Background Tasks](https://www.w3.org/TR/requestidlecallback/#idle-periods)
+
+- What
+
+  - 若从用户发出消息到完成合成操作花费的时间很少，少于16ms（即1/60s），那么从合成结束到下个VSync周期内，就是`空闲时间阶段`。
+  - 这个阶段可以进行诸如V8的垃圾回收，或者通过[window.requestIdleCallback（MDN）](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/requestIdleCallback)设置的回调任务的调用。
+
+- How充分利用空闲回调。参考自[Background Tasks API（MDN）](https://developer.mozilla.org/zh-CN/docs/Web/API/Background_Tasks_API)
+  - 对非高优先级的任务使用空闲回调。
+  - 空闲回调应尽可能不超支分配到的时间。
+  - 避免在空闲回调中改变DOM。空闲回调执行的时候，当前帧已经结束绘制了，所有布局的更新和计算也已经完成。如果你做的改变影响了布局，你可能会强制停止浏览器并重新计算，而从另一方面来看，这是不必要的。如果你的回调需要改变DOM，它应该使用`window.requestAnimationFrame()`来调度它，该API为`宏任务`，其回调会在**每一帧的开始执行**。
+  - 避免运行时间无法预测的任务。
 
 ## 结论
 
@@ -265,5 +323,6 @@ DOM到屏幕，从概念上讲分为：
 ## Reference
 
 - [HTML、CSS和JavaScript，是如何变成页面的？（极客时间小册）](https://time.geekbang.org/column/article/118826)
+- [[译] 浏览器帧原理剖析](https://juejin.im/post/6844903808762380296)
 - [任务调度：有了setTimeOut，为什么还要使用rAF？（极客时间小册）](https://time.geekbang.org/column/article/169468)
 - [Accelerated Rendering in Chrome](https://www.html5rocks.com/zh/tutorials/speed/layers/)

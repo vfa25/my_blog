@@ -5,7 +5,7 @@ date: '2020-7-13'
 
 ## Demo
 
-这是用于测试的html文件
+这是用于测试的html文件，用以测试`渲染阻塞`的必要条件。
 
 ```html
 <!DOCTYPE html>
