@@ -1,7 +1,11 @@
 # 数据结构
 
-<font color=purple size=5>I will, in fact, claim that the difference between a bad programmer and a good one is whether he considers his code or his data structures more important. Bad programmers worry about the code. Good programmers worry about data structures and their relationships.</font>
-<p style="direction: rtl;"><span><i style="color: purple;">Linus Torvalds(creator of Linux)</i></span><span>——</span></p>
+::: tip 导语
+
+I will, in fact, claim that the difference between a bad programmer and a good one is whether he considers his code or his data structures more important. Bad programmers worry about the code. Good programmers worry about data structures and their relationships.
+<p style="direction: rtl;"><span>Linus Torvalds(creator of Linux)</span><span>——</span></p>
+
+:::
 
 ## 简单的时间复杂度分析
 

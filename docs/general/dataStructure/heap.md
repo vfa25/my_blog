@@ -8,7 +8,7 @@
 
 [大顶堆实现（Java）](https://github.com/vfa25/dataStructure-algorithm/blob/master/datastructure/src/maxheap/MaxHeap.java)
 
-- 是一棵完全二叉树（即把元素顺序排列成树的形状，区别于满二叉树）。
+- 是一棵`完全二叉树`（即把元素顺序排列成树的形状，区别于`满二叉树`）。
 - 堆中某个结点的值总是不大于其父结点的值。
 
 同理，对应的可以定义`小顶堆`。
@@ -88,7 +88,7 @@ void siftDown(k) {
 
 ### Heapify
 
-将任意数组整理成堆的形状；heapify（[$O(n)$](https://www.cnblogs.com/wongyi/p/7685061.html)的时间复杂度）区别于扫描一遍数组，元素分别调用add方法$O(nlogn)$；其优点在于开始即抛弃了所有的叶子节点的可能操作。
+将任意数组整理成堆的形状；heapify（[$O(n)$](https://www.cnblogs.com/wongyi/p/7685061.html)的时间复杂度）区别于扫描一遍数组，元素分别调用add方法$O(nlogn)$；其优点在于开始即抛弃了所有的叶子结点的可能操作。
 
 思路：将给定数组视作二叉堆，随后找到最后一个`非叶子结点`，从该结点向上，循环进行`Sift Down`操作。
 至于怎么找到最后一个`非叶子结点`，只需拿到数组最后一个元素索引`i`，即可通过$\frac{i-1}{2}$求得其`父结点的索引`。

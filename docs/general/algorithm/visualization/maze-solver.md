@@ -26,7 +26,7 @@ solveMaze(x, y):
 静态迷宫绘制：维护三个二维矩阵（当然结点信息，维护私有类也行），分别为
 
 - maze：元素字符串（‘#’或‘ ’）；
-- visited：标记是否已访问（已访问节点，不再二次访问）
+- visited：标记是否已访问（已访问结点，不再二次访问）
 - path: 用于运动轨迹的渲染依据
 
 ```md
@@ -37,7 +37,6 @@ path := new boolean[W][H]
 ```
 
 走迷宫——[源码链接](https://github.com/vfa25/dataStructure-algorithm/tree/master/AlgorithmVisualization/src/mazesolver)
-
 
 ``` js
 // 动画逻辑

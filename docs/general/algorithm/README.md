@@ -1,7 +1,11 @@
 # 算法之美
 
-<font color=purple size=5>Computer programming is an art, because it applies accumulated knowledge to the world, because it requires skill and ingenuity, and especially because it produces objects of beauty. A programmer who subconsciously views himself as an artist will enjoy what he does and will do it better. </font>
-<p style="direction: rtl;"><span><i style="color: purple;">Donald Knuth</i></span><span>——</span></p>
+::: tip 导语
+
+Computer programming is an art, because it applies accumulated knowledge to the world, because it requires skill and ingenuity, and especially because it produces objects of beauty. A programmer who subconsciously views himself as an artist will enjoy what he does and will do it better.
+<p style="direction: rtl;"><span>Donald Knuth</span><span>——</span></p>
+
+:::
 
 - 常见：
 

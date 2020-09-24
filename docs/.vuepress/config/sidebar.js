@@ -179,31 +179,41 @@ const linuxList = [
 const dataStructure = [
   {
     title: '数据结构',
-    collapsable: true,
+    collapsable: false,
     children: [
       ['', 'Introduction'],
-      'array',
-      'linkedList',
-      'stack',
-      'queue',
-      'hashTable',
-      'skipList',
-      'heap',
-      'binarySearchTree',
-      'set',
-      'map',
-      'segmentTree',
-      'trie',
-      'unionFind',
-      'AVL',
-      'red-black-tree'
+      {
+        title: '基础',
+        children: [
+          'array',
+          'linkedList',
+          'skipList',
+          'stack',
+          'queue',
+          'hashTable',
+          'set',
+          'map',
+        ]
+      },
+      {
+        title: 'Tree',
+        children: [
+          'binarySearchTree',
+          'heap',
+          'segmentTree',
+          'trie',
+          'unionFind',
+          'AVL',
+          'red-black-tree'
+        ]
+      },
     ]
   },
 ];
 const algorithm = [
   {
     title: '算法',
-    collapsable: true,
+    collapsable: false,
     children: [
       ['', 'Introduction'],
       'recursion',
@@ -212,17 +222,14 @@ const algorithm = [
       'hash',
     ]
   },
-];
-const algorithmVisualization = [
-  ['', 'Introduction'],
   {
-    title: '迷宫问题',
+    title: '可视化',
     collapsable: true,
     children: [
-      'maze/solver',
+      'visualization/maze-solver',
     ]
-  },
-]
+  }
+];
 
 module.exports = {
   '/frontend/base/': frontendBase,
@@ -231,6 +238,5 @@ module.exports = {
   '/backend/python/': pythonList,
   '/backend/linux/': linuxList,
   '/general/dataStructure/': dataStructure,
-  '/general/algorithm/': algorithm,
-  '/general/algorithmVisualization/': algorithmVisualization
+  '/general/algorithm/': algorithm
 }
