@@ -80,13 +80,31 @@ const originCodeList = [
         title: '理念',
         children: [
           'react/idea',
+          'react/fiber-architecture',
+        ]
+      },
+      {
+        title: '架构',
+        children: [
+          {
+            title: 'render阶段',
+            children: [
+              'react/reconciler',
+              'react/begin-work',
+            ]
+          },
+        ]
+      },
+      {
+        title: '实现',
+        children: [
+          'react/node-structure',
         ]
       },
       // {
       //   title: '源码流程',
       //   children: [
       //     'react/update',
-      //     'react/node-structure',
       //     'react/fiber-scheduler'
       //   ]
       // }

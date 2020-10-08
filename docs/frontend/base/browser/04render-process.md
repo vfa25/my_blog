@@ -14,13 +14,15 @@ sidebarDepth: 3
 
 ## 一图胜千言
 
+图示为`帧同步`情况下、浏览器所做的工作，下文将对渲染各过程一一陈述。
+
 ![帧剖析示意概览](../../../.imgs/browser-anatomy-of-a-frame.png)
 
 ::: warning 注
 
-该图来自于[The Anatomy of a Frame | 2016.2.15 LAST UPDATED](https://aerotwist.com/blog/the-anatomy-of-a-frame/)
+该图来自于[The Anatomy of a Frame | 2016.2.15 LAST UPDATED](https://aerotwist.com/blog/the-anatomy-of-a-frame/)。
 
-对于图中最后一步的`发送帧`：Chromium新的合成器架构`OOP-D（进程外Display Compositor）`，已不再由`GPU线程`完成了，而是迁移到了`Viz`进程的`VizCompositor`线程（也就是以前的GPU进程。另外，在单进程架构下，Browser进程可以兼做Viz进程）。
+但是，对于Chromium新的合成器架构`OOP-D（进程外Display Compositor）`，图中最后一步的`发送帧`已然过时，其不再由`GPU线程`完成，而是迁移到了`Viz`进程的`VizCompositor`线程（也就是以前的GPU进程。另外，在单进程架构下，`Browser进程`可以兼做Viz进程）。
 
 > 该结论参考自[Chromium Viz 浅析 - 合成器架构篇](https://zhuanlan.zhihu.com/p/62076419)。
 
@@ -42,8 +44,7 @@ sidebarDepth: 3
 浏览器器内核拿到内容后，渲染大概可以划分成以下几个步骤：
 **构建DOM树、样式计算、布局阶段、分层、绘制、分块、光栅化和合成**。
 
-<details>
-<summary>以该Demo为例</summary>
+::: details 以该Demo为例
 
 ```html
 <!DOCTYPE html>
@@ -74,11 +75,12 @@ sidebarDepth: 3
 </html>
 ```
 
-</details>
+:::
 
-### 构建DOM树
+### 构建DOM树（Parse HTML）
 
-无论DOM或CSSOM，和React的Fiber一样，都是以树结构存储了`节点信息`，以之为渲染依据。另外一个重要的点是**为JS脚本暴露“访问及操作结构的接口”**；反之亦成立，JS API其实是修改的DOM或CSSOM。
+- 无论DOM或CSSOM，都是以树结构存储了`节点信息`，以之作为渲染依据（最终由`浏览器进程`的`viz`组件对`位图`进行`显示合成`，然后提交到`显卡`才会显示到屏幕上，当然这是后话了）。
+- 同时，**为JS脚本暴露“访问及操作结构的接口”**；反之亦成立，JS API其实是修改的DOM或CSSOM。
 
 渲染引擎中的`HTML解析器(HTMLParser)`，将HTML字节流转换为DOM结构的过程。
 
@@ -87,7 +89,7 @@ sidebarDepth: 3
 ![dom树解析图示](../../../.imgs/browser-parse-dom-tree.png)
 
 > 额外说明下Tokens阶段，HTML解析器通过维护了一个Token栈结构，通过匹配开始标签和结束标签执行进出栈操作，来计算节点之间的父子关系。
-> 渲染引擎的安全检查模块`XSSAuditor`，用来检测词法安全。在分词之后，会检测这些词元模块是否安全，比如是否引用了外部脚本、是否符合CSP规范、是否存在跨站点请求等。
+> 渲染引擎的安全检查模块`XSSAuditor`，用来检测词法安全。在分词之后，会检测这些词元模块是否安全，比如是否引用了外部脚本、是否符合[CSP规范](../webSafe/other.html#csp)、是否存在跨站点请求等。
 
 ### 样式计算（Recalculate Style）
 
@@ -267,7 +269,7 @@ DOM到屏幕，从概念上讲分为：
       - 通常，栅格化过程都会使用GPU（注：也可以使用CPU栅格化）来加速生成，即`快速栅格化`（或称`GPU栅格化`）。
       - 这是个跨进程通信的过程：`渲染进程`把生成位图的指令发送给`GPU进程`，在GPU中`图块`被生成为`位图`，后者保存在GPU内存中。
       - 光栅化操作执行完成后，`GPU进程`再将结果返回给`渲染进程`的`合成线程`，执行合成图层操作。
-      - **纹理上传**：由于渲染进程向GPU进程的跨进程通信，从计算机内存上传到GPU内存的操作会比较慢。因此在首次显示页面内容时，先使用低质量图像作为占位，待正常分辨率的位图生成后，再替换前者。（这种逐步加载的方式也被用于前端的[图片加载优化-逐步加载](../optimize/image.html#图片加载优化-逐步加载)）
+      - **纹理上传**：由于渲染进程向GPU进程的跨进程通信，从计算机内存上传到GPU内存的操作会比较慢。因此在首次显示页面内容时，先使用低质量图像作为占位，待正常分辨率的位图生成后，再替换前者。（这种逐步加载的思想也被用于前端的[图片加载优化-逐步加载](../optimize/image.html#图片加载优化-逐步加载)）
 
 ### 合成和显示
 

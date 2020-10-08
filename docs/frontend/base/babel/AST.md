@@ -5,14 +5,8 @@ date: "2019-06-23"
 
 `AST`即`Abstract Syntax Tree`，汉译为`抽象语法树`。
 
-在前端颇为常见：比如前端框架`Vue`的模版语法，就是先通过正则匹配Template字符串，再根据规则解析并构建（解析器）为`AST`，
+在前端颇为常见，比如前端框架`Vue`的模版语法，就是先通过正则匹配Template字符串，再根据规则解析并构建（解析器）为`AST`，
 后者既可以经`codegen`形成渲染函数，又可以作为下次`patch`的依据（`diff`算法）。
-
-不仅如此，稍后会更新浏览器渲染进程或JS引擎进程工作机制，基本概念请转场[浏览器的工作原理](/doc/howbrowserswork)。
-
-## Reference
-
-- [使用 Acorn 来解析 JavaScript](https://juejin.im/post/582425402e958a129926fcb4)
 
 ## parser介绍
 
@@ -187,3 +181,6 @@ function walkNode(node, callback) {
                └─ end: 22
 ```
 
+## Reference
+
+- [使用 Acorn 来解析 JavaScript](https://juejin.im/post/582425402e958a129926fcb4)

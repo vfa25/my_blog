@@ -8,12 +8,6 @@
 
 >Babel is a JavaScript compiler. [Babel官方文档](https://babeljs.io/)
 
-## Reference
-
-- [你真的会用 Babel 吗?](https://juejin.im/post/59b9ffa8f265da06710d8e89#heading-28)
-- [一口(很长的)气了解 babel](https://juejin.im/post/5c19c5e0e51d4502a232c1c6)
-<!-- - [Commonjs模块的值拷贝和ES模块的值引用](https://www.jianshu.com/p/1cfc5673e61d) -->
-
 ## Babel 编译
 
 babel 总共分为三个阶段：解析，转换，生成。
@@ -219,3 +213,8 @@ babel7 的一个重大变化，把所有 babel-* 重命名为 @babel/*，
 babel7 开始不再支持 nodejs 0.10, 0.12, 4, 5 这四个版本，相当于要求 nodejs >= 6。
 
 - 还有一些包从其他包独立出来的变化等等
+
+## Reference
+
+- [你真的会用 Babel 吗?](https://juejin.im/post/59b9ffa8f265da06710d8e89#heading-28)
+- [一口(很长的)气了解 babel](https://juejin.im/post/5c19c5e0e51d4502a232c1c6)
