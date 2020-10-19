@@ -10,22 +10,36 @@ sidebarDepth: 3
 - 二叉搜索树的每个结点的值：大于其左子树的所有结点的值；同时小于其右子树的所有结点的值。
 - 每一棵子树也是二叉搜索树。
 
+::: warning 本篇不考虑树中存在重复元素
+处理重复元素两种思路：
+
+- 一是借助链表或动态数组，把值相同的数据存储在一个结点；
+- 二是一个结点仍只存储一个数据，若在查找插入位置时，值相同，则当作大于这个结点的值来处理（即插入右子树）。
+:::
+
 ## 概念
 
 - 高度（`Height`，参考点为叶子结点）：该结点到叶子结点的最长路径（边的个数）。
 - 深度（`Depth`，参考点为根结点）：根结点到该结点所经历的边的个数。
 - 层（`Level`）：结点的深度 + 1。
 
+```md
+                     高度  深度  层
+     6                3    0    1
+   /   \
+  3     8             2    1    2
+ / \   / \
+1   5 7   9           1    2    3
+   /
+  4                   0    3    4
+```
+
 ## 原则（条件）
 
 - 具有顺序性。
 - 存储的元素必须有可比较性（在实际的软件开发中，在二叉查找树中存储的，是一个包含很多字段的对象。利用对象的某个字段作为键值来构建二叉查找树，而其他字段叫作卫星数据）。
 
-## 常见操作的时间复杂度
-
-由于一个结点最多访问两次，故访问、搜索、插入、删除，全为$O(logn)$的最好情况时间复杂度。
-
-> 本章节不考虑树中重复元素。处理重复元素两种思路：一是借助链表或动态数组，把值相同的数据存储在一个结点；二是一个结点仍只存储一个数据，若在查找插入位置时，值相同，则当作大于这个结点的值来处理。
+## 常见操作
 
 ### 插入
 
@@ -48,6 +62,40 @@ Node add(node, e) {
 }
 ```
 
+### 搜索
+
+![bstree-search](../../.imgs/bstree-search.gif)
+
+和`插入操作`类似。
+
+- 递归方式，结束条件为`匹配到结点`或`查找到null`：
+
+  ```js
+  boolean contains(node, e) {
+    if node == null then return false
+    if e == node.e then return true
+
+    if e < node.e
+      then return contains(node.left, e)
+    elseif e > node.e
+      then return contains(node.right, e)
+  }
+  ```
+
+- 迭代方式：
+
+  ```js
+  boolean contains(node, e) {
+    cur := node;
+    while cur != null do {
+      if e < cur.e then cur := cur.left;
+      elseif e > cur.e then cur := cur.right;
+      else return true;
+    }
+    return false;
+  }
+  ```
+
 ### 删除
 
 - 若待删除结点仅有左子结点或右子结点，均可以以后者直接替换前者。
@@ -60,74 +108,38 @@ Node add(node, e) {
 ![二叉搜索树删除结点示意图](../../.imgs/bstree-remove.png)
 
 ```js
+// 返回删除结点后的新的BST的根
 Node remove(node, e) {
   if node == null then return null
   if e < node.e
-    then node.left := remove(node.left, e)
+    then
+      node.left := remove(node.left, e)
+      return node
   elseif e > node. e)
-    then node.right := remove(node.right, e)
+    then
+      node.right := remove(node.right, e)
+      return node
   else
+    // 确定待删除的目标结点
+    // 不同时存在左右子结点
     if node.left == null
       then
         rightNode := node.right
         node.right := null
-        size--
         return rightNode
     elseif node.right == null
       then
         leftNode := node.left
         node.left := null
-        size--
         return leftNode
     else
-      // 关键
+      // 同时存在左右子结点
       successor := minimum(node.right)
       successor.right := removeMin(node.right)
       successor.left := node.left
 
       node.left := node.right := null
       return successor
-}
-```
-
-### 搜索
-
-![bstree-search](../../.imgs/bstree-search.gif)
-
-和`插入操作`类似。
-
-- 递归方式，结束条件为`匹配到结点`或`查找到null`，伪代码：
-
-```js
-boolean contains(node, e) {
-  if node == null then return false
-  if e == node.e then return true
-
-  if e < node.e
-    then return contains(node.left, e)
-  elseif e > node.e
-    then return contains(node.right, e)
-}
-```
-
-### 求floor值
-
-二叉搜索树有顺序性，获取floor值也变为可能。
-
-```js
-Node floor(node, e) {
-  if node == null then return null
-
-  if e == node.e
-    then return node
-  elseif e < node.e
-    then return floor(node.left, e)
-  else
-    result := floor(node.right, e)
-    if result == null
-      then return node
-    else
-      return result
 }
 ```
 
@@ -171,7 +183,7 @@ D  E F  G
 - 前序遍历
   - 最自然、常用的遍历方式。
 - 中序遍历
-  - 特点及应用场景：结果总是顺序（指升序或降序）的。
+  - 特点及应用场景：结果总是顺序（指升序或降序）的；因此，二叉搜索树也叫作二叉排序树。
 - 后序遍历
   - 特点：会先处理某个结点的左子树及右子树，再处理结点本身，是一个从叶子结点开始的过程。
   - 应用场景：为二叉搜索树释放内存。
@@ -256,3 +268,42 @@ D  E F  G
       }
   }
   ```
+
+### 求floor值
+
+二叉搜索树有顺序性，获取floor值（最接近且小于的值）也变为可能。
+
+```js
+Node floor(node, e) {
+  if node == null then return null
+
+  if e == node.e
+    then return node
+  elseif e < node.e
+    then return floor(node.left, e)
+  else
+    result := floor(node.right, e)
+    if result == null
+      then return node
+    else
+      return result
+}
+```
+
+## 时间复杂度分析
+
+- 最坏情况时间复杂度：即退化成链表，为$O(n)$。
+- 最好情况时间复杂度：即完全二叉树，为$O(logn)$。
+
+  ::: tip 完全二叉树时间复杂度分析
+  由于时间复杂度与树的高度成正比，即$O(height)$，那么对于结点总数`n`与层数`L`，满足：
+
+  ```md
+  n >= 1+2+4+8+...+2^(L-2)+1
+  n <= 1+2+4+8+...+2^(L-2)+2^(L-1)
+  ```
+
+  根据等比数列求和得，层数`L`的区间为[$O(log_2{(n+1)})$, $O(log_2{n}+1)$]，故完全二叉树的时间复杂度为$O(logn)$。
+  :::
+
+> 为了防止二叉搜索树退化成链表，因此将引入平衡二叉搜索树。后者高度接近于$O(logn)$，所以访问、搜索、插入、删除时很稳定，时间复杂度均为$O(logn)$。

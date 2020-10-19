@@ -1,4 +1,4 @@
-# 算法之美
+# 算法
 
 ::: tip 导语
 
@@ -10,6 +10,3 @@ Computer programming is an art, because it applies accumulated knowledge to the 
 - 常见：
 
   - 递归、排序、二分查找、搜索、哈希算法、贪心算法、分治算法、回溯算法、动态规划、字符串匹配算法。
-
-- 导向：
-  **来历**，**自身的特点**，**适合解决的问题**，**实际的应用场景**。

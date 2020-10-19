@@ -13,19 +13,18 @@ AVL树，是最早的自平衡二叉搜索树结构。
 
 ## AVL树出现的背景
 
-- 首先，它是基于二叉搜索树并对其进行改进，防止退化为链表，因此引入了`平衡因子`的概念。
-- AVL树在保证了每个结点的左右子树之间的高度差不大于1的同时，仍需满足二叉搜索树的特点，
-  即每个结点的左子树均应小于该结点，同理右子树均应大于该结点。
+它是基于二叉搜索树并对其进行改进，防止退化为链表，因此引入了`平衡因子`的概念。
+
+AVL树在保证绝对平衡性（即每个结点的左右子树之间的高度差不大于1）的同时，仍需满足二叉搜索树的特点（即每个结点的左子树均应小于该结点，同理右子树均应大于该结点）。
 
 ## 辅助函数
 
 - getHeight：每个node结点均应维护一个树的高度的属性
 
 ```js
-// node结点初始化时，高度属性默认为1。node.height := 1
-
 int getHeight(Node node) {
   if node == null then return 0
+  // 注：Node node结点初始化时，高度属性默认为1。node.height := 1
   return node.height
 }
 ```
@@ -98,13 +97,13 @@ boolean isBalanced(Node node) {
 
 - LL：右旋转
 
-  图示，结点y率先不满足平衡性，且新插入的结点在不平衡结点的左侧的左侧。
+  图示，`结点y`率先不满足平衡性，且新插入的`结点z`在不平衡结点的左侧的左侧。
   ![LL-before](../../.imgs/avl-ll-rotate-before.png)
 
-  - 此时结点`y`的平衡因子为2（其左子结点的平衡因子$\geq0$），需解决
-  - 同时，$T1<z<T2<x<T3<y<T4$，需维持
+  - 此时`结点y`的平衡因子为2，需解决
+  - 同时，$T1<z<T2<x<T3<y<T4$的特性，需维持
 
-  那么只需要将结点y作为结点x的右子结点，然后将结点x的原右子结点作为结点y的新左子结点即可。
+  那么只需要将`结点y`作为`结点x`的右子结点，然后将`结点x`的原右子结点作为`结点y`的新左子结点即可。
 
   ![LL-finish](../../.imgs/avl-ll-rotate-finish.png)
 
@@ -114,7 +113,7 @@ boolean isBalanced(Node node) {
     x := y.left
     tmp := x.right
 
-    // 右旋关键的两行逻辑
+    // 向右旋转
     x.right := y
     y.left := tmp
 
@@ -128,17 +127,35 @@ boolean isBalanced(Node node) {
 
 - RR：左旋转同理
 
+  ```js
+  // 对结点y进行左旋操作，返回旋转后新的根结点x
+  Node leftRotate(Node y) {
+    x := y.right
+    tmp := x.left
+
+    // 向左旋转
+    x.left := y
+    y.right := tmp
+
+    // 更新height
+    y.height = Math.max(getHeight(y.left), getHeight(y.right)) + 1
+    x.height = Math.max(getHeight(x.left), getHeight(x.right)) + 1
+
+    return x
+  }
+  ```
+
 ### LR、RL：插入的结点在不平衡结点的一侧的另一侧
 
 - LR
 
-  图示，结点y率先不满足平衡性，且新插入的结点在不平衡结点的左侧的右侧。
+  图示，`结点y`率先不满足平衡性，且新插入的`结点z`在不平衡结点的左侧的右侧。
   ![LR-before](../../.imgs/avl-lr-rotate-before.png)
 
-  - 此时结点`y`的平衡因子为2（其左子结点的平衡因子$<0$），需解决
-  - 同时，$T1<x<T2<z<T3<y<T4$，需维持
+  - 此时`结点y`的平衡因子为2，需解决
+  - 同时，$T1<x<T2<z<T3<y<T4$的特性，需维持
 
-  首先对结点x进行左旋转，转化成了LL的情况。
+  首先对`结点x`（即`y.left`）进行左旋转，转化成了LL的情况，然后按后者的情况处理即可。
   ![LR-intermediate](../../.imgs/avl-lr-rotate-intermediate.png)
   
 - RL同理
@@ -201,9 +218,10 @@ Node add(Node node, K key, V value) {
 
 维护平衡性逻辑同理于添加操作，从待删除结点向上回溯维护平衡性。
 
-但是，删除操作有个查找后继结点的操作，亦需要维护平衡性。伪代码如下。
+不过，在删除操作时，若待删除结点同时存在左右子树，此时需查找后继结点，并维护平衡性。
 
 ```js
+// - 符号为第一种实现方式，+ 符号为第二种实现方式
 Node remove(Node node, K key) {
   .../* 省略 */...
   if key == node.key and node.left != null and node.right != null
@@ -211,11 +229,10 @@ Node remove(Node node, K key) {
       // 找到后继结点，即比待删除结点大的最小结点
       successor := minimum(node.right)
       // 删除掉以node.right为根的二叉搜索树中的最小结点，返回删除结点后新的二叉搜索树的根
+-     // 第一种实现方式
 -     successor.right := removeMin(node.right)
-+     // 第一种实现方式
++     // 第二种实现方式
 +     successor.right := remove(node.right, successor.key)
-+     // 第二种实现方式，对于递归实现的辅助函数removeMin，也维护平衡性
-+     // 两种方式，出发点一致
       successor.left := node.left
 
       node.left := node.right := null
@@ -224,6 +241,16 @@ Node remove(Node node, K key) {
 + if retNode == null then return null
   return handleBalance(retNode)
 }
+
+- Node removeMin(Node node) {
+-     if node.left == null
+-       then
+-         rightNode := node.right
+-         node.right := null
+-         return rightNode
+-     node.left := removeMin(node.left)
+-     return node
+- }
 ```
 
 ## AVL树的优化
@@ -232,4 +259,6 @@ Node remove(Node node, K key) {
 
 ## AVL树的局限性
 
-平均（统计意义上）性能更优的——红黑树，二者增删改查都是$O(logn)$的时间复杂度，但红黑树的旋转操作相对更少。
+由于要维持高度平衡性，所以在动态增删时，代价较高。
+
+因此引出，统计意义上性能更优的——`红黑树`，尽管二者增删改查都是$O(logn)$的时间复杂度，但`红黑树`只做到了`近似平衡`，故而旋转操作相对更少。

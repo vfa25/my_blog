@@ -205,7 +205,7 @@ const dataStructure = [
         children: [
           'array',
           'linkedList',
-          'skipList',
+          // 'skipList',
           'stack',
           'queue',
           'hashTable',
