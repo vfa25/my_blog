@@ -64,16 +64,18 @@ type BaseFiberRootProperties = {|
   // 1. 没有提交(committed)的任务
   // 2. 没有提交的挂起任务
   // 3. 没有提交的可能被挂起的任务
+
+  // 最早的pending优先级（所有任务进来一开始都是这个状态）
   // The earliest pending expiration time that exists in the tree
   firstPendingTime: ExpirationTime,
-  // 最老和新的在提交的时候被挂起的任务
+  // 最早和最晚的 在提交的时候被 挂起（suspended） 的任务
   // The earliest suspended expiration time that exists in the tree
   firstSuspendedTime: ExpirationTime,
   // The latest suspended expiration time that exists in the tree
   lastSuspendedTime: ExpirationTime,
   // The next known expiration time after the suspended range
   nextKnownPendingLevel: ExpirationTime,
-  // 最新的通过一个Promise被resolve并且可以重新尝试的优先级
+  // 最晚的通过一个Promise被resolve并且可以重新尝试的优先级
   // The latest time at which a suspended component pinged the root to
   // render again
   lastPingedTime: ExpirationTime,

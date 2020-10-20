@@ -89,8 +89,15 @@ const originCodeList = [
           {
             title: 'render阶段',
             children: [
-              'react/reconciler',
+              'react/render-overview',
               'react/begin-work',
+              'react/complete-work',
+            ]
+          },
+          {
+            title: 'commit阶段',
+            children: [
+              'react/commit-overview',
             ]
           },
         ]
