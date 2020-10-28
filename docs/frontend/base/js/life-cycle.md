@@ -127,5 +127,5 @@ ECStack.pop();
 - [深入理解JavaScript系列（11）：执行上下文（Execution Contexts）](https://www.cnblogs.com/TomXu/archive/2012/01/13/2308101.html)
 - [编译器和解释器：V8是如何执行一段JavaScript代码的？（极客时间小册）](https://time.geekbang.org/column/article/131887)
 - [V8 是如何实现 JavaScript Hoist 的](https://blog.crimx.com/2015/03/29/javascript-hoist-under-the-hood/)
-- [从输入URL到页面加载的过程？如何由一道题完善自己的前端知识体系！](https://juejin.im/post/5aa5cb846fb9a028e25d2fb1#heading-50)
+- [从输入URL到页面加载的过程？如何由一道题完善自己的前端知识体系！](https://segmentfault.com/a/1190000013662126)
 - [重学前端（极客时间小册）](https://time.geekbang.org/column/article/77749)

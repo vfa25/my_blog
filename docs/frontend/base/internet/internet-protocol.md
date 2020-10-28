@@ -102,7 +102,7 @@ SSL握手分为[RSA算法](http://www.ruanyifeng.com/blog/2013/06/rsa_algorithm_
 
 ## Reference
 
-- [从输入URL到页面加载的过程？如何由一道题完善自己的前端知识体系！](https://juejin.im/post/5aa5cb846fb9a028e25d2fb1)
+- [从输入URL到页面加载的过程？如何由一道题完善自己的前端知识体系！](https://segmentfault.com/a/1190000013662126)
 - [SSL/TLS协议运行机制的概述](http://www.ruanyifeng.com/blog/2014/02/ssl_tls.html)
 - [图解SSL/TLS协议](http://www.ruanyifeng.com/blog/2014/09/illustration-ssl.html)
 - [HTTP/2：如何提升网络速度？（极客时间小册）](https://time.geekbang.org/column/article/148546)

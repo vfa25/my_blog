@@ -20,14 +20,7 @@ const frontendBase = [
       'browser/04render-process',
       'browser/05render-block',
       'browser/06event-loop',
-    ]
-  },
-  {
-    title: 'ReactNative',
-    collapsable: true,
-    children: [
-      'react-native/hybrid',
-      'react-native/push',
+      'browser/07-visual-formatting-model',
     ]
   },
   {
@@ -52,6 +45,14 @@ const frontendBase = [
       'babel/base',
       'babel/AST',
       'babel/plugin',
+    ]
+  },
+  {
+    title: 'ReactNative',
+    collapsable: true,
+    children: [
+      'react-native/hybrid',
+      'react-native/push',
     ]
   },
   {

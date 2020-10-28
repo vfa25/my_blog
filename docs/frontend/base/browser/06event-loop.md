@@ -398,4 +398,4 @@ sidebarDepth: 3
 - [Chromium 是如何解决队头阻塞问题的？（极客时间小册）](https://time.geekbang.org/column/article/169468)
 - [WHATWG 规范：event-loop-processing-model](https://html.spec.whatwg.org/multipage/webappapis.html#event-loop-processing-model)
 - [Cooperative Scheduling of Background Tasks（W3C）](https://www.w3.org/TR/requestidlecallback/#idle-periods)
-- [从浏览器多进程到JS单线程，JS运行机制最全面的一次梳理](https://juejin.im/post/6844903553795014663#heading-21)
+- [从浏览器多进程到JS单线程，JS运行机制最全面的一次梳理](https://segmentfault.com/a/1190000012925872)

@@ -36,5 +36,5 @@ date: '2020-3-17'
 
 ## Reference
 
-- [从浏览器多进程到JS单线程，JS运行机制最全面的一次梳理](https://juejin.im/post/6844903553795014663#heading-21)
+- [从浏览器多进程到JS单线程，JS运行机制最全面的一次梳理](https://segmentfault.com/a/1190000012925872)
 - [浏览器工作原理与实践（极客时间小册）](https://time.geekbang.org/column/article/118205)

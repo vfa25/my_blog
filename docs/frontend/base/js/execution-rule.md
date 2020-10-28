@@ -474,7 +474,7 @@ foo();
 
 - [深入理解JavaScript系列（10）：JavaScript核心（晋级高手必读篇）](https://www.cnblogs.com/TomXu/archive/2012/01/12/2308594.html)
 - [变量提升：JavaScript代码是按顺序执行的吗？（极客时间小册）](https://time.geekbang.org/column/article/119046)
-- [从输入URL到页面加载的过程？如何由一道题完善自己的前端知识体系！](https://juejin.im/post/5aa5cb846fb9a028e25d2fb1#heading-50)
+- [从输入URL到页面加载的过程？如何由一道题完善自己的前端知识体系！](https://segmentfault.com/a/1190000013662126)
 - [ECMA-262](http://dmitrysoshnikov.com/ecmascript/chapter-2-variable-object/)
 - [前端性能优化原理与实践](https://juejin.im/book/5b936540f265da0a9624b04b/section/5bac3a4df265da0aa81c043c)
 - [前端面试之道](https://juejin.im/book/5bdc715fe51d454e755f75ef/section/5bdc71fbf265da6128599324)
