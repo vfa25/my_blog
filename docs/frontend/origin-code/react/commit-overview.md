@@ -16,7 +16,7 @@ date: "2020-10-14"
 
   除此之外，一些生命周期钩子（比如`componentDidXXX`）、`hook`（比如`useEffect`）需要在`commit阶段`执行。
 
-- 子阶段：`commit阶段`的主要工作（即`Renderer`的工作流程）分为三部分：
+- 子阶段：在源码中`commit阶段`（即`Renderer`的工作流程）被分为三个子阶段（sub-phases）：
 
   - `before mutation阶段`（执行`DOM`操作前）
   - `mutation阶段`（执行`DOM`操作）

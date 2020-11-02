@@ -99,6 +99,7 @@ const originCodeList = [
             title: 'commit阶段',
             children: [
               'react/commit-overview',
+              'react/before-mutation',
             ]
           },
         ]
@@ -106,6 +107,12 @@ const originCodeList = [
       {
         title: '实现',
         children: [
+          // {
+          //   title: 'Hooks',
+          //   children: [
+          //     'react/use-effect',
+          //   ]
+          // },
           'react/node-structure',
         ]
       },

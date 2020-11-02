@@ -295,7 +295,7 @@ DOM到屏幕，从概念上讲分为：
   - 当显示器将一帧画面绘制完成后，并在准备读取下一帧之前，显示器会发出一个 **垂直同步信号(vertical synchronization)** 给GPU，简称 VSync。
   - 具体的讲，当GPU接收到VSync信号后，会将VSync信号同步给浏览器进程，浏览器进程再将其同步到对应的渲染进程，渲染进程接收到VSync信号之后，就可以准备绘制新的一帧了。详细可参考[Improved vsync scheduling for Chrome on Android](https://docs.google.com/document/d/16822du6DLKDZ1vQVNWI3gDVYoSqCSezgEmWZ0arvkP8/edit)。
 
-![VSync示意图](./imgs/browser-vertical-sync-overview.png)
+![VSync示意图](../../../.imgs/browser-vertical-sync-overview.png)
 
 ### 空闲时间
 

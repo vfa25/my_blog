@@ -229,9 +229,9 @@ export const Deletion = /*                 */ 0b00000000001000;
 2. 对于第二个问题：
 
     - 假设`mountChildFibers`也会赋值`effectTag`，那么可以预见`mount`时整棵`Fiber树`所有节点都会有`Placement effectTag`。这样在`commit阶段`执行`DOM`操作时每个节点都会执行一次插入操作，十分低效。
-    - 为了解决这个问题，在`mount`时只有`RootFiber`会赋值`Placement effectTag`，在`commit阶段`只会执行一次插入操作。
+    - 为了解决这个问题，在`mount`时只有`RootFiber`会进入`reconcileChildFibers`逻辑，并对其`子Fiber节点`（通常是`function App() {}`）进行赋值`Placement effectTag`（源码请看[这里](https://github.com/facebook/react/blob/v16.13.1/packages/react-reconciler/src/ReactChildFiber.js#L1322)），在`commit阶段`只会执行一次插入操作。
 
 ## 总结
 
-![beginWork流程图](./imgs/begin-work.png)
+![beginWork流程图](../../../.imgs/begin-work.png)
 <center>beginWork流程图（该图暂忽略Scheduler相关）</center>

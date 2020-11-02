@@ -194,7 +194,7 @@ return null;
 ```
 
 :::tip
-对于[上一节](./begin-work.html#effecttag)提出的问题：已知`mount`时，只有`rootFiber`存在`effectTag`（为`Placement effectTag`），那么`commit阶段`是如何通过一次插入`DOM`操作将整棵`DOM`树插入页面的？
+对于[上一节](./begin-work.html#effecttag)提出的问题：已知`mount`时，只有`rootFiber`的`子Fiber节点`（通常是`function App() {}`）存在`effectTag`（为`Placement effectTag`），那么`commit阶段`是如何通过一次插入`DOM`操作将整棵`DOM`树插入页面的？
 
 - 原因就在于`completeWork`中的`appendAllChildren`方法。
 - 由于`completeWork`属于“归”阶段调用的函数，故每次调用`appendAllChildren`时，都将会根据`fiber.child`及`fiber.sibling`，把已生成的子孙`DOM`节点插入到当前生成的`DOM`节点下。那么当“归”到`rootFiber`时，已然有了一个构建好的离屏`DOM`树。
@@ -232,5 +232,5 @@ rootFiber.firstEffect       ...省略中间的n个fiber...      rootFiber.lastEf
 
 ## 总结
 
-![completeWork流程图](./imgs/complete-work.png)
+![completeWork流程图](../../../.imgs/complete-work.png)
 <center>completeWork流程图（该图暂忽略Scheduler相关）</center>

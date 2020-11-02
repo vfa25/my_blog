@@ -77,7 +77,7 @@ Some text
 
 `div`生成了一个`块框`（亦是`块包含框`），包含了另一个`块框p`以及`文本内容Some text`，此时`文本内容Some text`会被强制加到一个`匿名块框`里面，并被`div`生成的`块框`包含。
 
-![匿名块框](./imgs/css-anon-block.png)
+![匿名块框](../../../.imgs/css-anon-block.png)
 :::
 
 换句话说：
@@ -201,7 +201,7 @@ FC像是一个大箱子，里面装有很多元素，箱子可以隔开里面的
     </p>
     ```
 
-    ![ifc水平对齐示意](./imgs/css-ifc-horizontal-demo.png)
+    ![ifc水平对齐示意](../../../.imgs/css-ifc-horizontal-demo.png)
 
     可见，对齐的时候是根据行框的宽度，居中对齐。
     :::

@@ -82,10 +82,7 @@ type BaseFiberRootProperties = {|
   lastExpiredTime: ExpirationTime,
 |};
 
-// The following attributes are only used by interaction tracing builds.
-// They enable interactions to be associated with their async work,
-// And expose interaction metadata to the React DevTools Profiler plugin.
-// Note that these attributes are only defined when the enableSchedulerTracing flag is enabled.
+// 开发环境 React DevTools Profiler plugin相关
 type ProfilingOnlyFiberRootProperties = {|
   interactionThreadID: number,
   memoizedInteractions: Set<Interaction>,
@@ -311,10 +308,17 @@ export type Update<State> = {|
 type SharedQueue<State> = {|pending: Update<State> | null|};
 
 export type UpdateQueue<State> = {|
-  // 每次操作完更新之后的state
+  // 更新基于哪个state开始
   baseState: State,
+  // 更新基于哪个Update开始，形成的链表
   baseQueue: Update<State> | null,
+  // shared.pending：本次更新的单或多个Update形成的链表
+  // 其中baseQueue + shared.pending会作为本次更新需要执行的Update。
   shared: SharedQueue<State>,
   effects: Array<Update<State>> | null,
+  // 第一个`side effect`
+  firstEffect: Update<State> | null,
+  // 最后一个`side effect`
+  lastEffect: Update<State> | null,
 |};
 ```
