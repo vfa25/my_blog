@@ -408,6 +408,8 @@ public class PnModule extends ReactContextBaseJavaModule {
 - 在入口js文件中的`componentDidMount`钩子里注册监听器事件。
 - 若用户登录态由`未登录`到`登录`，则尝试注册NPNS，并建立心跳连接；反之则清除。
 
+> `发送事件到 JavaScript`，详情请查看[官网](https://reactnative.cn/docs/native-modules-android#%E5%8F%91%E9%80%81%E4%BA%8B%E4%BB%B6%E5%88%B0-javascript)。
+
 ```js
 import { NativeEventEmitter } from "react-native";
 import { Actions } from "react-native-router-flux";

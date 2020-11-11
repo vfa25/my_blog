@@ -22,7 +22,7 @@ sidebarDepth: 3
       - `微任务队列(microtask queue)`不是一个`任务队列(task queue)`。
 - 执行流程
   - 如果其他进程向`渲染主线程`跨进程通信，则需先通过IPC把任务发送给渲染进程的`IO线程`；
-  - `IO线程`接收到任务之后，会将这些任务组装成任务添加进`任务队列`尾部；
+  - `IO线程`接收到任务之后，会将这些任务组装成任务添加进`任务队列`尾部（比如`ReactNative`的API[Callback](https://reactnative.cn/docs/native-modules-android#%E5%9B%9E%E8%B0%83%E5%87%BD%E6%95%B0)必然是异步的，因为跨进程通信就是通过事件循环来进行的）；
   - `渲染主线程`会循环地从`任务队列`读取第一个可执行的任务。
 
 [WHATWG 规范](https://html.spec.whatwg.org/multipage/webappapis.html#event-loop-processing-model)中对事件循环机制的定义：
@@ -34,7 +34,9 @@ sidebarDepth: 3
 5. 执行完成后，事件循环系统将`当前正在执行的任务`设置为`null`；
 6. 执行微任务队列(`MicroTasks`)；
 7. 最后统计执行完成的时长等信息；
-8. 循环上述过程（注：此时并不会更新渲染，更新渲染是显示器的`垂直同步信号`驱动的，下文详述）。
+8. 循环上述过程
+
+> 注：事件循环与更新渲染没有本质联系，后者是显示器的[垂直同步信号](./04render-process.html#chromium是如何保证不掉帧或跳帧的)驱动的。
 
 ### 任务队列中的任务类型
 

@@ -52,6 +52,7 @@ const frontendBase = [
     collapsable: true,
     children: [
       'react-native/hybrid',
+      'react-native/log',
       'react-native/push',
     ]
   },
