@@ -76,7 +76,7 @@ const originCodeList = [
   ['', '首页'],
   {
     title: 'React',
-    collapsable: true,
+    collapsable: false,
     children: [
       {
         title: '理念',
@@ -101,6 +101,8 @@ const originCodeList = [
             children: [
               'react/commit-overview',
               'react/before-mutation',
+              'react/mutation',
+              'react/layout',
             ]
           },
         ]

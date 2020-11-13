@@ -7,11 +7,11 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "npx vuepress dev docs --port 10010",
     "build": "npx vuepress build docs",
-    "deploy:pre": "npm run build && zip -r ./dist.zip ./dist && git add .",
     "commit": "git-cz",
     "img:compress": "cross-env npx webpack --mode=production --config build/webpack.config.js",
     "prd:setup": "pm2 deploy ecosystem.yaml production setup",
-    "prd:deploy": "pm2 deploy ecosystem.yaml production"
+    "prd:deploy": "pm2 deploy ecosystem.yaml production",
+    "deploy": "sh deploy.sh"
   },
   "keywords": [],
   "author": "",
