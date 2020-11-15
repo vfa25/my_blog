@@ -64,7 +64,7 @@ to descendant leaves contain the same number of black nodes.
 由于`规则5`，可知红黑树的最大高度为$2logn$，那么增删改查也将是$O(logn)$的时间复杂度。
 
 ::: details 红黑树的高度计算
-已知完全二叉树的高度近似$log_2{n}$（请看[这里](./binarySearchTree.html#时间复杂度分析)）。
+已知完全二叉树的高度近似$log_2{n}$（请看[这一节介绍](./binarySearchTree.html#时间复杂度分析)）。
 
 假设将红黑树的红结点拿开，那么该树将变成多叉树，由于`规则5`，且由于其高度要低于完全二叉树，所以去掉红色结点的“黑树”的高度也不会超过$log_2{n}$。
 

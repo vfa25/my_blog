@@ -15,9 +15,9 @@ date: "2020-9-13"
 
 - 首先浏览器在渲染页面时有如下特性：
 
-  1. `JS引擎线程`（负责执行JS脚本）与`渲染主线程`（处理“DOM、Style、Layout、Layer、Paint”）、`合成线程`（处理“分块、光栅化、合成”）互斥，即前者的执行会造成后者挂起。请看[这里](../../base/browser/05render-block.html)。
-  2. 对于`用户交互事件`，如果该事件有回调，则会经过`渲染进程`的`I/O线程->合成线程->渲染主线程`，随后该回调被推入`用户交互事件队列`（注：一个事件循环有一个或多个事件队列），请看[这里](../../base/browser/06event-loop.html#事件循环和任务队列)。
-  3. 每一`帧`包含工作阶段和空闲阶段，并在该帧时间结束时，操作系统会去读取显卡的`前缓冲区`，请看[这里](../../base/browser/04render-process.html#chromium是如何保证不掉帧或跳帧的)。
+  1. `JS引擎线程`（负责执行JS脚本）与`渲染主线程`（处理“DOM、Style、Layout、Layer、Paint”）、`合成线程`（处理“分块、光栅化、合成”）互斥，即前者的执行会造成后者挂起。请看[这一节介绍](../../base/browser/05render-block.html)。
+  2. 对于`用户交互事件`，如果该事件有回调，则会经过`渲染进程`的`I/O线程->合成线程->渲染主线程`，随后该回调被推入`用户交互事件队列`（注：一个事件循环有一个或多个事件队列），请看[这一节介绍](../../base/browser/06event-loop.html#事件循环和任务队列)。
+  3. 每一`帧`包含工作阶段和空闲阶段，并在该帧时间结束时，操作系统会去读取显卡的`前缓冲区`，请看[这一节介绍](../../base/browser/04render-process.html#chromium是如何保证不掉帧或跳帧的)。
 
 - 针对以上特性，提出问题
 
@@ -52,7 +52,7 @@ date: "2020-9-13"
 
 - ES6的`Generator（生成器函数）`，它是通过创建、恢复、暂停协程的方式，来实现任务中断及恢复。
 - 保证帧对齐的API[requestAnimationFrame](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/requestAnimationFrame)，不过后来React也移除了[(#17252)](https://github.com/facebook/react/commit/a2e05b6c148b25590884e8911d4d4acfcb76a487#diff-3856e885394723dea203587a10ea16b3)。
-- 浏览器API[requestIdleCallback](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/requestIdleCallback)则是通过在空闲时间里执行回调（关于空闲时间请看[这里](../../base/browser/04render-process.html#chromium是如何保证不掉帧或跳帧的)）。
+- 浏览器API[requestIdleCallback](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/requestIdleCallback)则是通过在空闲时间里执行回调（关于空闲时间请看[这一节介绍](../../base/browser/04render-process.html#chromium是如何保证不掉帧或跳帧的)）。
 
 但是由于以下因素，React放弃使用该API：
 

@@ -3,7 +3,7 @@ title: "useEffect"
 date: "2020-10-27"
 ---
 
-在[commit阶段概览](./before-mutation.html#before-mutation概览)中介绍了`useEffect`的工作流程。
+在[commit阶段概览一节介绍](./before-mutation.html#before-mutation概览)了`useEffect`的工作流程。
 
 其中提到：在`flushPassiveEffects`方法内部会从全局变量`rootWithPendingPassiveEffects`获取`effectList`。那么就从该方法开始，一探`useEffect`的工作原理。
 

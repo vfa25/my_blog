@@ -241,7 +241,7 @@ useLayoutEffect(() => {
 
 当`fiber.tag`为`HostComponent`，会调用`commitUpdate`。源码请看[这里](https://github.com/facebook/react/blob/v16.13.1/packages/react-dom/src/client/ReactDOMHostConfig.js#L390)。
 
-最终会在`updateDOMProperties`函数（源码请看[这里](https://github.com/facebook/react/blob/v16.13.1/packages/react-dom/src/client/ReactDOMComponent.js#L362)）中将`render阶段`[completeWork](./complete-work.html#update时)中为`fiber.updateQueue`赋值的对应的内容渲染在页面上。
+最终会在`updateDOMProperties`函数（源码请看[这里](https://github.com/facebook/react/blob/v16.13.1/packages/react-dom/src/client/ReactDOMComponent.js#L362)）中将`render阶段completeWork`（[这一节介绍](./complete-work.html#update时)）中为`fiber.updateQueue`赋值的对应的内容渲染在页面上。
 
 ```js
 /**

@@ -23,7 +23,7 @@ function beginWork(
 - workInProgress：当前组件对应的`Fiber节点`。
 - renderExpirationTime：`Scheduler`优先级相关。
 
-根据[双缓存机制](./reconciler.html#双缓存)，除`fiberRootNode`（应用的起点）和`rootFiber`（由于需要`prepare a fresh stack`，请看[这里](https://github.com/facebook/react/blob/v16.13.1/packages/react-reconciler/src/ReactFiberWorkLoop.js#L1003)）以外，
+根据[双缓存机制一节介绍](./reconciler.html#双缓存)，除`fiberRootNode`（应用的起点）和`rootFiber`（由于需要`prepare a fresh stack`，请看[这里](https://github.com/facebook/react/blob/v16.13.1/packages/react-reconciler/src/ReactFiberWorkLoop.js#L1003)）以外，
 
 - 组件`mount`时，由于是首次渲染，是不存在当前组件对应的`Fiber节点`在上一次更新时的`Fiber节点`，即`mount`时`current === null`。
 - 组件`update`时，由于之前已经`mount`过，所以`current !== null`。
@@ -184,7 +184,7 @@ export function reconcileChildren(
 该逻辑会生成新的`子Fiber节点`，并赋值给`workInProgress.child`，后者作为`beginWork`的返回值（请看[这里](https://github.com/facebook/react/blob/v16.13.1/packages/react-reconciler/src/ReactFiberBeginWork.js#L969)），并作为下次`performUnitOfWork`执行时`workInProgress`的传参（请看[这里](https://github.com/facebook/react/blob/v16.13.1/packages/react-reconciler/src/ReactFiberWorkLoop.js#L1470)）。
 
 :::tip Demo
-借助上一节的[Demo](./reconciler.html#demo)，第一个进入`beginWork`方法的`Fiber节点`即`rootFiber`，其`alternate`指向`current rootFiber`而非`null`（即存在`current`，该属性是在`ReactDOM.render`调用时赋值的）。
+根据[上一节的Demo介绍](./reconciler.html#demo)，第一个进入`beginWork`方法的`Fiber节点`即`rootFiber`，其`alternate`指向`current rootFiber`而非`null`（即存在`current`，该属性是在`ReactDOM.render`调用时赋值的）。
 
 由于存在`current`，`rootFiber`在`reconcileChildren`时会走`reconcileChildFibers`逻辑。
 
@@ -233,5 +233,5 @@ export const Deletion = /*                 */ 0b00000000001000;
 
 ## 总结
 
-![beginWork流程图](../../../.imgs/begin-work.png)
+![beginWork流程图](../../../.imgs/react-begin-work.png)
 <center>beginWork流程图（该图暂忽略Scheduler相关）</center>

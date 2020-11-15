@@ -52,12 +52,12 @@ React应用的根节点`fiberRootNode`只有一个，区别于可以通过多次
 - 包含应用挂载的目标DOM节点——`containerInfo`属性；
 - 记录整个应用更新过程的各种信息。
 
-> `FiberRoot fiberRootNode`数据结构请看[这里](./node-structure.html#fiberroot)。
+> `FiberRoot fiberRootNode`数据结构请看[这一节介绍](./node-structure.html#fiberroot)。
 :::
 
 ## “render阶段”入口
 
-`render`阶段开始于`performSyncWorkOnRoot`或`performConcurrentWorkOnRoot`方法的调用。这取决于本次更新是同步更新还是异步更新。
+`render`阶段开始于`performSyncWorkOnRoot`或`performConcurrentWorkOnRoot`方法的调用（源码请看[这里](https://github.com/facebook/react/blob/v16.13.1/packages/react-reconciler/src/ReactFiberWorkLoop.js#L623-L639)）。这取决于本次更新是同步更新还是异步更新。
 
 ```js
 // performSyncWorkOnRoot会调用该方法

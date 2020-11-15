@@ -57,11 +57,11 @@ React核心团队成员[Sebastian Markbåge](https://github.com/sebmarkbage/)（
 2. 作为静态的数据结构来说，每个`Fiber`节点对应一个`React element`，保存了该组件的类型（函数组件/类组件/原生组件...）、对应的DOM节点等信息。
 3. 作为动态的工作单元来说，每个`Fiber`节点保存了本次更新中该组件改变的状态、要执行的工作（需要被删除/被插入页面中/被更新...）。
 
-`Fiber`这一个固定的数据结构。具体请看[这里](./node-structure.html#fiber)。
+`Fiber`这一个固定的数据结构。具体请看[这一节介绍](./node-structure.html#fiber)。
 
 ## Fiber作为架构的属性
 
-`Fiber`并非是计算机语言中的新名词，它被称为`纤程`，和`协程(coroutine)`的区别请看[这里](../../base/js/async-await-and-coroutine.html#协程-coroutine)。
+`Fiber`并非是计算机语言中的新名词，它被称为`纤程`，和`协程(coroutine)`的区别请看[这一节介绍](../../base/js/async-await-and-coroutine.html#协程-coroutine)。
 
 ::: tip React Fiber可以理解为
 

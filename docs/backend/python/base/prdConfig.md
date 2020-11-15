@@ -6,7 +6,7 @@
 
 ## pm2可以守护python进程
 
-[pm2参考](../../linux/config/pm2.html)
+[pm2一节介绍](../../linux/config/pm2.html)
 
 ```sh
 # python项目启动

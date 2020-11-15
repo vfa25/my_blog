@@ -27,7 +27,7 @@ sidebarDepth: 3
 
 ### 2. 查找缓存（App cache）
 
-- 在真正发起网络请求之前，<font color=red>NetWork进程</font>会查找[网络-浏览器缓存](../internet/http-cache.html#http缓存)是否缓存了该资源。如果有缓存资源，那么直接返回资源给<font color=red>Browser进程</font>。
+- 在真正发起网络请求之前，<font color=red>NetWork进程</font>会查找`浏览器缓存`（[这一节介绍](../internet/http-cache.html#http缓存)）是否缓存了该资源。如果有缓存资源，那么直接返回资源给<font color=red>Browser进程</font>。
 - 若缓存中没有找到资源，那么直接进入网络请求流程（`fetchStart`）。
 
 ### 3. DNS查询得到IP
@@ -47,7 +47,7 @@ sidebarDepth: 3
     ![tcp队列示意](../../../.imgs/tcp-queue.png)
 2. 建立TCP连接
 
-    [网络-数据传输流程](../internet/internet-protocol.html#数据传输流程)（`connectStart`、`connectEnd`）。
+    [网络-数据传输流程一节介绍](../internet/internet-protocol.html#数据传输流程)（`connectStart`、`connectEnd`）。
 
 ### 5. 构建及发送HTTP请求
 

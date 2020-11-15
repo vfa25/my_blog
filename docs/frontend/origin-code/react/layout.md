@@ -8,7 +8,7 @@ sidebarDepth: 3
 
 该阶段之所以称为`layout`，因为该阶段的代码都是在`DOM渲染`（在`mutation阶段`）完成后执行的。
 
-已知[DOM的布局（layout）阶段](../../base/browser/04render-process.html#布局阶段（layout）)是最早访问到已经改变后的`DOM`的时机，对应语义的`react的layout阶段`触发的生命周期钩子和`hook`，也可以直接访问到已经改变后的`DOM`。
+已知[DOM的布局（layout）阶段一节介绍](../../base/browser/04render-process.html#布局阶段（layout）)是最早访问到已经改变后的`DOM`的时机，对应语义的`react的layout阶段`触发的生命周期钩子和`hook`，也可以直接访问到已经改变后的`DOM`。
 
 ### 概览
 
@@ -95,7 +95,7 @@ function commitLayoutEffects(
   ```
 
   - `useLayoutEffect`
-    - 已知在`mutation阶段`且[Update effect](./mutation.html#functioncomponent-mutation)时，会执行（上一次更新的）`useLayoutEffect hook`的销毁函数。
+    - 已知在`mutation阶段`且`Update effect`（[这一节介绍](./mutation.html#functioncomponent-mutation)）时，会执行（上一次更新的）`useLayoutEffect hook`的销毁函数。
     - 而此时的`layout阶段`，会**同步执行**（本次更新的）`useLayoutEffect hook`的`回调函数`（即[官网](https://zh-hans.reactjs.org/docs/hooks-reference.html#uselayouteffect)描述的调用时机：在所有的`DOM`变更之后）。
   - `useEffect`：不同的是，`useEffect`则需要先调度，在`layout阶段`完成后再异步执行。
 
@@ -148,7 +148,7 @@ root.current = finishedWork;
 
 > 源码请看[这里](https://github.com/facebook/react/blob/v16.13.1/packages/react-reconciler/src/ReactFiberWorkLoop.js#L1880)。
 
-已知[双缓存机制](./render-overview.html#双缓存)，`workInProgress Fiber`树在`commit阶段`完成渲染后，会变为`current Fiber树`。这行代码的作用就是切换`fiberRootNode`指向的`current Fiber树`。
+已知[双缓存机制一节介绍](./render-overview.html#双缓存)，`workInProgress Fiber`树在`commit阶段`完成渲染后，会变为`current Fiber树`。这行代码的作用就是切换`fiberRootNode`指向的`current Fiber树`。
 
 那么这行代码为什么在这里呢？（在`mutation阶段`结束后，`layout阶段`开始前。）
 
