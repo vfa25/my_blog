@@ -1,6 +1,7 @@
 ---
 title: "React中的数据结构"
 date: "2020-08-05"
+sidebarDepth: 3
 ---
 
 ## FiberRoot
@@ -283,10 +284,13 @@ export type Fiber = {|
 
 ## react-update 和 updateQueue
 
+### ClassComponent与HostRoot
+
 ```js
 export type Update<State> = {|
-  // 更新的过期时间
+  // 更新的过期时间，表示优先级。类比于需求的紧急程度
   expirationTime: ExpirationTime,
+  // Suspense相关
   suspenseConfig: null | SuspenseConfig,
   /** 更新类型
    * export const UpdateState = 0;
@@ -308,7 +312,29 @@ export type Update<State> = {|
 type SharedQueue<State> = {|pending: Update<State> | null|};
 
 export type UpdateQueue<State> = {|
-  // 更新基于哪个state开始
+  // 本次更新前该Fiber节点的state，Update基于该state计算更新。类比于master分支
+  baseState: State,
+  // 本次更新前该Fiber节点已保存的Update，单向环状链表
+  // 之所以在更新产生前该Fiber节点内就存在Update，
+  // 是由于某些Update优先级较低，所以在上次render阶段由Update计算state时被跳过
+  // 类比于执行git rebase基于的commit
+  baseQueue: Update<State> | null,
+  // 本次触发更新，产生的Update会保存在shared.pending中形成单向环状链表。
+  // 当由Update计算state时这个环会被剪开
+  // 类比于本次需要合并commit的新的feature
+  shared: SharedQueue<State>,
+  // 数组。保存update.callback !== null的Update
+  effects: Array<Update<State>> | null,
+|};
+```
+
+<!-- ### Hooks
+
+```js
+type SharedQueue<State> = {|pending: Update<State> | null|};
+
+export type UpdateQueue<State> = {|
+  // 本次更新前该Fiber节点的state，Update基于该state计算更新。类比于master分支
   baseState: State,
   // 更新基于哪个Update开始，形成的链表
   baseQueue: Update<State> | null,
@@ -321,4 +347,4 @@ export type UpdateQueue<State> = {|
   // 最后一个`side effect`
   lastEffect: Update<State> | null,
 |};
-```
+``` -->

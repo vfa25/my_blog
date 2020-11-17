@@ -120,6 +120,8 @@ const originCodeList = [
             title: '状态更新',
             children: [
               'react/state-overview',
+              'react/update-style',
+              'react/update',
             ]
           },
           // {

@@ -23,7 +23,7 @@ function beginWork(
 - workInProgress：当前组件对应的`Fiber节点`。
 - renderExpirationTime：`Scheduler`优先级相关。
 
-根据[双缓存机制一节介绍](./reconciler.html#双缓存)，除`fiberRootNode`（应用的起点）和`rootFiber`（由于需要`prepare a fresh stack`，请看[这里](https://github.com/facebook/react/blob/v16.13.1/packages/react-reconciler/src/ReactFiberWorkLoop.js#L1003)）以外，
+根据[双缓存机制一节介绍](./fiber-architecture.html#双缓存)，除`fiberRootNode`（应用的起点）和`rootFiber`（由于需要`prepare a fresh stack`，请看[这里](https://github.com/facebook/react/blob/v16.13.1/packages/react-reconciler/src/ReactFiberWorkLoop.js#L1003)）以外，
 
 - 组件`mount`时，由于是首次渲染，是不存在当前组件对应的`Fiber节点`在上一次更新时的`Fiber节点`，即`mount`时`current === null`。
 - 组件`update`时，由于之前已经`mount`过，所以`current !== null`。

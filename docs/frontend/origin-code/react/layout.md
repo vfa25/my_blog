@@ -148,7 +148,7 @@ root.current = finishedWork;
 
 > 源码请看[这里](https://github.com/facebook/react/blob/v16.13.1/packages/react-reconciler/src/ReactFiberWorkLoop.js#L1880)。
 
-已知[双缓存机制一节介绍](./render-overview.html#双缓存)，`workInProgress Fiber`树在`commit阶段`完成渲染后，会变为`current Fiber树`。这行代码的作用就是切换`fiberRootNode`指向的`current Fiber树`。
+根据[双缓存机制一节介绍](./fiber-architecture.html#双缓存)，`workInProgress Fiber`树在`commit阶段`完成渲染后，会变为`current Fiber树`。这行代码的作用就是切换`fiberRootNode`指向的`current Fiber树`。
 
 那么这行代码为什么在这里呢？（在`mutation阶段`结束后，`layout阶段`开始前。）
 

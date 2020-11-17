@@ -36,6 +36,15 @@ date: "2020-9-13"
       [异步更新](https://codesandbox.io/s/infallible-dewdney-9fkv9)
       :::
 
+      :::tip Time Slicing
+      - React doesn't block the thread while rendering
+      - Feels synchronous if the device is fast
+      - Feels responsive if the device is slow
+      - Only the final rendered state is displayed
+      - Same declarative component model
+      > 参考自[Dan Abramov- Beyond React 16 - JSConf Iceland 2018](https://www.youtube.com/watch?v=v6iR3Zk4oDY)。
+      :::
+
   2. React的`Scheduler`和`Reconciler`为异步，待所有组件都完成`Reconciler`的工作，才会统一交给`Renderer`。
 
 ## React16架构
