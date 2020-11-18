@@ -8,7 +8,7 @@
 
 [大顶堆实现（Java）](https://github.com/vfa25/dataStructure-algorithm/blob/master/datastructure/src/maxheap/MaxHeap.java)
 
-- 是一棵`完全二叉树`（即把元素顺序排列成树的形状，区别于`满二叉树`）。
+- 是一棵`完全二叉树`（通俗的讲就是每一层都是从左及右的尽量填满，区别于`满二叉树`）。
 - 堆中某个结点的值总是不大于其父结点的值。
 
 同理，对应的可以定义`小顶堆`。

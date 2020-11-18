@@ -234,6 +234,7 @@ const dataStructure = [
       ['', 'Introduction'],
       {
         title: '基础',
+        collapsable: false,
         children: [
           'array',
           'linkedList',
@@ -247,6 +248,7 @@ const dataStructure = [
       },
       {
         title: 'Tree',
+        collapsable: false,
         children: [
           'binarySearchTree',
           'heap',
@@ -268,6 +270,7 @@ const algorithm = [
       ['', 'Introduction'],
       'recursion',
       'sort',
+      'bfs-and-dfs',
       'binarySearch',
       'hash',
     ]
