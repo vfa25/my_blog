@@ -117,6 +117,6 @@ onClick() {
                                             |______________________________________________________|
     ```
 
-    这样，只需要取`fiber.updateQueue.shared.pending.next`，即能拿到头结点`UpdateOldFirst`，这种链表被称为**带头链表**。
+    这样，只需要取`fiber.updateQueue.shared.pending.next`，即能拿到结点`UpdateOldFirst`，类似于**带头链表**。
 
 2. 处理新的环形链表时，终止条件：`update === null || update === first ?`，其中`update = update.next`。

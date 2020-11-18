@@ -122,6 +122,7 @@ const originCodeList = [
               'react/state-overview',
               'react/update-style',
               'react/update',
+              'react/priority'
             ]
           },
           // {

@@ -14,7 +14,7 @@ sidebarDepth: 3
 
 本章节示例使用`邻接表`来存储`无向图`。
 
-![algorithm-graph-fs-demo-prepare](./imgs/algorithm-graph-fs-demo-prepare.png)
+![algorithm-graph-fs-demo-prepare](../../.imgs/algorithm-graph-fs-demo-prepare.png)
 
 ```java
 import java.util.LinkedList;
@@ -54,7 +54,7 @@ public class Graph {
 
 `广度优先搜索（Breadth-First-Search`），就是一种“地毯式”层层推进的搜索策略，即先查找离起始`顶点`最近的，然后是次近的，依次往外搜索。
 
-![algorithm-graph-fs-demo-bfs](./imgs/algorithm-graph-fs-demo-bfs.png)
+![algorithm-graph-fs-demo-bfs](../../.imgs/algorithm-graph-fs-demo-bfs.png)
 
 图的`广度优先搜索`的代码实现。其中`s`表示`起始顶点`，`t`表示`终止顶点`。搜索一条`从s到t`的路径。实际上，该路径也是两顶点的最短路径。
 
@@ -114,7 +114,7 @@ private void print(int[] prev, int s, int t) {
 
 如下图所示，其中实线箭头表示遍历，虚线箭头表示回退。
 
-![algorithm-graph-fs-demo-dfs](./imgs/algorithm-graph-fs-demo-dfs.png)
+![algorithm-graph-fs-demo-dfs](../../.imgs/algorithm-graph-fs-demo-dfs.png)
 
 深度优先搜索本质是**回溯思想**。
 

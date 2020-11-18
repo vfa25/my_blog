@@ -141,15 +141,15 @@ Cache-control的格式是个时间段，优先级高于Expires，并且作为后
 
 ## 启发式缓存（heuristic）
 
-这个比较特殊，它更像强缓存；
+这个比较特殊。
 
-在没有诸如`Expires`、`Cache-Control: max-age`、 `Cache-Control: s-maxage`等字段时，为什么浏览器也会缓存。
+在没有诸如`Expires`、`Cache-Control`字段时，为什么浏览器会直接`200状态码`读的本地缓存？
 
 ![启发式缓存图1](../../../.imgs/http-cache-heuristic01.png)
 
 这就是所谓的`启发式缓存`，过期时间通常被认为是`Date（创建报文的日期时间）和 Last-Modified 之间的时间差值, 取其值的10%作为缓存时间周期`；详见[13.2.4 Expiration Calculations](https://tools.ietf.org/html/rfc2616#section-13.2.4)。
 
-之前也专门测试过过期时间
+测试过期时间
 
 ![启发式缓存图2](../../../.imgs/http-cache-heuristic02.jpg)
 
