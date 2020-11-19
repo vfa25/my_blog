@@ -82,6 +82,7 @@ const originCodeList = [
         title: '理念',
         children: [
           'react/idea',
+          'react/constructure',
           'react/fiber-architecture',
         ]
       },
@@ -131,6 +132,12 @@ const originCodeList = [
           //     'react/use-effect',
           //   ]
           // },
+          {
+            title: 'Concurrent Mode',
+            children: [
+              'react/concurrent-overview',
+            ]
+          },
           'react/node-structure',
         ]
       },

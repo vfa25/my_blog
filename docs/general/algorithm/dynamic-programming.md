@@ -24,7 +24,7 @@ sidebarDepth: 3
 
 如下图示，0 表示 false，1 表示 true。只需要在最后一层，找一个值为 true 且最接近 w（这里是 9）的值，就是背包中物品总重量的最大值。
 
-![algorithm-dynamic-programming-demo-0-1-bag](./imgs/algorithm-dynamic-programming-demo-0-1-bag.png)
+![algorithm-dynamic-programming-demo-0-1-bag](../../.imgs/algorithm-dynamic-programming-demo-0-1-bag.png)
 
 ```java
 // weight:物品重量，n:物品个数，w:背包可承载重量
