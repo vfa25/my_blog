@@ -150,6 +150,12 @@ if __name__ == '__main__':
 分治（divide and conquer）思想。在中点对切，以递归函数将原数据结构分段为若干组（分解），最后各组开始两两“归并”（合并），在该过程时实现排序（解决）。
 :::
 
+`分治算法`的核心思想其实就是四个字：分而治之。
+
+- 分解：将原问题分解成一系列子问题；
+- 解决：递归地求解各个子问题，若子问题足够小，则直接求解；
+- 合并：将子问题的结果合并成原问题。
+
 ### 归并排序递归实现
 
 基于分治思想的排序算法，一般可以用递归来实现。来看一下递推公式及分解终止条件：
@@ -290,6 +296,51 @@ function sort(arr) {
 - 时间复杂度依然是$O(nlogn)$。同时，这是以循环层数来判断时间复杂度的反例。
 
 [自底向上，迭代方法实现归并排序（Java）](https://github.com/vfa25/dataStructure-algorithm/blob/master/algorithms/src/sort/MergeSortBU.java)
+
+### 分治算法计算`逆序对个数`
+
+::: details 分治算法计算“逆序对个数”
+假设有 n 个数据，那么完全有序的数据的有序度就是$n(n-1)/2$，逆序度等于 0；倒序排列则相反。
+
+对于不完全有序的数据，可以用`分治算法`来计算。
+
+套用分治的思想来求`数组A`的逆序对个数。可以将数组分成前后两半`A1`和`A2`，分别计算`A1`和`A2`的逆序对个数`K1`和`K2`，然后再计算`A1`与`A2`之间的逆序对个数`K3`。那`数组A`的逆序对个数就等于`K1+K2+K3`。那么关键点：计算`K3`，则可以借助`归并排序`。
+
+```py
+from typing import List
+
+num = 0;
+
+def merge_sort(a: List[int]) -> None:
+    _merge_sort_between(a, 0, len(a) - 1)
+
+
+def _merge_sort_between(a: List[int], low: int, high: int) -> None:
+    if low < high:
+        mid = low + (high - low) // 2
+        _merge_sort_between(a, low, mid)
+        _merge_sort_between(a, mid + 1, high)
+        _merge(a, low, mid, high)
+
+
+def _merge(a: List[int], low: int, mid: int, high: int) -> None:
+    global num
+    i, j, tmp = low, mid + 1, []
+    while i <= mid and j <= high:
+        if a[i] <= a[j]:
+            tmp.append(a[i])
+            i += 1
+        else:
+            num += (mid-i+1) # 统计p-q之间，比a[j]大的元素个数
+            tmp.append(a[j])
+            j += 1
+    start = i if i <= mid else j
+    end = mid if i <= mid else high
+    tmp.extend(a[start:end + 1])
+    a[low:high + 1] = tmp
+```
+
+:::
 
 ## 快排(Quick Sort)
 

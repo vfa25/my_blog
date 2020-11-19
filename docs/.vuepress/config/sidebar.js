@@ -271,9 +271,11 @@ const algorithm = [
       ['', 'Introduction'],
       'recursion',
       'sort',
-      'bfs-and-dfs',
       'binarySearch',
       'hash',
+      'bfs-and-dfs',
+      'backtracking',
+      'dynamic-programming',
     ]
   },
   {
