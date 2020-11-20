@@ -293,7 +293,7 @@ function sort(arr) {
 特性：
 
 - **由于没有使用数组随机访问的特性，因此自底向上的归并思想，可以对链表实现$O(nlogn)$的排序。**
-- 时间复杂度依然是$O(nlogn)$。同时，这是以循环层数来判断时间复杂度的反例。
+- 时间复杂度依然是$O(nlogn)$。这是对只通过循环层数来判断时间复杂度的固有思想的反例。
 
 [自底向上，迭代方法实现归并排序（Java）](https://github.com/vfa25/dataStructure-algorithm/blob/master/algorithms/src/sort/MergeSortBU.java)
 
