@@ -375,6 +375,15 @@ sidebarDepth: 3
 - JS脚本执行事件；
 - 网络请求完成、文件读写完成等各种I/O的完成事件。
 
+#### 使用`setTimeout`的一些注意事项
+
+1. 如果当前任务执行时间过久，会影响定时器任务的执行。这是因为要等当前任务执行完毕，进入下次事件循环才执行`setTimeout`回调。
+2. 如果`setTimeout`存在嵌套调用，那么系统会在 5 次之后，设置最短时间间隔为 4 毫秒。
+
+    规范为`If nesting level is greater than 5, and timeout is less than 4, then set timeout to 4.`，规范请看[这里](https://html.spec.whatwg.org/multipage/timers-and-user-prompts.html)，源码请看[这里](https://source.chromium.org/chromium/chromium/src/+/master:third_party/blink/renderer/core/frame/dom_timer.cc;l=96-97)。
+3. 未激活的页面，setTimeout 执行最小间隔是 1000 毫秒。
+4. 延时执行时间有最大值，这是因为现代浏览器以 32bit 存储延时值，最大正整数为$2^{31} - 1$（2147483647ms === 24.8 天）
+
 ### 微任务
 
 微任务就是一个需要异步执行的函数。执行时机是在主函数执行结束之后、当前宏任务结束之前。

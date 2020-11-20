@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "npx vuepress dev docs --port 10010",
-    "build": "npx vuepress build docs",
+    "build": "cross-env rm -rf ./dist ./dist.zip && npx vuepress build docs",
     "commit": "git-cz",
     "img:compress": "cross-env npx webpack --mode=production --config build/webpack.config.js",
     "prd:setup": "pm2 deploy ecosystem.yaml production setup",

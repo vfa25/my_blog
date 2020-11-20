@@ -136,6 +136,7 @@ const originCodeList = [
             title: 'Concurrent Mode',
             children: [
               'react/concurrent-overview',
+              'react/scheduler',
             ]
           },
           'react/node-structure',

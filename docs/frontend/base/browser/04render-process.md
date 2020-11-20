@@ -16,6 +16,8 @@ sidebarDepth: 3
 
 图示为`帧同步`情况下、浏览器所做的工作，下文将对渲染各过程一一陈述。
 
+![帧生命周期](../../../.imgs/browser-life-of-frame.png)
+
 ![帧剖析示意概览](../../../.imgs/browser-anatomy-of-a-frame.png)
 
 ::: warning 注
