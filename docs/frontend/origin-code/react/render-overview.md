@@ -32,6 +32,8 @@ function workLoopConcurrent() {
 
 > `workLoopConcurrent`源码请看[这里](https://github.com/facebook/react/blob/v16.13.1/packages/react-reconciler/src/ReactFiberWorkLoop.js#L1467)。
 
+![react-fiber-reconciler-traverse](../../../.imgs/react-fiber-reconciler-traverse.gif)
+
 已知`Fiber Reconciler`通过`Fiber树`中序遍历的方式实现可中断的递归，所以`performUnitOfWork`的工作可以分为两部分：“递”和“归”。
 
 ::: tip Fiber Reconciler的遍历，伪码如下：
@@ -126,3 +128,7 @@ render阶段会依次执行（`console.log(workInProgress.tag, workInProgress.ty
 ```
 
 其中，`Fiber节点`的`tag属性`对应的类型请看[这里](https://github.com/facebook/react/blob/v16.13.1/packages/shared/ReactWorkTags.js#L35)。
+
+## Reference
+
+- [Fiber 内部: 深入理解 React 的新 reconciliation 算法](https://zhuanlan.zhihu.com/p/59055212)。

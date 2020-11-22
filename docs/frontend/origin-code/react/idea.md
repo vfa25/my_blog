@@ -4,7 +4,7 @@ date: "2020-9-13"
 sidebarDepth: 3
 ---
 
-> 本系列参考自[卡颂](https://github.com/BetaSu)的[React技术揭秘](https://react.iamkasong.com/)，基于[React v16.13.1](https://github.com/facebook/react/tree/v16.13.1)。
+> 本系列参考自[卡颂的React技术揭秘](https://react.iamkasong.com/)，[Dan Abramov's blog](https://overreacted.io/)。基于[React v16.13.1](https://github.com/facebook/react/tree/v16.13.1)。
 
 ## React理念
 
@@ -23,23 +23,24 @@ sidebarDepth: 3
 
 - 首先浏览器在渲染页面时有如下特性：
 
-  1. `JS引擎线程`（负责执行JS脚本）与负责页面渲染的`渲染主线程`（处理“DOM、Style、Layout、Layer、Paint”）+`合成线程`（处理“分块、光栅化、合成”）互斥，即前者的执行会造成后者挂起。请看[这一节介绍](../../base/browser/05render-block.html)。
-  2. 每一`帧`包含工作阶段和空闲阶段，并在该帧时间结束时，操作系统会去读取显卡的`前缓冲区`，如果工作阶段一直被JS任务（同步或异步的单个大任务）霸占，轻者出现掉帧情况，重则看不到页面任何响应。请看[这一节介绍](../../base/browser/04render-process.html#chromium是如何保证不掉帧或跳帧的)。
+  1. `JS脚本的执行`（由JS引擎完成）与`页面渲染`（由Blink引擎完成，处理“DOM、Style、Layout、Layer、Paint”）互斥，因为这两项工作都是运行在`渲染主线程`，即前者的执行会造成后者挂起。请看[这一节介绍](../../base/browser/04render-process.html#一图胜千言)。
+  2. 每一`帧`包含`工作阶段`和`空闲阶段`。并在该帧时间结束时，显示器会去读取显卡的`前缓冲区`，如果`工作阶段`一直被JS任务（同步或异步的单个大任务）霸占（执行时间大于1帧），轻者出现掉帧情况，重则看不到页面任何响应。请看[这一节介绍](../../base/browser/04render-process.html#chromium是如何保证不掉帧或跳帧的)。
   3. 对于`用户交互事件`，如果该事件有回调，则会经过`渲染进程`的`I/O线程->合成线程->渲染主线程`，随后该回调被推入`用户交互事件队列`（注：一个事件循环有一个或多个事件队列），从交互友好方面看希望这是高优先级执行的。请看[这一节介绍](../../base/browser/06event-loop.html#事件循环和任务队列)。
 
-- 针对以上特性，提出问题
+- 对于以上特性，提出问题
 
-  1. 如何防止动画掉帧，或执行JS同步任务时间过长、造成输入事件卡顿？
+  1. 如何防止动画掉帧，或正在执行JS大任务造成的输入卡死？
   2. 在每次帧结束时，如何避免展示出不完全的页面？
+  3. 如何保证高优先级任务的及时执行呢？
+
+那么React是如何解决的呢？
 
 ### 可中断的异步更新
 
 **异步更新的优点：响应自然。**
 
-- React是如何解决的
-
-  1. **可中断的任务切片**。处理在浏览器每一帧的时间中，预留一些时间给JS线程，React利用这部分时间更新组件（在[源码](https://github.com/facebook/react/blob/v16.13.1/packages/scheduler/src/forks/SchedulerHostConfig.default.js#L119)中，预留的初始时间是5ms）。当预留的时间不够用时，React将线程控制权交还给浏览器使其有时间渲染UI，React则等待下一帧时间到来继续被中断的工作。这样在每一帧，都有足够时间给`渲染进程`做UI绘制。
-
+1. 针对第一个问题：**可中断的任务切片**。
+    - Why
       :::tip Time Slicing
       - React doesn't block the thread while rendering
       - Feels synchronous if the device is fast
@@ -48,6 +49,12 @@ sidebarDepth: 3
       - Same declarative component model
       > 参考自[Dan Abramov- Beyond React 16 - JSConf Iceland 2018](https://www.youtube.com/watch?v=v6iR3Zk4oDY)。
       :::
+    - When（切片动作的时机）
+
+      React默认的每个切片任务的执行周期为5ms（源码请看[这里](https://github.com/facebook/react/blob/v16.13.1/packages/scheduler/src/forks/SchedulerHostConfig.default.js#L119)），即每5ms会递归的触发`宏任务`，执行JS、重启React工作。
+
+      如果`需要绘制页面`或`用户正在输入`（借助`navigator.scheduling.isInputPending`，[Example请看这里](https://github.com/WICG/is-input-pending#example)）（该逻辑源码请看[这里](https://github.com/facebook/react/blob/v16.13.1/packages/scheduler/src/forks/SchedulerHostConfig.default.js#L145)），那么React（JS）将`渲染主线程`控制权交还给浏览器，用于`渲染UI`或进入新的`事件循环`。
+    - How
 
       开启`时间切片`的方式：入口API使用`Concurrent Mode`。
 
@@ -67,7 +74,8 @@ sidebarDepth: 3
       [异步更新](https://codesandbox.io/s/infallible-dewdney-9fkv9)
       :::
 
-  2. 双缓存机制。React的`Scheduler`和`Reconciler`为异步，待所有组件都完成`Reconciler`的工作，才会统一交给`Renderer`。这和显卡的`前缓冲区`与`后缓冲区`的概念类似。
+2. 针对第二个问题：双缓存机制。React的`Scheduler`和`Reconciler`为异步，待所有组件都完成`Reconciler`的工作，才会统一交给`Renderer`。这和显卡的`前缓冲区`与`后缓冲区`的概念类似。
+3. 针对第三个问题：则是通过区分优先级来实现的，各优先级请看[源码中的定义](https://github.com/facebook/react/blob/v16.13.1/packages/scheduler/src/SchedulerPriorities.js)。
 
 ## IO瓶颈
 

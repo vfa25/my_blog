@@ -1,5 +1,5 @@
 ---
-title: "Scheduler方式"
+title: "心智模型"
 date: "2020-11-16"
 sidebarDepth: 3
 ---

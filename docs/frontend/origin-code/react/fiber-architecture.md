@@ -3,54 +3,6 @@ title: "Fiber架构"
 date: "2020-9-21"
 ---
 
-## 代数效应(Algebraic Effects)
-
-React核心团队成员[Sebastian Markbåge](https://github.com/sebmarkbage/)（React Hooks的发明者）曾说：我们在React中做的就是践行代数效应（Algebraic Effects）。
-
-1. 什么是代数式？
-
-    已知代数方程，是由多项式组成的方程：`2x + 3y + 4z = 10`。即该方程式的作用是加法运算（即`做什么`），至于其中x、y、z的根是什么（即`怎么做`）却无需耦合。
-
-2. 什么是代数效应？
-
-    - 代数，形容词，表示像代数这样；
-    - 效应（Effects），对于上式x、y、z三兄弟（对应JS的函数）本身会产生的作用，被称为`效应`。
-    - 代数效应，即、像是代数式中变量一样的效应。
-
-3. 代数效应在React中的应用
-
-    React的作用：构建快速响应的大型Web应用程序。React已然基于`Fiber`架构完成了`做什么`。对于使用者，只需要以组件的方式调用诸如`useState`、`setState`API实现`怎么做`即可。
-
-## Why not use generator functions
-
-在JS中，若提到恢复暂停`协程(coroutine)`，会首先想到`Generator（生成器）`API。
-
-但是`Generator`的一些不适用的特性、使React团队放弃使用它来实现`Reconciler（协调器）`：
-
-1. 必须使用`Generator`包裹每个函数，增加了语法开销的同时也增加了对现有实现的运行时开销；
-2. 最重要的一点是**生成器是有状态的，无法在中途恢复**。
-
-    ```js
-    function* doWork(a, b, c) {
-      // doExpensiveWork为占位符，表示有开销的其他有效逻辑
-      var x = doExpensiveWorkA(a);
-      yield;
-      var y = x + doExpensiveWorkB(b);
-      yield;
-      var z = y + doExpensiveWorkC(c);
-      return z;
-    }
-    ```
-
-    如果只是做时间分片当然没有问题。然而，如果有这么一个场景：当已经完成`doExpensiveWorkA(a)`和`doExpensiveWorkB(b)`、且未完成`doExpensiveWorkC(c)`时，获取到了`b`变量的更新，那么就无法复用变量`x`。也就是说，无法直接跳到`doExpensiveWorkB`去执行时，仍然重用`doExpensiveWorkA(a)`的结果。
-
-    那么`x`变量能缓存在内存么？不优雅。
-
-    1. 假设以`非全局上下文`做内存缓存，但是异步代码执行时，调用栈里仅且有全局上下文。即没有机会去注入(inject memoization)；
-    2. 如果使用`全局上下文`做内存缓存，则会出现`缓存失效问题(cache invalidation problems)`。这是一个传说，原文是：`There are only two hard things in Computer Science: cache invalidation and naming thing.（by Phil Karlton）`。即无法确定何时、该缓存应该失效。
-
-> 更详细的解释请看[这个issue](https://github.com/facebook/react/issues/7942#issuecomment-254987818)。
-
 ## Fiber含义
 
 1. 作为架构来说，`React16`的`Reconciler`基于`Fiber`节点实现，被称为`Fiber Reconciler`。对应的`React15`的`Reconciler`采用递归的方式执行，数据保存在递归调用栈中，所以被称为`Stack Reconciler`。

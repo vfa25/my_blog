@@ -80,8 +80,10 @@ const originCodeList = [
     children: [
       {
         title: '理念',
+        collapsable: false,
         children: [
           'react/idea',
+          'react/react-mental-model',
           'react/constructure',
           'react/fiber-architecture',
         ]

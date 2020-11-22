@@ -208,6 +208,9 @@ return null;
 
 实现方式就是借助`单向链表effectList`（注：`effectList`仅是个称呼，形容词）。
 
+![react-fiber-effectTag-overview](../../../.imgs/react-fiber-effectTag-overview.jpg)
+![react-fiber-effectTag-linkList](../../../.imgs/react-fiber-effectTag-linkList.png)
+
 1. 在`completeWork`的上层函数`completeUnitOfWork`中，每个执行完`completeWork`且存在`effectTag`的`Fiber节点`会被保存在一个`effectList`单向链表中。
 2. `effectList`保存在`父Fiber节点`（即`returnFiber`）中，`returnFiber.firstEffect`表示第一个`Fiber节点`，`returnFiber.lastEffect`表示最后一个`Fiber节点`。
 3. 类似`appendAllChildren`，在“归”阶段，所有有`effectTag`的`Fiber节点`都会被追加在`effectList`中，最终形成一条以`rootFiber.firstEffect`为起点的单向链表。
@@ -234,3 +237,7 @@ rootFiber.firstEffect       ...省略中间的n个fiber...      rootFiber.lastEf
 
 ![completeWork流程图](../../../.imgs/react-complete-work.png)
 <center>completeWork流程图（该图暂忽略Scheduler相关）</center>
+
+## Reference
+
+- [Fiber 内部: 深入理解 React 的新 reconciliation 算法](https://zhuanlan.zhihu.com/p/59055212)。
