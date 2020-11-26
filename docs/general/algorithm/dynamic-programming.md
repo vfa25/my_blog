@@ -132,7 +132,7 @@ public static void double11advance(int[] items, int n, int w) {
 ## 一个模型三个特征
 
 以求取最小路径和为例：
-![algorithm-minimum-path-sum](./imgs/algorithm-minimum-path-sum.jpg)
+![algorithm-minimum-path-sum](../../.imgs/algorithm-minimum-path-sum.jpg)
 ，题源：[64. 最小路径和](https://leetcode-cn.com/problems/minimum-path-sum/)。
 
 - **多阶段决策最优解模型**

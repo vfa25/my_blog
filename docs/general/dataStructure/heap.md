@@ -1,4 +1,8 @@
-# 堆(Heap)
+---
+title: '堆(Heap)'
+date: "2019-8-30"
+sidebarDepth: 3
+---
 
 ![常用堆时间复杂度](../../.imgs/heap_O.png)
 
@@ -8,7 +12,7 @@
 
 [大顶堆实现（Java）](https://github.com/vfa25/dataStructure-algorithm/blob/master/datastructure/src/maxheap/MaxHeap.java)
 
-- 是一棵`完全二叉树`（通俗的讲就是每一层都是从左及右的尽量填满，区别于`满二叉树`）。
+- 是一棵`完全二叉树`（通俗的讲就是每一层都是从左及右无间隙的填入，区别于`满二叉树`）。
 - 堆中某个结点的值总是不大于其父结点的值。
 
 同理，对应的可以定义`小顶堆`。
@@ -28,7 +32,9 @@ right child (i) := 2*i + 1
 
 增、删都是$O(logn)$的平均时间复杂度，由于二叉堆是个完全二叉树，即永远不会退化为链表。
 
-### 关系结点获取索引（从数组的索引0开始存储元素）
+### 关系结点获取索引
+
+若从数组的索引0开始存储元素。
 
 ```js
 parent(i) := (i - 1)/2
@@ -75,10 +81,10 @@ Node extractMax() {
 void siftDown(k) {
   while leftChild(k) < data.length // 该结点的子结点索引未越界
     do
-      j := leftChild(k) // 缓存左子结点索引
+      j := leftChild(k) // j 用于保存子结点中较大值的 索引
       if j + 1 < data.length AND data[j + 1] > data[j]
         then  j := j + 1
-      // 至此，取出了子结点的最大值
+      // 至此，get了较大值的 索引
       if data[k] > data[j] then break // 若该结点大于子结点最大值，退出循环
       data.swap(k, j) // 否则二者对换
       k = j // 同时维护变量k
@@ -86,20 +92,22 @@ void siftDown(k) {
 }
 ```
 
-### Heapify
+### Heapify建堆
 
-将任意数组整理成堆的形状；heapify（[$O(n)$](https://www.cnblogs.com/wongyi/p/7685061.html)的时间复杂度）区别于扫描一遍数组，元素分别调用add方法$O(nlogn)$；其优点在于开始即抛弃了所有的叶子结点的可能操作。
+![data-structure-heap-heapify](../../.imgs/data-structure-heap-heapify.png)
 
-思路：将给定数组视作二叉堆，随后找到最后一个`非叶子结点`，从该结点向上，循环进行`Sift Down`操作。
-至于怎么找到最后一个`非叶子结点`，只需拿到数组最后一个元素索引`i`，即可通过$\frac{i-1}{2}$求得其`父结点的索引`。
+- 作用：用于将任意数组整理成堆的形状。
+- 已知暴力扫描数组并分别调用add方法插入到空堆，其时间复杂度为$O(nlogn)$。因为是分别对n个元素执行了$O(logn)$的添加操作；
+- 而`heapify`的优点在于开始即抛弃了所有的叶子结点的可能操作，复杂度为$O(n)$（参考[链接](https://www.zhihu.com/question/20729324)）。
+- 思路：将给定数组视作二叉堆，只需要抛弃所有的`叶子结点`，而从最后一个`非叶子结点`开始，从后向前循环进行`Sift Down`下沉操作。
 
-![O(n) vs O(nlogn)，是否使用Heapify对比](../../.imgs/heap-heapify.png)
+  那么怎么找到最后一个`非叶子结点`的索引？只需拿到数组最后一个元素索引`i`，即可通过$\frac{i-1}{2}$求得其`父结点的索引`。
 
 ```js
 // 只需在构造函数中遍历执行Sift Down即可
 void MaxHeap(arr) {
   data := new ArrayList(arr) // 动态数组
-  for i := k downto 0
+  for i := parent(arr.length - 1) downto 0
     do siftDown(i)
   end
 }
