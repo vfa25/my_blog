@@ -129,9 +129,8 @@ Is the information correct? [Y/n] y
   # vi常用命令：i编辑状态, esc退出编辑状态, :q不保存退出, :wq保存退出, 后两个+!表示强制退出，如”:wq!“
   # 重启ssh
   sudo service ssh restart
-  # 如果文件不生效，则进行600可读授权，再重启ssh
+  # 如果文件不生效，则进行用户的rw可读授权，再重启ssh
   chmod 600 ~/.ssh/authorized_keys
-
   ```
 
 - 此时再打开新端口，如果前几步正确，执行`ssh my_manager@47.110.224.7`，应可以进行无密码登录了。

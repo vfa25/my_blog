@@ -55,7 +55,9 @@ VO(globalContext) = {
 }
 ```
 
-> 有了`执行上下文`及`可执行代码（字节码）`，那么接下来就开始执行（字节码+JIT即时编译）了。
+> 变量提升可参考[V8 是如何实现 JavaScript Hoist 的](https://blog.crimx.com/2015/03/29/javascript-hoist-under-the-hood/)。
+
+此时，`解释器`创建好了`执行上下文`，并在`编译阶段`已有的`可执行代码（字节码）`，那么接下来就可以执行了。
 
 ## 进入执行上下文
 

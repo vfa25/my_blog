@@ -143,7 +143,7 @@ Cache-control的格式是个时间段，优先级高于Expires，并且作为后
 
 这个比较特殊。
 
-在没有诸如`Expires`、`Cache-Control`字段时，为什么浏览器会直接`200状态码`读的本地缓存？
+在响应头没有`Expires`、`Cache-Control`字段时，为什么浏览器会直接`200状态码`读的本地缓存，而不是`304状态码`？
 
 ![启发式缓存图1](../../../.imgs/http-cache-heuristic01.png)
 

@@ -1,11 +1,15 @@
-# 字典树(Trie)
+---
+title: '字典树(Trie)'
+date: '2019-9-14'
+sidebarDepth: 3
+---
 
 又称前缀树，它更像是专门为字符串设计的集合和映射。
 
-前景提要：起初被设计来做通讯录；将每个英文姓名作为字符串条目以构建Trie，在`isWord == true`结点保存每一条目的详细信息。
+据说`Trie`问世时被设计来做通讯录：将每个英文姓名作为字符串条目以构建`Trie`，在`isWord == true`结点保存每一条目的详细信息。
 
-根据前面章节对字典（Map）的底层结构分析，在当使用搜索树时（有序映射，键可比较），其时间复杂度为$O(logn)$。
-但是，Tire可以做到**查询每个条目的时间复杂度，和一共有多少条目无关，而是与查询的字符串长度相关，其时间复杂度为$O(w)$**。
+根据前面章节对字典（Map）的结构分析，在当使用（有序映射）搜索树时，其时间复杂度为$O(logn)$。
+而`Tire`可以做到**查询每个条目的时间复杂度，和一共有多少条目无关，而是与查找的字符串长度相关，其时间复杂度为$O(w)$**，其中w表示要查找的字符串的长度。
 
 ![Trie概览](../../.imgs/trie-overview.png)
 
@@ -25,24 +29,11 @@ class Node {
 
 **空间**。
 
-从👆的Node类易知，每个结点仅存储了一个字符的信息，消耗的空间不免增大；同时当前字符映射到下一字符，也要为TreeMap开辟承载指针的空间。
-
-## 拓展
-
-- 更多的数据结构
-  - 压缩字典树（Compressed Trie）：实现方式即预处理（动态拆分），以使每个结点存储多字符；在空间成本减少的同时，其副作用是，会增加维护成本。
-  - 三分搜索树（Ternary Search Trie）：实现方式即next指针三分（对于一根结点a，根据compare，以$<a$、$==a$、$>a$作三分区）。
-  - 后缀树：同样作为字符串模式识别。
-- 更多字符串问题
-  - 子串查询（如文本中的关键词搜索）：KMP、Boyer-Moore、Rabin-Karp。
-  - 模式匹配（正则表达式引擎）。
-  - 文件压缩
-  - 编译原理
-  - 生物科学领域：DNA。
+根据私有类`Node`易知，每个结点仅存储了一个字符的信息，消耗的空间不免增大；同时当前字符映射到下一字符，也要为TreeMap开辟承载指针的空间。
 
 ## 基本操作
 
-[Java实现Trie](https://github.com/vfa25/dataStructure-algorithm/blob/master/datastructure/src/tree/Trie.java)
+[Trie代码实现（Java）](https://github.com/vfa25/dataStructure-algorithm/blob/master/datastructure/src/tree/Trie.java)。
 
 ### 添加操作
 
@@ -126,3 +117,16 @@ boolean remove(String word) {
   return true
 }
 ```
+
+## 拓展
+
+- 更多的数据结构
+  - 压缩字典树（Compressed Trie）：实现方式即预处理（动态拆分），以使每个结点存储多字符；在空间成本减少的同时，其副作用是，会增加维护成本。
+  - 三分搜索树（Ternary Search Trie）：实现方式即next指针三分（对于一根结点a，根据compare，以$<a$、$==a$、$>a$作三分区）。
+  - 后缀树：同样作为字符串模式识别。
+- 更多字符串问题
+  - 子串查询（如文本中的关键词搜索）：KMP、Boyer-Moore、Rabin-Karp。
+  - 模式匹配（正则表达式引擎）。
+  - 文件压缩
+  - 编译原理
+  - 生物科学领域：DNA。

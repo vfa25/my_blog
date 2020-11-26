@@ -131,9 +131,13 @@ public static void double11advance(int[] items, int n, int w) {
 
 ## 一个模型三个特征
 
+以求取最小路径和为例：
+![algorithm-minimum-path-sum](./imgs/algorithm-minimum-path-sum.jpg)
+，题源：[64. 最小路径和](https://leetcode-cn.com/problems/minimum-path-sum/)。
+
 - **多阶段决策最优解模型**
 
-  动态规划一般是用来解决最优问题。而解决问题的过程，需要经历多个**决策**阶段。每个决策阶段都对应着一组**状态**。然后寻找一组决策序列，经过这组决策序列，能够产生最终期望求解的**最优值**。
+  动态规划一般是用来解决最优问题。而解决问题的过程，需要经历多个**决策**阶段。每个决策阶段都对应着一组**状态**。然后寻找出一组决策序列，经过这组决策序列，能够产生最终期望求解的**最优值**。
 - **最优子结构**
 
   最优子结构指的是，问题的最优解包含子问题的最优解。反过来说就是，可以通过子问题的最优解，推导出问题的最优解。
@@ -146,12 +150,142 @@ public static void double11advance(int[] items, int n, int w) {
   2. 某阶段状态一旦确定，就不受之后阶段的决策影响。
 
   无后效性是一个非常“宽松”的要求。只要满足`动态规划问题模型`，其实基本上都会满足无后效性。
-  > 以`最短路径`为例，①当到达`(i, j)`位置时，如果需要计算其状态，只会关注其前驱位置`(i-1, j)`或是`(i, j-1)` 的状态，而不关注它们的的路径。②同时，当下次决策时，也不允许后退，即前面阶段的状态确定之后，不会被后面阶段的决策所改变。
+  > 以`最短路径`为例，①当到达`(i, j)`位置时，如果需要计算其状态，只会关注其前驱位置`(i-1, j)`或是`(i, j-1)` 的状态，而不关注它们的的路径。②当下次决策时，也不允许后退，即前面阶段的状态确定之后，不会被后面阶段的决策所改变。
 - **重复子问题**
 
   不同的决策序列，到达某个相同的阶段时，可能会产生重复的状态。
   > 以`最短路径`为例，如果看一下其`递归树`，会发现有很多重复节点。毕竟条条大路（多个路径）通（经过）罗马（同一节点）。
 
-<!-- ## 有章可循：动态规划解题思路总结
+## 有章可循：动态规划解题思路总结
 
-### 状态转移表法 -->
+一般能用动态规划解决的，都可以用回溯算法暴力搜索解决。
+
+:::details 求最小路径和，先来用回溯算法实现一下。
+尽管通过 **回溯加“备忘录”** 的方法，来避免重复子问题。但是在LeetCode上，依然在测试用例进度第60/61时，超出时间限制。
+
+```java
+class Solution {
+    private int[][] mem;
+    private int minDist = Integer.MAX_VALUE;
+    public int minPathSum(int[][] grid) {
+        int row = grid.length;
+        int column = grid[0].length;
+        mem = new int[row][column];
+        minPathSum(0, 0, 0, grid, row-1, column-1);
+        return minDist;
+    }
+
+    private void minPathSum(int i, int j, int dist, int[][] grid, int row, int column) {
+        if (i == row && j == column) {
+            dist += grid[i][j];
+            if (dist < minDist) minDist = dist;
+            return;
+        }
+        if (mem[i][j] != 0 && mem[i][j] < dist) return;
+        mem[i][j] = dist;
+        if (i < row) {
+            minPathSum(i+1, j, dist+grid[i][j], grid, row, column);
+        }
+        if (j < column) {
+            minPathSum(i, j+1, dist+grid[i][j], grid, row, column);
+        }
+    }
+}
+```
+
+:::
+
+下文中的两种方法本质是一样的，对于不熟悉的问题，可是使用`状态转移表法`，但这对于高维度问题比较弱势；如果能直接归纳出`状态转移方程`肯定是最好不过。
+
+### 状态转移表法
+
+状态转移表法的大致思路可以概括为：**回溯算法实现 - 定义状态 - 画递归树 - 找重复子问题 - 画状态转移表 - 根据递推关系填表 - 将填表过程翻译成代码**。
+
+对于前文的例图，状态推演如下所示：
+
+| 1       | 3+1 = 4        | 4+1 = 5        |
+|---------|----------------|----------------|
+| 1+1 = 2 | min(2,4)+5 = 7 | min(5,7)+1 = 6 |
+| 2+4 = 6 | min(7,6)+2 = 8 | min(6,8)+1 = 7 |
+
+```java
+public int minPathSum(int[][] grid) {
+    int row = grid.length;
+    int column = grid[0].length;
+    int[][] states = new int[row][column]; // 记录原点到(i,j)的最短路径
+    int sum = 0;
+    for (int j = 0; j < column; j++) { // 初始化states的第一行数据
+        sum += grid[0][j];
+        states[0][j] = sum;
+    }
+    sum = 0;
+    for (int i = 0; i < row; i++) { // 初始化states的第一列数据
+        sum += grid[i][0];
+        states[i][0] = sum;
+    }
+    for (int i = 1; i < row; i++) {
+        for (int j = 1; j < column; j++) {
+            states[i][j] = grid[i][j] + Math.min(states[i][j-1], states[i-1][j]);
+        }
+    }
+    return states[row-1][column-1];
+}
+```
+
+### 状态转移方程法
+
+状态转移方程法的大致思路可以概括为：**找最优子结构 - 写状态转移方程 - 将状态转移方程翻译成代码**。
+
+分析**某个问题如何通过子问题来递归求解，即最优子结构**。实现方式一种是**递归加“备忘录”**，另一种是**迭代递推**（后者和`状态转移表法`代码一样，只是思路不同）。
+
+递归的关键就是**状态转移方程**。本例中：
+
+```java
+min_dist(i, j) = w[i][j] + min(min_dist(i, j-1), min_dist(i-1, j))
+```
+
+```java
+private int[][] mem;
+public int minPathSum(int[][] grid) {
+    int row = grid.length;
+    int column = grid[0].length;
+    mem = new int[row][column];
+    return minPathSum(grid, row-1, column-1);
+}
+public int minPathSum(int[][] grid, int i, int j) {
+    if (i == 0 && j == 0) return grid[0][0];
+    if (mem[i][j] > 0) return mem[i][j];
+    int minLeft = Integer.MAX_VALUE;
+    if (j-1 >= 0) {
+        minLeft = minPathSum(grid, i, j-1);
+    }
+    int minUp = Integer.MAX_VALUE;
+    if (i-1 >= 0) {
+        minUp = minPathSum(grid, i-1, j);
+    }
+
+    int currMinDist = grid[i][j] + Math.min(minLeft, minUp);
+    mem[i][j] = currMinDist;
+    return currMinDist;
+}
+```
+
+<!-- ## Demo：如何量化两个字符串的相似度
+
+量化方法就是：`编辑距离`；指的是将一个字符串转化成另一个字符串，需要的最少编辑操作次数（比如增加一个字符、删除一个字符、替换一个字符）。
+
+- 莱文斯坦距离（Levenshtein distance），出发点是寻找`差异`的大小；允许增加、删除、替换字符这三个编辑操作。
+- 最长公共子串长度（Longest common substring length），出发点是寻找`相似度`的大小；只允许增加、删除字符这两个编辑操作。
+
+### 莱文斯坦距离
+
+:::details 回溯算法思路
+
+- 如果a[i]与b[j]匹配，继续递归考察a[i+1]和b[j+1]；
+- 如果a[i]与b[j]不匹配
+  - 可以删除a[i]，然后递归考察a[i+1]和b[j]；
+  - 可以删除b[j]，然后递归考察a[i]和b[j+1]；
+  - 可以在a[i]前面添加一个跟b[j]相同的字符，然后递归考察a[i]和b[j+1]；
+  - 可以在b[j]前面添加一个跟a[i]相同的字符，然后递归考察a[i+1]和b[j]；
+  - 可以将a[i]替换成b[j]，或者将b[j]替换成a[i]，然后递归考察a[i+1]和b[j+1]。
+::: -->

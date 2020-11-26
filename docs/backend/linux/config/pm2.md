@@ -1,13 +1,16 @@
-# PM2
+---
+title: 'PM2'
+date: '2019-9-14'
+sidebarDepth: 3
+---
 
 [PM2文档](https://pm2.io/doc/en/runtime/quick-start/?utm_source=pm2&utm_medium=website&utm_campaign=rebranding)
 
 ## 部署项目目录
 
-当然通过命令行`scp`或者登陆服务端`git`拉取代码也可以，但太麻烦；
-这里通过pm2实现、以本地配置文件进行服务端部署。
+这里通过pm2、以本地配置文件进行服务端部署。避免了繁琐的通过命令行`scp`或者登陆服务端`git`拉取代码。
 
-[Easy Deploy with SSH](https://pm2.io/doc/en/runtime/guide/easy-deploy-with-ssh/)
+参考[Easy Deploy with SSH](https://pm2.io/doc/en/runtime/guide/easy-deploy-with-ssh/)。
 
 新建一个文件`ecosystem.yaml`
 
@@ -54,29 +57,24 @@ pm2 deploy ecosystem.yaml production setup
 来看一下文件夹production：其内部又创建了 3 个子文件夹：
 source 是 clone 下来的源码，shared 里面是日志文件和 pid 之类，current 是 source 的软连接，两者是一样的代码。
 
-***报错解决***
+## Linux文件权限
 
-- 无创建目录权限：mkdir: cannot create directory ‘/www/node-blog-express’: Permission denied
+> 无创建目录权限：mkdir: cannot create directory ‘/www/node-blog-express’: Permission denied
 
-  开放权限：sudo chown -R my_manager /www/ (或者sudo chown -R $USER:$USER /www 可以让权限被当前用户访问)
+- 赋予拥有者权限：`sudo chown -R my_manager /www/` (或者同时赋予组：`sudo chown -R $USER:$GROUP /www`)
+- 开放用户rwx权限：`sudo chmod 755 /www/node-blog-express`（其中`7`表示用户的`rwx`权限与第一个`5`的用户组`rw`权限）
 
-  [chown 命令使用](https://www.jianshu.com/p/ff20d7c8132f)
+这里注意：一旦更改了部署目录，比如更改为`/var/www`，可重新`chmod`权限设置下：
 
-  甚至开放访问权限：sudo chmod 755 /www/node-blog-express
+```sh
+sudo mkdir /var/www
 
-  [Linux chmod命令](https://www.runoob.com/linux/linux-comm-chmod.html)
+# Let's add deploy user to group www-data as a standard practice.
+sudo adduser deploy www-data
 
-  这里注意：一旦更改了部署目录，比如更改为`/var/www`，可重新chmod权限设置下：
-
-  ```sh
-  sudo mkdir /var/www
-
-  # Let's add deploy user to group www-data as a standard practice.
-  sudo adduser deploy www-data
-
-  sudo chown -R www-data:www-data /var/www  
-  sudo chmod -R g+wr /var/www 
-  ```
+sudo chown -R www-data:www-data /var/www  # 表示所有者为用户www-data，使用者为用户组www-data
+sudo chmod -R g+wr /var/www # 其中 -R 表示递归
+```
 
 ## 构建编译发布 Node.js 项目
 
