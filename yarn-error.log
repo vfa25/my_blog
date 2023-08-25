@@ -1,0 +1,73 @@
+Arguments: 
+  /Users/a/.nvm/versions/node/v16.15.1/bin/node /usr/local/bin/yarn
+
+PATH: 
+  /Library/Frameworks/Python.framework/Versions/3.6/bin:/Users/a/.nvm/versions/node/v16.15.1/bin:/Users/a/Desktop/SDK/flutter/bin:/Library/Frameworks/Python.framework/Versions/3.6/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/share/dotnet:~/.dotnet/tools:/Library/Frameworks/Mono.framework/Versions/Current/Commands:/Applications/Wireshark.app/Contents/MacOS:/Library/Java/JavaVirtualMachines/jdk1.8.0_201.jdk/Contents/Home/bin:/Users/a/Library/Android/sdk/tools:/Users/a/Library/Android/sdk/platform-tools
+
+Yarn version: 
+  1.13.0
+
+Node version: 
+  16.15.1
+
+Platform: 
+  darwin x64
+
+Trace: 
+  Error: EINVAL: invalid argument, unlink '/Users/a/Documents/my_doc/node_modules/executable/node_modules/pify'
+
+npm manifest: 
+  {
+    "name": "my_doc",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+      "test": "echo \"Error: no test specified\" && exit 1",
+      "dev": "npx vuepress dev docs --port 10010",
+      "build": "cross-env rm -rf ./dist ./dist.zip && npx vuepress build docs",
+      "commit": "git-cz",
+      "img:compress": "cross-env npx webpack --mode=production --config build/webpack.config.js",
+      "prd:setup": "pm2 deploy ecosystem.yaml production setup",
+      "prd:deploy": "pm2 deploy ecosystem.yaml production",
+      "deploy": "sh deploy.sh"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "devDependencies": {
+      "clean-webpack-plugin": "^3.0.0",
+      "commitizen": "^3.1.1",
+      "cross-env": "^5.2.0",
+      "file-loader": "^4.0.0",
+      "image-webpack-loader": "^5.0.0",
+      "webpack": "^4.34.0",
+      "webpack-cli": "^3.3.4"
+    },
+    "config": {
+      "commitizen": {
+        "path": "node_modules/cz-conventional-changelog"
+      }
+    },
+    "dependencies": {
+      "@vuepress/plugin-back-to-top": "^1.0.0-rc.1",
+      "@vuepress/plugin-google-analytics": "^1.0.0-rc.1",
+      "@vuepress/plugin-pwa": "^1.0.0-rc.1",
+      "chalk": "^2.4.2",
+      "commander": "^3.0.0",
+      "husky": "^2.3.0",
+      "markdown-it-katex": "^2.0.3",
+      "md5": "^2.2.1",
+      "ora": "^3.4.0",
+      "prettier": "^1.17.1",
+      "vuepress": "^1.0.0-beta.2",
+      "vuepress-plugin-comment": "^0.5.4",
+      "vuepress-plugin-viewer": "^1.0.0"
+    }
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile
