@@ -30,7 +30,10 @@ module.exports = {
           text: 'Python3',
           link: '/backend/python/'
         },
-        // { text: 'Node', link: '/backend/node/' },
+        {
+          text: 'Node',
+          link: '/backend/node/'
+        },
         {
           text: 'Linux',
           link: '/backend/linux/'

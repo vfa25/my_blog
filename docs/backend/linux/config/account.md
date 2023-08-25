@@ -111,7 +111,7 @@ Is the information correct? [Y/n] y
   # 2. 秘钥生成，无需设置密码，命令执行完后会有id_rsa id_rsa.pub两个文件
   ssh-keygen -t rsa -b 4096 -C "邮箱（可以随便填写）"
   # 3. 开启ssh代理
-  eval "$(ssh-agent -s)
+  eval "$(ssh-agent -s)"
   # 4. 将ssh key添加入ssh代理中
   ssh-add ~/.ssh/id_rsa
   # 5. 查看公钥文件
@@ -131,6 +131,8 @@ Is the information correct? [Y/n] y
   sudo service ssh restart
   # 如果文件不生效，则进行用户的rw可读授权，再重启ssh
   chmod 600 ~/.ssh/authorized_keys
+  # 仍不生效可修改ssh配置文件 sudo vim /etc/ssh/sshd_config
+  改 \#StrictModes yes 为 StrictModes no
   ```
 
 - 此时再打开新端口，如果前几步正确，执行`ssh my_manager@47.110.224.7`，应可以进行无密码登录了。

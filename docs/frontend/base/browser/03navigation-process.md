@@ -6,7 +6,7 @@ sidebarDepth: 3
 
 ## 导航流程
 
->本篇仅关注前端向，[☞本题的原始出处请跳转](http://fex.baidu.com/blog/2014/05/what-happen/)
+>本篇仅关注前端向，[原始出处☞](http://fex.baidu.com/blog/2014/05/what-happen/)
 
 ![performance.timing](../../../.imgs/performance-timing.png)
 <center>关键事件节点API——window.performance.timing</center>
@@ -21,13 +21,13 @@ sidebarDepth: 3
   ![navigationStart](../../../.imgs/browser-navigation-start.png)
 
   - 在表现上，标签页的图标便进入了Loading状态。
-  - 页面显示依然是之前打开的页面内容；因为要到`提交文档`阶段，<font color=red>Browser进程</font>才会移除旧的页面内容。
-- <font color=red>Browser进程</font>随即通过IPC（Inter-Process Communication）将该URL发给<font color=red>NetWork网络进程</font>；
+  - 页面显示依然是之前打开的页面内容；因为要到[提交文档](#提交文档)阶段，<font color=red>Browser进程</font>才会移除旧的页面内容。
+- <font color=red>Browser进程</font>随即通过[IPC（Inter-Process Communication）](https://www.chromium.org/developers/design-documents/inter-process-communication)将该URL发给<font color=red>NetWork网络进程</font>；
 - `Redirect`跳转节点（`redirectStart`、`redirectEnd`），即若资源被`301永久性转移`或`302暂时性转移`（***注意：redirectStart、redirectEnd的时间节点是收到服务端的响应请求后，被Redirect后的第二次发起URL请求时候，若未曾重定向则值均为0***）。
 
 ### 2. 查找缓存（App cache）
 
-- 在真正发起网络请求之前，<font color=red>NetWork进程</font>会查找`浏览器缓存`（[这一节介绍](../internet/http-cache.html#http缓存)）是否缓存了该资源。如果有缓存资源，那么直接返回资源给<font color=red>Browser进程</font>。
+- 在真正发起网络请求之前，<font color=red>NetWork进程</font>会查找[浏览器缓存](../internet/http-cache.html#http缓存)是否缓存了该资源。如果有缓存资源，那么直接返回资源给<font color=red>Browser进程</font>。
 - 若缓存中没有找到资源，那么直接进入网络请求流程（`fetchStart`）。
 
 ### 3. DNS查询得到IP
@@ -45,9 +45,7 @@ sidebarDepth: 3
 
     对同一个域名的请求，Chrome默认最多同时建立6个TCP连接。如果超过，多出的请求会进入队列；否则，会直接建立TCP连接。
     ![tcp队列示意](../../../.imgs/tcp-queue.png)
-2. 建立TCP连接
-
-    [网络-数据传输流程一节介绍](../internet/internet-protocol.html#数据传输流程)（`connectStart`、`connectEnd`）。
+2. [建立TCP连接](../internet/internet-protocol.html#数据传输流程)（`connectStart`、`connectEnd`）。
 
 ### 5. 构建及发送HTTP请求
 
@@ -89,22 +87,26 @@ sidebarDepth: 3
 
 #### 响应体数据解析
 
-1. 准备渲染进程
+##### 准备渲染进程
 
-    ![process-per-site-instance](../../../.imgs/browser-process-per-site-instance.png)
+![process-per-site-instance](../../../.imgs/browser-process-per-site-instance.png)
 
-    渲染进程策略：`process-per-site-instance`
-    - 通常情况下，打开新的页面都会使用单独的渲染进程；
-    - 但如果从A页面打开B页面（即在同一个`浏览上下文组(browsing context group)`），且A和B都属于**同一站点（same-site，相同的协议名和根域名）**，那么B页面默认会复用A页面的渲染进程。
-    如果不希望这个默认规则，可通过设置属性`rel="noopener noreferrer"`。
-2. 提交文档
+渲染进程策略：`process-per-site-instance`
 
-    即<font color=red>Browser进程</font>将<font color=red>NetWork进程</font>接收到的`响应体数据`提交给<font color=red>Render进程</font>，流程如下：
-    - <font color=red>Render进程</font>收到`CommitNavigation`后，直接和<font color=red>NetWork进程</font>建立传输数据的`管道`；
-    - 等文档数据传输完成后， <font color=red>Render进程</font>返回`确认提交文档`的消息给<font color=red>Browser进程</font>；
-    - <font color=red>Browser进程</font>在收到`确认提交文档`的消息后，会移除之前的旧的文档、更新浏览器界面状态，包括：安全状态、地址栏URL、前进后退的历史状态，并置空Web页面。
+- 通常情况下，打开新的页面都会使用单独的渲染进程；
+- 但如果从A页面打开B页面（即在同一个`浏览上下文组(browsing context group)`），且A和B都属于**同一站点（same-site，相同的协议名和根域名）**，那么B页面默认会复用A页面的渲染进程。
 
-    ![ensure-commit-navigation](../../../.imgs/browser-ensure-commit-navigation.png)
+如果不希望这个默认规则，可通过设置属性`rel="noopener noreferrer"`。
+
+##### 提交文档
+
+即<font color=red>Browser进程</font>将<font color=red>NetWork进程</font>接收到的`响应体数据`提交给<font color=red>Render进程</font>，流程如下：
+
+- <font color=red>Render进程</font>收到`CommitNavigation`后，直接和<font color=red>NetWork进程</font>建立传输数据的`管道`；
+- 等文档数据传输完成后， <font color=red>Render进程</font>返回`确认提交文档`的消息给<font color=red>Browser进程</font>；
+- <font color=red>Browser进程</font>在收到`确认提交文档`的消息后，会移除之前的旧的文档、更新浏览器界面状态，包括：安全状态、地址栏URL、前进后退的历史状态，并置空Web页面。
+
+![ensure-commit-navigation](../../../.imgs/browser-ensure-commit-navigation.png)
 
 **至此，导航结束，其涵盖了从用户发起URL请求到提交文档给渲染进程的中间所有阶段。**
 

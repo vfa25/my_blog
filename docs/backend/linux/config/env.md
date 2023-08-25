@@ -25,6 +25,13 @@
   v10.15.3
   ```
 
+  ::: warning glibc基础库版本更新，严重则CPU秒跪，直接跑路那种！！！
+  [参考链接：libc.so.6: version `GLIBC_2.25‘ not found](https://blog.csdn.net/SHK242673/article/details/126938820)，
+  但这个链接实测无效。有效链接：[Ubuntu 18.04 出现GLIBC_2.28 not found的解决方法(亲测有效)](https://betheme.net/dashuju/93611.html?action=onClick)。
+
+  gilbc下载：`wget https://ftp.gnu.org/gnu/glibc/glibc-2.28.tar.gz`;
+  :::
+
 - 其他
 
   **淘宝镜像**

@@ -27,16 +27,24 @@ sidebarDepth: 3
 
 [WHATWG 规范](https://html.spec.whatwg.org/multipage/webappapis.html#event-loop-processing-model)中对事件循环机制的定义：
 
-1. 先从多个任务队列中选出一个最老的可执行任务（即`oldestTask`），并将后者从前者中删除；
-2. 然后事件循环系统将这个`oldestTask`设置为`当前正在执行的任务(currently running task)`；
-3. 并记录任务开始执行的时间`taskStartTime`；
-4. 执行`oldestTask`任务；
-5. 执行完成后，事件循环系统将`当前正在执行的任务`设置为`null`；
-6. 执行微任务队列(`MicroTasks`)；
-7. 最后统计执行完成的时长等信息；
-8. 循环上述过程
+1. 假令`taskQueue`是多个任务队列之一，其至少应包含一个可执行任务；如果没有的话，则跳到微任务步骤；
+2. `oldestTask`是`taskQueue`的第一个可执行任务，将前者从后者中删除；
+3. 然后事件循环系统将这个`oldestTask`设置为`当前正在执行的任务(currently running task)`；
+4. 并记录任务开始执行的时间`taskStartTime`；
+5. 执行`oldestTask`任务；
+6. 执行完成后，事件循环系统将`当前正在执行的任务`设置为`null`；
+7. 进入`微任务`检查点；
+8. `hasARenderingOpportunity`置为 false；
+9. 并记录任务结束的时间`now`；
+10. 将顶层浏览器上下文置为空集，报告任务的持续时间；
+11. 更新渲染。`all Document objects`按规则更新，如果其不为空，则设置`hasARenderingOpportunity`为true；
+12. 如果以下都为true：
+    - 浏览器event loop；
+    - there is no task in this event loop's task queues whose document is fully active.
+    - 微任务队列为空；
+    - `hasARenderingOpportunity`为false；
 
-> 注：事件循环与更新渲染没有本质联系，后者是显示器的`垂直同步信号`（[这一节介绍](./04render-process.html#chromium是如何保证不掉帧或跳帧的)）驱动的。
+    那么，将进入`requestIdleCallback`阶段。
 
 ### 任务队列中的任务类型
 

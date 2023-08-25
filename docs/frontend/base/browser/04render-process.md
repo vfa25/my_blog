@@ -24,7 +24,7 @@ sidebarDepth: 3
 
 该图来自于[The Anatomy of a Frame | 2016.2.15 LAST UPDATED](https://aerotwist.com/blog/the-anatomy-of-a-frame/)。
 
-但是，对于Chromium新的合成器架构`OOP-D（进程外Display Compositor）`，图中最后一步的`发送帧`已然过时，其不再由`GPU线程`完成，而是迁移到了`Viz`进程的`VizCompositor`线程（也就是以前的GPU进程。另外，在单进程架构下，`Browser进程`可以兼做Viz进程）。
+但是，对于Chromium新的合成器架构`OOP-D（进程外Display Compositor）`，图中最后一步的`发送帧`将不再由`GPU线程`完成，而是迁移到了`Viz`进程的`VizCompositor`线程（也就是以前的GPU进程。另外，在单进程架构下，`Browser进程`可以兼做Viz进程）。
 
 > 该结论参考自[Chromium Viz 浅析 - 合成器架构篇](https://zhuanlan.zhihu.com/p/62076419)。
 
@@ -32,7 +32,7 @@ sidebarDepth: 3
 
 ## 参与渲染的进程与其中的线程
 
-- **渲染进程（Renderer Process）**。一般一个标签页就是一个渲染进程，遵循渲染进程策略（[这一节介绍](./03navigation-process.html#响应体数据解析)）。
+- **渲染进程（Renderer Process）**。一般一个标签页就是一个渲染进程，遵循[渲染进程策略](./03navigation-process.html#响应体数据解析)。
   - **合成线程（Compositor Thread）**。这是最先被告知`垂直同步事件（vsync event，操作系统告知浏览器刷新一帧图像的信号）`的线程。它接收所有的输入事件。如果可能，合成线程会避免进入主线程，自己尝试将输入的事件（比如滚动）转换为屏幕的移动。它会更新图层的位置，并经由`GPU线程`直接向`GPU`提交帧来完成这个操作。如果输入事件需要进行处理，或者有其他的显示工作，它将无法直接完成该过程，这就需要主线程了。
   - **主线程**。在这里浏览器执行：JS、样式、布局和绘制等。
   - **合成图块栅格化线程（Compositor Tile Worker）**。由`合成线程`派生的包含一个或多个线程的线程池，用于调度栅格化任务，用以将分好的`图块（tiles）`传往`GPU线程`生成`位图`。
