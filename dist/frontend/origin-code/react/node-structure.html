@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>React中的数据结构 | Coding积分</title>
+    <meta name="generator" content="VuePress 1.9.10">
+    <link rel="icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/katex.min.css">
+    <link rel="stylesheet" href="/github-markdown.min.css">
+    <meta name="description" content="">
+    
+    <link rel="preload" href="/assets/css/0.styles.8fbe6532.css" as="style"><link rel="preload" href="/assets/js/app.c3848fb9.js" as="script"><link rel="preload" href="/assets/js/2.02b5b629.js" as="script"><link rel="preload" href="/assets/js/1.ef8f17f3.js" as="script"><link rel="preload" href="/assets/js/120.c3961c44.js" as="script"><link rel="preload" href="/assets/js/38.0f8f0d7a.js" as="script"><link rel="prefetch" href="/assets/js/10.b9d755fe.js"><link rel="prefetch" href="/assets/js/100.d5ab2ab3.js"><link rel="prefetch" href="/assets/js/101.01edefd5.js"><link rel="prefetch" href="/assets/js/102.b15e673b.js"><link rel="prefetch" href="/assets/js/103.987db242.js"><link rel="prefetch" href="/assets/js/104.f186fa89.js"><link rel="prefetch" href="/assets/js/105.76e8b917.js"><link rel="prefetch" href="/assets/js/106.010b8987.js"><link rel="prefetch" href="/assets/js/107.42f21df7.js"><link rel="prefetch" href="/assets/js/108.d86065b3.js"><link rel="prefetch" href="/assets/js/109.d0eaf466.js"><link rel="prefetch" href="/assets/js/11.e3794902.js"><link rel="prefetch" href="/assets/js/110.b2b44f06.js"><link rel="prefetch" href="/assets/js/111.3d6bb1a1.js"><link rel="prefetch" href="/assets/js/112.b9ef0b2e.js"><link rel="prefetch" href="/assets/js/113.398782d1.js"><link rel="prefetch" href="/assets/js/114.38a82fc3.js"><link rel="prefetch" href="/assets/js/115.8949df39.js"><link rel="prefetch" href="/assets/js/116.5b1dcdd6.js"><link rel="prefetch" href="/assets/js/117.4fe83483.js"><link rel="prefetch" href="/assets/js/118.59adcc16.js"><link rel="prefetch" href="/assets/js/119.5b74f7b8.js"><link rel="prefetch" href="/assets/js/12.e56ec85a.js"><link rel="prefetch" href="/assets/js/121.7d46e467.js"><link rel="prefetch" href="/assets/js/122.f7ca349a.js"><link rel="prefetch" href="/assets/js/123.b7a49182.js"><link rel="prefetch" href="/assets/js/124.e70aa2cf.js"><link rel="prefetch" href="/assets/js/125.8acbbd04.js"><link rel="prefetch" href="/assets/js/126.d98be1b5.js"><link rel="prefetch" href="/assets/js/127.81b496ca.js"><link rel="prefetch" href="/assets/js/128.f0365526.js"><link rel="prefetch" href="/assets/js/129.5c4dabdd.js"><link rel="prefetch" href="/assets/js/13.2f42d82c.js"><link rel="prefetch" href="/assets/js/130.aa729a09.js"><link rel="prefetch" href="/assets/js/131.320bf8fa.js"><link rel="prefetch" href="/assets/js/132.cc6773a5.js"><link rel="prefetch" href="/assets/js/14.7d5593c2.js"><link rel="prefetch" href="/assets/js/15.6450a784.js"><link rel="prefetch" href="/assets/js/16.e3f1aa9c.js"><link rel="prefetch" href="/assets/js/17.ca45b0ee.js"><link rel="prefetch" href="/assets/js/18.e888ce04.js"><link rel="prefetch" href="/assets/js/19.dc09d70a.js"><link rel="prefetch" href="/assets/js/20.f43d14e6.js"><link rel="prefetch" href="/assets/js/21.9f30a01a.js"><link rel="prefetch" href="/assets/js/22.bd44b059.js"><link rel="prefetch" href="/assets/js/23.1350f2c0.js"><link rel="prefetch" href="/assets/js/24.38f9aad3.js"><link rel="prefetch" href="/assets/js/25.31d4c253.js"><link rel="prefetch" href="/assets/js/26.8bcde4ce.js"><link rel="prefetch" href="/assets/js/27.93b75c56.js"><link rel="prefetch" href="/assets/js/28.e1109be1.js"><link rel="prefetch" href="/assets/js/29.2fb8068e.js"><link rel="prefetch" href="/assets/js/3.ebe05460.js"><link rel="prefetch" href="/assets/js/30.540e977a.js"><link rel="prefetch" href="/assets/js/31.9a6220c2.js"><link rel="prefetch" href="/assets/js/32.5412c650.js"><link rel="prefetch" href="/assets/js/33.052007c9.js"><link rel="prefetch" href="/assets/js/34.732ca00b.js"><link rel="prefetch" href="/assets/js/35.b787480e.js"><link rel="prefetch" href="/assets/js/36.9f48e293.js"><link rel="prefetch" href="/assets/js/37.6d353160.js"><link rel="prefetch" href="/assets/js/39.3dcb5ae8.js"><link rel="prefetch" href="/assets/js/4.8a29cf3f.js"><link rel="prefetch" href="/assets/js/40.b0ccd258.js"><link rel="prefetch" href="/assets/js/41.20fc8371.js"><link rel="prefetch" href="/assets/js/42.68f2e2fb.js"><link rel="prefetch" href="/assets/js/43.2f55e58e.js"><link rel="prefetch" href="/assets/js/44.3a67285c.js"><link rel="prefetch" href="/assets/js/45.ce6329db.js"><link rel="prefetch" href="/assets/js/46.4e23c1cd.js"><link rel="prefetch" href="/assets/js/47.2003ca20.js"><link rel="prefetch" href="/assets/js/48.5c1c9a59.js"><link rel="prefetch" href="/assets/js/49.aa4e44b0.js"><link rel="prefetch" href="/assets/js/5.7ffd66dd.js"><link rel="prefetch" href="/assets/js/50.03a5d40e.js"><link rel="prefetch" href="/assets/js/51.f6e3d019.js"><link rel="prefetch" href="/assets/js/52.015efd92.js"><link rel="prefetch" href="/assets/js/53.aec49688.js"><link rel="prefetch" href="/assets/js/54.71a0aa55.js"><link rel="prefetch" href="/assets/js/55.be491d90.js"><link rel="prefetch" href="/assets/js/56.bae0a90d.js"><link rel="prefetch" href="/assets/js/57.0108a8c3.js"><link rel="prefetch" href="/assets/js/58.60b3c1c6.js"><link rel="prefetch" href="/assets/js/59.71d112ea.js"><link rel="prefetch" href="/assets/js/6.40faa36f.js"><link rel="prefetch" href="/assets/js/60.3660c070.js"><link rel="prefetch" href="/assets/js/61.04418c8b.js"><link rel="prefetch" href="/assets/js/62.aab1d41a.js"><link rel="prefetch" href="/assets/js/63.1ceab668.js"><link rel="prefetch" href="/assets/js/64.dd13cfb9.js"><link rel="prefetch" href="/assets/js/65.d3737511.js"><link rel="prefetch" href="/assets/js/66.c0f2aa80.js"><link rel="prefetch" href="/assets/js/67.622b80f7.js"><link rel="prefetch" href="/assets/js/68.9a68f19d.js"><link rel="prefetch" href="/assets/js/69.5f774a78.js"><link rel="prefetch" href="/assets/js/7.efb7d949.js"><link rel="prefetch" href="/assets/js/70.f040eef0.js"><link rel="prefetch" href="/assets/js/71.ae68a433.js"><link rel="prefetch" href="/assets/js/72.9350cf9a.js"><link rel="prefetch" href="/assets/js/73.9b521f6c.js"><link rel="prefetch" href="/assets/js/74.847df1b9.js"><link rel="prefetch" href="/assets/js/75.582958c9.js"><link rel="prefetch" href="/assets/js/76.6f86660e.js"><link rel="prefetch" href="/assets/js/77.5ce16a2c.js"><link rel="prefetch" href="/assets/js/78.58708520.js"><link rel="prefetch" href="/assets/js/79.3f0c049f.js"><link rel="prefetch" href="/assets/js/80.cdc7e31e.js"><link rel="prefetch" href="/assets/js/81.f55ae753.js"><link rel="prefetch" href="/assets/js/82.9e4cabdc.js"><link rel="prefetch" href="/assets/js/83.1112fdb3.js"><link rel="prefetch" href="/assets/js/84.0cf15367.js"><link rel="prefetch" href="/assets/js/85.6e7b7d1a.js"><link rel="prefetch" href="/assets/js/86.c949b8c6.js"><link rel="prefetch" href="/assets/js/87.6279ffbf.js"><link rel="prefetch" href="/assets/js/88.2740168e.js"><link rel="prefetch" href="/assets/js/89.b1e92a4b.js"><link rel="prefetch" href="/assets/js/90.0098da46.js"><link rel="prefetch" href="/assets/js/91.56165bcf.js"><link rel="prefetch" href="/assets/js/92.7f421aab.js"><link rel="prefetch" href="/assets/js/93.cc33e234.js"><link rel="prefetch" href="/assets/js/94.59088d0f.js"><link rel="prefetch" href="/assets/js/95.6ec3464c.js"><link rel="prefetch" href="/assets/js/96.5ad75cf6.js"><link rel="prefetch" href="/assets/js/97.30e2393e.js"><link rel="prefetch" href="/assets/js/98.3e7472d9.js"><link rel="prefetch" href="/assets/js/99.1dcbc1f9.js"><link rel="prefetch" href="/assets/js/vendors~docsearch.017e494f.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.8fbe6532.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/" class="home-link router-link-active"><!----> <span class="site-name">Coding积分</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/guide/" class="nav-link">
+  最新
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="偏前端" class="dropdown-title"><span class="title">偏前端</span> <span class="arrow down"></span></button> <button type="button" aria-label="偏前端" class="mobile-dropdown-title"><span class="title">偏前端</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/frontend/base/" class="nav-link">
+  日常总结
+</a></li><li class="dropdown-item"><!----> <a href="/frontend/origin-code/" class="nav-link router-link-active">
+  源码笔记
+</a></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="Server" class="dropdown-title"><span class="title">Server</span> <span class="arrow down"></span></button> <button type="button" aria-label="Server" class="mobile-dropdown-title"><span class="title">Server</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/backend/python/" class="nav-link">
+  Python3
+</a></li><li class="dropdown-item"><!----> <a href="/backend/node/" class="nav-link">
+  Node
+</a></li><li class="dropdown-item"><!----> <a href="/backend/linux/" class="nav-link">
+  Linux
+</a></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="通用" class="dropdown-title"><span class="title">通用</span> <span class="arrow down"></span></button> <button type="button" aria-label="通用" class="mobile-dropdown-title"><span class="title">通用</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/general/dataStructure/" class="nav-link">
+  数据结构
+</a></li><li class="dropdown-item"><!----> <a href="/general/algorithm/" class="nav-link">
+  算法
+</a></li></ul></div></div> <a href="https://github.com/vfa25/my_doc" target="_blank" rel="noopener noreferrer" class="repo-link">
+    GitHub
+    <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/guide/" class="nav-link">
+  最新
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="偏前端" class="dropdown-title"><span class="title">偏前端</span> <span class="arrow down"></span></button> <button type="button" aria-label="偏前端" class="mobile-dropdown-title"><span class="title">偏前端</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/frontend/base/" class="nav-link">
+  日常总结
+</a></li><li class="dropdown-item"><!----> <a href="/frontend/origin-code/" class="nav-link router-link-active">
+  源码笔记
+</a></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="Server" class="dropdown-title"><span class="title">Server</span> <span class="arrow down"></span></button> <button type="button" aria-label="Server" class="mobile-dropdown-title"><span class="title">Server</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/backend/python/" class="nav-link">
+  Python3
+</a></li><li class="dropdown-item"><!----> <a href="/backend/node/" class="nav-link">
+  Node
+</a></li><li class="dropdown-item"><!----> <a href="/backend/linux/" class="nav-link">
+  Linux
+</a></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="通用" class="dropdown-title"><span class="title">通用</span> <span class="arrow down"></span></button> <button type="button" aria-label="通用" class="mobile-dropdown-title"><span class="title">通用</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/general/dataStructure/" class="nav-link">
+  数据结构
+</a></li><li class="dropdown-item"><!----> <a href="/general/algorithm/" class="nav-link">
+  算法
+</a></li></ul></div></div> <a href="https://github.com/vfa25/my_doc" target="_blank" rel="noopener noreferrer" class="repo-link">
+    GitHub
+    <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></nav>  <ul class="sidebar-links"><li><a href="/frontend/origin-code/" aria-current="page" class="sidebar-link">首页</a></li><li><section class="sidebar-group depth-0"><p class="sidebar-heading open"><span>React</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><section class="sidebar-group is-sub-group depth-1"><p class="sidebar-heading"><span>理念</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/frontend/origin-code/react/idea.html" class="sidebar-link">React理念</a></li><li><a href="/frontend/origin-code/react/react-mental-model.html" class="sidebar-link">React心智模型</a></li><li><a href="/frontend/origin-code/react/constructure.html" class="sidebar-link">React16+架构</a></li><li><a href="/frontend/origin-code/react/fiber-architecture.html" class="sidebar-link">Fiber架构</a></li></ul></section></li><li><section class="sidebar-group collapsable is-sub-group depth-1"><p class="sidebar-heading"><span>架构</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable is-sub-group depth-1"><p class="sidebar-heading open"><span>实现</span> <span class="arrow down"></span></p> <ul class="sidebar-links sidebar-group-items"><li><section class="sidebar-group collapsable is-sub-group depth-2"><p class="sidebar-heading open"><span>状态更新</span> <span class="arrow down"></span></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/frontend/origin-code/react/state-overview.html" class="sidebar-link">流程概览</a></li><li><a href="/frontend/origin-code/react/update-style.html" class="sidebar-link">心智模型</a></li><li><a href="/frontend/origin-code/react/update.html" class="sidebar-link">Update</a></li><li><a href="/frontend/origin-code/react/priority.html" class="sidebar-link">优先级</a></li></ul></section></li><li><section class="sidebar-group collapsable is-sub-group depth-2"><p class="sidebar-heading"><span>Concurrent Mode</span> <span class="arrow right"></span></p> <!----></section></li><li><a href="/frontend/origin-code/react/node-structure.html" aria-current="page" class="active sidebar-link">React中的数据结构</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/frontend/origin-code/react/node-structure.html#fiberroot" class="sidebar-link">FiberRoot</a></li><li class="sidebar-sub-header"><a href="/frontend/origin-code/react/node-structure.html#fiber" class="sidebar-link">Fiber</a></li><li class="sidebar-sub-header"><a href="/frontend/origin-code/react/node-structure.html#react-update-和-updatequeue" class="sidebar-link">react-update 和 updateQueue</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/frontend/origin-code/react/node-structure.html#classcomponent与hostroot" class="sidebar-link">ClassComponent与HostRoot</a></li></ul></li></ul></li></ul></section></li></ul></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>ReactNative</span> <span class="arrow right"></span></p> <!----></section></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h2 id="fiberroot"><a href="#fiberroot" class="header-anchor">#</a> FiberRoot</h2> <div class="language-js line-numbers-mode"><pre class="language-js"><code><span class="token comment">// Exported FiberRoot type includes all properties,</span>
+<span class="token comment">// To avoid requiring potentially error-prone :any casts throughout the project.</span>
+<span class="token comment">// Profiling properties are only safe to access in profiling builds (when enableSchedulerTracing is true).</span>
+<span class="token comment">// The types are defined separately within this file to ensure they stay in sync.</span>
+<span class="token comment">// (We don't have to use an inline :any cast when enableSchedulerTracing is disabled.)</span>
+<span class="token keyword">export</span> type FiberRoot <span class="token operator">=</span> <span class="token punctuation">{</span>
+  <span class="token operator">...</span>BaseFiberRootProperties<span class="token punctuation">,</span>
+  <span class="token operator">...</span>ProfilingOnlyFiberRootProperties<span class="token punctuation">,</span>
+  <span class="token operator">...</span>SuspenseCallbackOnlyFiberRootProperties<span class="token punctuation">,</span>
+  <span class="token operator">...</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+type BaseFiberRootProperties <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token operator">|</span>
+  <span class="token comment">// 可选值如下：export type RootTag = 0 | 1 | 2;</span>
+  <span class="token comment">// const LegacyRoot = 0; const BlockingRoot = 1; const ConcurrentRoot = 2;</span>
+  <span class="token comment">// The type of root (legacy, batched, concurrent, etc.)</span>
+  <span class="token literal-property property">tag</span><span class="token operator">:</span> RootTag<span class="token punctuation">,</span>
+  
+  <span class="token comment">// 应用挂载的DOM节点，render方法的第二个参数</span>
+  <span class="token comment">// Any additional information from the host associated with this root.</span>
+  <span class="token literal-property property">containerInfo</span><span class="token operator">:</span> any<span class="token punctuation">,</span>
+  <span class="token comment">// 仅持久更新，即不支持增量更新的平台，react-dom不会用到</span>
+  <span class="token comment">// Used only by persistent updates.</span>
+  <span class="token literal-property property">pendingChildren</span><span class="token operator">:</span> any<span class="token punctuation">,</span>
+  <span class="token comment">// 树结构下、当前应用对应的Fiber对象，即Root Fiber</span>
+  <span class="token comment">// The currently active root fiber. This is the mutable root of the tree.</span>
+  <span class="token literal-property property">current</span><span class="token operator">:</span> Fiber<span class="token punctuation">,</span>
+
+  <span class="token literal-property property">pingCache</span><span class="token operator">:</span>
+    <span class="token operator">|</span> WeakMap<span class="token operator">&lt;</span>Thenable<span class="token punctuation">,</span> Set<span class="token operator">&lt;</span>ExpirationTime<span class="token operator">&gt;&gt;</span>
+    <span class="token operator">|</span> Map<span class="token operator">&lt;</span>Thenable<span class="token punctuation">,</span> Set<span class="token operator">&lt;</span>ExpirationTime<span class="token operator">&gt;&gt;</span>
+    <span class="token operator">|</span> <span class="token keyword">null</span><span class="token punctuation">,</span>
+
+  <span class="token literal-property property">finishedExpirationTime</span><span class="token operator">:</span> ExpirationTime<span class="token punctuation">,</span>
+  <span class="token comment">// 已经完成的任务的FiberRoot对象，如果只有一个Root，那将恒为这个Root的Fiber，或者是null</span>
+  <span class="token comment">// 在commit阶段只会处理这个值对应的业务</span>
+  <span class="token comment">// A finished work-in-progress HostRoot that's ready to be committed.</span>
+  <span class="token literal-property property">finishedWork</span><span class="token operator">:</span> Fiber <span class="token operator">|</span> <span class="token keyword">null</span><span class="token punctuation">,</span>
+  <span class="token comment">// 当任务被挂起时通过setTimeout设置的返回内容，用来下一次如果有新的任务挂起时清理还没触发的timeout</span>
+  <span class="token comment">// Timeout handle returned by setTimeout. Used to cancel a pending timeout, if</span>
+  <span class="token comment">// it's superseded by a new one.</span>
+  <span class="token literal-property property">timeoutHandle</span><span class="token operator">:</span> TimeoutHandle <span class="token operator">|</span> NoTimeout<span class="token punctuation">,</span>
+  <span class="token comment">// 顶层context对象，只有主动调用 renderSubtreeIntoContainer 时才会有用</span>
+  <span class="token comment">// Top context object, used by renderSubtreeIntoContainer</span>
+  <span class="token literal-property property">context</span><span class="token operator">:</span> Object <span class="token operator">|</span> <span class="token keyword">null</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">pendingContext</span><span class="token operator">:</span> Object <span class="token operator">|</span> <span class="token keyword">null</span><span class="token punctuation">,</span>
+  <span class="token comment">// 用于确定第一次渲染的时候是否需要融合（SSR）</span>
+  <span class="token comment">// Determines if we should attempt to hydrate on the initial mount</span>
+  <span class="token operator">+</span>hydrate<span class="token operator">:</span> boolean<span class="token punctuation">,</span>
+  <span class="token comment">// Node returned by Scheduler.scheduleCallback</span>
+  <span class="token literal-property property">callbackNode</span><span class="token operator">:</span> <span class="token operator">*</span><span class="token punctuation">,</span>
+  <span class="token comment">// Expiration of the callback associated with this root</span>
+  <span class="token literal-property property">callbackExpirationTime</span><span class="token operator">:</span> ExpirationTime<span class="token punctuation">,</span>
+  <span class="token comment">// Priority of the callback associated with this root</span>
+  <span class="token literal-property property">callbackPriority</span><span class="token operator">:</span> ReactPriorityLevel<span class="token punctuation">,</span>
+  <span class="token comment">// 以下优先级用于区分</span>
+  <span class="token comment">// 1. 没有提交(committed)的任务</span>
+  <span class="token comment">// 2. 没有提交的挂起任务</span>
+  <span class="token comment">// 3. 没有提交的可能被挂起的任务</span>
+
+  <span class="token comment">// 最早的pending优先级（所有任务进来一开始都是这个状态）</span>
+  <span class="token comment">// The earliest pending expiration time that exists in the tree</span>
+  <span class="token literal-property property">firstPendingTime</span><span class="token operator">:</span> ExpirationTime<span class="token punctuation">,</span>
+  <span class="token comment">// 最早和最晚的 在提交的时候被 挂起（suspended） 的任务</span>
+  <span class="token comment">// The earliest suspended expiration time that exists in the tree</span>
+  <span class="token literal-property property">firstSuspendedTime</span><span class="token operator">:</span> ExpirationTime<span class="token punctuation">,</span>
+  <span class="token comment">// The latest suspended expiration time that exists in the tree</span>
+  <span class="token literal-property property">lastSuspendedTime</span><span class="token operator">:</span> ExpirationTime<span class="token punctuation">,</span>
+  <span class="token comment">// The next known expiration time after the suspended range</span>
+  <span class="token literal-property property">nextKnownPendingLevel</span><span class="token operator">:</span> ExpirationTime<span class="token punctuation">,</span>
+  <span class="token comment">// 最晚的通过一个Promise被resolve并且可以重新尝试的优先级</span>
+  <span class="token comment">// The latest time at which a suspended component pinged the root to</span>
+  <span class="token comment">// render again</span>
+  <span class="token literal-property property">lastPingedTime</span><span class="token operator">:</span> ExpirationTime<span class="token punctuation">,</span>
+  <span class="token literal-property property">lastExpiredTime</span><span class="token operator">:</span> ExpirationTime<span class="token punctuation">,</span>
+<span class="token operator">|</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+<span class="token comment">// 开发环境 React DevTools Profiler plugin相关</span>
+type ProfilingOnlyFiberRootProperties <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token operator">|</span>
+  <span class="token literal-property property">interactionThreadID</span><span class="token operator">:</span> number<span class="token punctuation">,</span>
+  <span class="token literal-property property">memoizedInteractions</span><span class="token operator">:</span> Set<span class="token operator">&lt;</span>Interaction<span class="token operator">&gt;</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">pendingInteractionMap</span><span class="token operator">:</span> PendingInteractionMap<span class="token punctuation">,</span>
+<span class="token operator">|</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+<span class="token comment">// The follow fields are only used by enableSuspenseCallback for hydration.</span>
+type SuspenseCallbackOnlyFiberRootProperties <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token operator">|</span>
+  <span class="token literal-property property">hydrationCallbacks</span><span class="token operator">:</span> <span class="token keyword">null</span> <span class="token operator">|</span> SuspenseHydrationCallbacks<span class="token punctuation">,</span>
+<span class="token operator">|</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br><span class="line-number">28</span><br><span class="line-number">29</span><br><span class="line-number">30</span><br><span class="line-number">31</span><br><span class="line-number">32</span><br><span class="line-number">33</span><br><span class="line-number">34</span><br><span class="line-number">35</span><br><span class="line-number">36</span><br><span class="line-number">37</span><br><span class="line-number">38</span><br><span class="line-number">39</span><br><span class="line-number">40</span><br><span class="line-number">41</span><br><span class="line-number">42</span><br><span class="line-number">43</span><br><span class="line-number">44</span><br><span class="line-number">45</span><br><span class="line-number">46</span><br><span class="line-number">47</span><br><span class="line-number">48</span><br><span class="line-number">49</span><br><span class="line-number">50</span><br><span class="line-number">51</span><br><span class="line-number">52</span><br><span class="line-number">53</span><br><span class="line-number">54</span><br><span class="line-number">55</span><br><span class="line-number">56</span><br><span class="line-number">57</span><br><span class="line-number">58</span><br><span class="line-number">59</span><br><span class="line-number">60</span><br><span class="line-number">61</span><br><span class="line-number">62</span><br><span class="line-number">63</span><br><span class="line-number">64</span><br><span class="line-number">65</span><br><span class="line-number">66</span><br><span class="line-number">67</span><br><span class="line-number">68</span><br><span class="line-number">69</span><br><span class="line-number">70</span><br><span class="line-number">71</span><br><span class="line-number">72</span><br><span class="line-number">73</span><br><span class="line-number">74</span><br><span class="line-number">75</span><br><span class="line-number">76</span><br><span class="line-number">77</span><br><span class="line-number">78</span><br><span class="line-number">79</span><br><span class="line-number">80</span><br><span class="line-number">81</span><br><span class="line-number">82</span><br><span class="line-number">83</span><br><span class="line-number">84</span><br><span class="line-number">85</span><br><span class="line-number">86</span><br><span class="line-number">87</span><br></div></div><h2 id="fiber"><a href="#fiber" class="header-anchor">#</a> Fiber</h2> <ul><li>每一个<code>ReactElement</code>都会对应一个<code>Fiber</code>对象。</li> <li>记录节点的各种状态（这也是<code>hooks</code>的基础。因为状态记录在<code>fiber</code>上，并在更新节点后再行更新<code>class component</code>对象；而<code>functional component</code>尽管没有<code>this</code>，应用也有能力记录状态）。</li> <li>借助树结构的性质：串联整个应用。</li></ul> <div class="language-js line-numbers-mode"><pre class="language-js"><code><span class="token comment">// Fiber对应组件的处理态，且前者非唯一</span>
+<span class="token comment">// A Fiber is work on a Component that needs to be done or was done. There can</span>
+<span class="token comment">// be more than one per component.</span>
+<span class="token keyword">export</span> type Fiber <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token operator">|</span>
+  <span class="token comment">// These first fields are conceptually members of an Instance. This used to</span>
+  <span class="token comment">// be split into a separate type and intersected with the other Fiber fields,</span>
+  <span class="token comment">// but until Flow fixes its intersection bugs, we've merged them into a</span>
+  <span class="token comment">// single type.</span>
+
+  <span class="token comment">// An Instance is shared between all versions of a component. We can easily</span>
+  <span class="token comment">// break this out into a separate object to avoid copying so much to the</span>
+  <span class="token comment">// alternate versions of the tree. We put this on a single object for now to</span>
+  <span class="token comment">// minimize the number of objects created during the initial render.</span>
+
+  <span class="token comment">// 标识不同的组件类型（23种）—— /packages/shared/ReactWorkTags.js</span>
+  <span class="token comment">// 定义 fiber 的类型. 它在 reconciliation 算法中用来确定需要完成的工作.</span>
+  <span class="token comment">// work 的种类取决于 React element 的类型.</span>
+  <span class="token comment">// createFiberFromTypeAndProps 函数将React element 映射到相关的 fiber 节点类型.</span>
+  <span class="token comment">// Tag identifying the type of fiber.</span>
+  <span class="token literal-property property">tag</span><span class="token operator">:</span> WorkTag<span class="token punctuation">,</span>
+
+  <span class="token comment">// ReactElement里面的key，一组子元素中的唯一标识</span>
+  <span class="token comment">// Unique identifier of this child.</span>
+  <span class="token literal-property property">key</span><span class="token operator">:</span> <span class="token keyword">null</span> <span class="token operator">|</span> string<span class="token punctuation">,</span>
+
+  <span class="token comment">// ReactElement.type，也就是我们调用`createElement`的第一个参数</span>
+  <span class="token comment">// The value of element.type which is used to preserve the identity during</span>
+  <span class="token comment">// reconciliation of this child.</span>
+  <span class="token literal-property property">elementType</span><span class="token operator">:</span> any<span class="token punctuation">,</span>
+
+  <span class="token comment">// 相关联的 fiber 类型, 函数或是类；</span>
+  <span class="token comment">// 对于class组件, 指向构造函数；对于DOM元素则为HTML标签名</span>
+  <span class="token comment">// The resolved function/class/ associated with this fiber.</span>
+  <span class="token literal-property property">type</span><span class="token operator">:</span> any<span class="token punctuation">,</span>
+
+  <span class="token comment">// 与当前Fiber相关的本地状态</span>
+  <span class="token comment">// ClassComp的new实例、DOM组件的DOM节点、Fun Comp则为null，HostFiber则为FiberRoot</span>
+  <span class="token comment">// The local state associated with this fiber.</span>
+  <span class="token literal-property property">stateNode</span><span class="token operator">:</span> any<span class="token punctuation">,</span>
+
+  <span class="token comment">// Conceptual aliases</span>
+  <span class="token comment">// parent : Instance -&gt; return The parent happens to be the same as the</span>
+  <span class="token comment">// return fiber since we've merged the fiber and instance.</span>
+
+  <span class="token comment">// Remaining fields belong to Fiber</span>
+
+  <span class="token comment">// 指向他在Fiber节点树中的`parent`，用来在处理完这个节点之后向上返回</span>
+  <span class="token comment">// The Fiber to return to after finishing processing this one.</span>
+  <span class="token comment">// This is effectively the parent, but there can be multiple parents (two)</span>
+  <span class="token comment">// so this is only the parent of the thing we're currently processing.</span>
+  <span class="token comment">// It is conceptually the same as the return address of a stack frame.</span>
+  <span class="token keyword">return</span><span class="token operator">:</span> Fiber <span class="token operator">|</span> <span class="token keyword">null</span><span class="token punctuation">,</span>
+  
+  <span class="token comment">// 单链表树结构</span>
+  <span class="token comment">// Singly Linked List Tree Structure.</span>
+  <span class="token comment">// 指向自己的第一个子节点</span>
+  <span class="token literal-property property">child</span><span class="token operator">:</span> Fiber <span class="token operator">|</span> <span class="token keyword">null</span><span class="token punctuation">,</span>
+  <span class="token comment">// 指向自己的兄弟结构</span>
+  <span class="token comment">// 兄弟节点的return指向同一个父节点</span>
+  <span class="token literal-property property">sibling</span><span class="token operator">:</span> Fiber <span class="token operator">|</span> <span class="token keyword">null</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">index</span><span class="token operator">:</span> number<span class="token punctuation">,</span>
+
+  <span class="token comment">// ref属性</span>
+  <span class="token comment">// The ref last used to attach this node.</span>
+  <span class="token comment">// I'll avoid adding an owner field for prod and model that as functions.</span>
+  <span class="token literal-property property">ref</span><span class="token operator">:</span>
+    <span class="token operator">|</span> <span class="token keyword">null</span>
+    <span class="token operator">|</span> <span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token parameter"><span class="token literal-property property">handle</span><span class="token operator">:</span> mixed</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token keyword">void</span><span class="token punctuation">)</span> <span class="token operator">&amp;</span> <span class="token punctuation">{</span><span class="token literal-property property">_stringRef</span><span class="token operator">:</span> <span class="token operator">?</span>string<span class="token punctuation">,</span> <span class="token operator">...</span><span class="token punctuation">}</span><span class="token punctuation">)</span>
+    <span class="token operator">|</span> RefObject<span class="token punctuation">,</span>
+
+  <span class="token comment">// Input is the data coming into process this fiber. Arguments. Props.</span>
+  <span class="token comment">// 新的变动带来的新的props</span>
+  <span class="token literal-property property">pendingProps</span><span class="token operator">:</span> any<span class="token punctuation">,</span> <span class="token comment">// This type will be more specific once we overload the tag.</span>
+  <span class="token comment">// 上一次渲染完成之后的老的props</span>
+  <span class="token literal-property property">memoizedProps</span><span class="token operator">:</span> any<span class="token punctuation">,</span> <span class="token comment">// The props used to create the output.</span>
+
+  <span class="token comment">// 该Fiber对应的组件产生的Update会存放在这个队列里面</span>
+  <span class="token comment">// A queue of state updates and callbacks.</span>
+  <span class="token literal-property property">updateQueue</span><span class="token operator">:</span> UpdateQueue<span class="token operator">&lt;</span>any<span class="token operator">&gt;</span> <span class="token operator">|</span> <span class="token keyword">null</span><span class="token punctuation">,</span>
+
+  <span class="token comment">// 上一次渲染完成时候的state</span>
+  <span class="token comment">// The state used to create the output</span>
+  <span class="token literal-property property">memoizedState</span><span class="token operator">:</span> any<span class="token punctuation">,</span>
+
+  <span class="token comment">// 一个列表，存放这个Fiber依赖的context</span>
+  <span class="token comment">// Dependencies (contexts, events) for this fiber, if it has any</span>
+  <span class="token literal-property property">dependencies</span><span class="token operator">:</span> Dependencies <span class="token operator">|</span> <span class="token keyword">null</span><span class="token punctuation">,</span>
+
+  <span class="token comment">// 用来描述当前Fiber和他子树的`Bitfield`</span>
+  <span class="token comment">// 并发模式表示这个子树是否默认是异步渲染的</span>
+  <span class="token comment">// Fiber被创建的时候他会继承父Fiber的mode</span>
+  <span class="token comment">// 其他的标识也可以在创建的时候被设置</span>
+  <span class="token comment">// 但是在创建之后不应该再被修改，特别是他的子Fiber创建之前</span>
+  <span class="token comment">/**
+  export type TypeOfMode = number;
+  export const NoMode = 0b0000;
+  export const StrictMode = 0b0001;
+  export const BlockingMode = 0b0010;
+  export const ConcurrentMode = 0b0100;
+  export const ProfileMode = 0b1000;
+  */</span>
+  <span class="token comment">// Bitfield that describes properties about the fiber and its subtree. E.g.</span>
+  <span class="token comment">// the ConcurrentMode flag indicates whether the subtree should be async-by-</span>
+  <span class="token comment">// default. When a fiber is created, it inherits the mode of its</span>
+  <span class="token comment">// parent. Additional flags can be set at creation time, but after that the</span>
+  <span class="token comment">// value should remain unchanged throughout the fiber's lifetime, particularly</span>
+  <span class="token comment">// before its child fibers are created.</span>
+  <span class="token literal-property property">mode</span><span class="token operator">:</span> TypeOfMode<span class="token punctuation">,</span>
+
+  <span class="token comment">// 用来记录Side Effect，即除了更新之外的 effects</span>
+  <span class="token comment">// Effect</span>
+  <span class="token literal-property property">effectTag</span><span class="token operator">:</span> SideEffectTag<span class="token punctuation">,</span>
+
+  <span class="token comment">// 单链表用来快速查找下一个side effect</span>
+  <span class="token comment">// Singly linked list fast path to the next fiber with side-effects.</span>
+  <span class="token literal-property property">nextEffect</span><span class="token operator">:</span> Fiber <span class="token operator">|</span> <span class="token keyword">null</span><span class="token punctuation">,</span>
+  <span class="token comment">// The first and last fiber with side-effect within this subtree. This allows</span>
+  <span class="token comment">// us to reuse a slice of the linked list when we reuse the work done within</span>
+  <span class="token comment">// this fiber.</span>
+  <span class="token comment">// 子树中第一个side effect</span>
+  <span class="token literal-property property">firstEffect</span><span class="token operator">:</span> Fiber <span class="token operator">|</span> <span class="token keyword">null</span><span class="token punctuation">,</span>
+  <span class="token comment">// 子树中最后一个side effect</span>
+  <span class="token literal-property property">lastEffect</span><span class="token operator">:</span> Fiber <span class="token operator">|</span> <span class="token keyword">null</span><span class="token punctuation">,</span>
+
+  <span class="token comment">// 代表任务在未来的哪个时间点应该被完成</span>
+  <span class="token comment">// 不包括他的子树产生的任务</span>
+  <span class="token comment">// Represents a time in the future by which this work should be completed.</span>
+  <span class="token comment">// Does not include work found in its subtree.</span>
+  <span class="token literal-property property">expirationTime</span><span class="token operator">:</span> ExpirationTime<span class="token punctuation">,</span>
+  
+  <span class="token comment">// 快速确定子树中是否有不在等待的变化</span>
+  <span class="token comment">// This is used to quickly determine if a subtree has no pending changes.</span>
+  <span class="token literal-property property">childExpirationTime</span><span class="token operator">:</span> ExpirationTime<span class="token punctuation">,</span>
+
+  <span class="token comment">// 当前的fiber 和 处于工作中的fiber（workInProgress），二者的alternate分别指向彼此</span>
+  <span class="token comment">// 在渲染完成之后他们会交换位置</span>
+  <span class="token comment">// This is a pooled version of a Fiber. Every fiber that gets updated will</span>
+  <span class="token comment">// eventually have a pair. There are cases when we can clean up pairs to save</span>
+  <span class="token comment">// memory if we need to.</span>
+  <span class="token literal-property property">alternate</span><span class="token operator">:</span> Fiber <span class="token operator">|</span> <span class="token keyword">null</span><span class="token punctuation">,</span>
+
+  <span class="token comment">// 下面是调试相关的，收集每个Fiber和子树渲染时间的</span>
+
+  <span class="token comment">// Time spent rendering this Fiber and its descendants for the current update.</span>
+  <span class="token comment">// This tells us how well the tree makes use of sCU for memoization.</span>
+  <span class="token comment">// It is reset to 0 each time we render and only updated when we don't bailout.</span>
+  <span class="token comment">// This field is only set when the enableProfilerTimer flag is enabled.</span>
+  actualDuration<span class="token operator">?</span><span class="token operator">:</span> number<span class="token punctuation">,</span>
+
+  <span class="token comment">// If the Fiber is currently active in the &quot;render&quot; phase,</span>
+  <span class="token comment">// This marks the time at which the work began.</span>
+  <span class="token comment">// This field is only set when the enableProfilerTimer flag is enabled.</span>
+  actualStartTime<span class="token operator">?</span><span class="token operator">:</span> number<span class="token punctuation">,</span>
+
+  <span class="token comment">// Duration of the most recent render time for this Fiber.</span>
+  <span class="token comment">// This value is not updated when we bailout for memoization purposes.</span>
+  <span class="token comment">// This field is only set when the enableProfilerTimer flag is enabled.</span>
+  selfBaseDuration<span class="token operator">?</span><span class="token operator">:</span> number<span class="token punctuation">,</span>
+
+  <span class="token comment">// Sum of base times for all descendants of this Fiber.</span>
+  <span class="token comment">// This value bubbles up during the &quot;complete&quot; phase.</span>
+  <span class="token comment">// This field is only set when the enableProfilerTimer flag is enabled.</span>
+  treeBaseDuration<span class="token operator">?</span><span class="token operator">:</span> number<span class="token punctuation">,</span>
+
+  <span class="token comment">// Conceptual aliases</span>
+  <span class="token comment">// workInProgress : Fiber -&gt;  alternate The alternate used for reuse happens</span>
+  <span class="token comment">// to be the same as work in progress.</span>
+  <span class="token comment">// __DEV__ only</span>
+  _debugID<span class="token operator">?</span><span class="token operator">:</span> number<span class="token punctuation">,</span>
+  _debugSource<span class="token operator">?</span><span class="token operator">:</span> Source <span class="token operator">|</span> <span class="token keyword">null</span><span class="token punctuation">,</span>
+  _debugOwner<span class="token operator">?</span><span class="token operator">:</span> Fiber <span class="token operator">|</span> <span class="token keyword">null</span><span class="token punctuation">,</span>
+  _debugIsCurrentlyTiming<span class="token operator">?</span><span class="token operator">:</span> boolean<span class="token punctuation">,</span>
+  _debugNeedsRemount<span class="token operator">?</span><span class="token operator">:</span> boolean<span class="token punctuation">,</span>
+
+  <span class="token comment">// Used to verify that the order of hooks does not change between renders.</span>
+  _debugHookTypes<span class="token operator">?</span><span class="token operator">:</span> Array<span class="token operator">&lt;</span>HookType<span class="token operator">&gt;</span> <span class="token operator">|</span> <span class="token keyword">null</span><span class="token punctuation">,</span>
+<span class="token operator">|</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br><span class="line-number">28</span><br><span class="line-number">29</span><br><span class="line-number">30</span><br><span class="line-number">31</span><br><span class="line-number">32</span><br><span class="line-number">33</span><br><span class="line-number">34</span><br><span class="line-number">35</span><br><span class="line-number">36</span><br><span class="line-number">37</span><br><span class="line-number">38</span><br><span class="line-number">39</span><br><span class="line-number">40</span><br><span class="line-number">41</span><br><span class="line-number">42</span><br><span class="line-number">43</span><br><span class="line-number">44</span><br><span class="line-number">45</span><br><span class="line-number">46</span><br><span class="line-number">47</span><br><span class="line-number">48</span><br><span class="line-number">49</span><br><span class="line-number">50</span><br><span class="line-number">51</span><br><span class="line-number">52</span><br><span class="line-number">53</span><br><span class="line-number">54</span><br><span class="line-number">55</span><br><span class="line-number">56</span><br><span class="line-number">57</span><br><span class="line-number">58</span><br><span class="line-number">59</span><br><span class="line-number">60</span><br><span class="line-number">61</span><br><span class="line-number">62</span><br><span class="line-number">63</span><br><span class="line-number">64</span><br><span class="line-number">65</span><br><span class="line-number">66</span><br><span class="line-number">67</span><br><span class="line-number">68</span><br><span class="line-number">69</span><br><span class="line-number">70</span><br><span class="line-number">71</span><br><span class="line-number">72</span><br><span class="line-number">73</span><br><span class="line-number">74</span><br><span class="line-number">75</span><br><span class="line-number">76</span><br><span class="line-number">77</span><br><span class="line-number">78</span><br><span class="line-number">79</span><br><span class="line-number">80</span><br><span class="line-number">81</span><br><span class="line-number">82</span><br><span class="line-number">83</span><br><span class="line-number">84</span><br><span class="line-number">85</span><br><span class="line-number">86</span><br><span class="line-number">87</span><br><span class="line-number">88</span><br><span class="line-number">89</span><br><span class="line-number">90</span><br><span class="line-number">91</span><br><span class="line-number">92</span><br><span class="line-number">93</span><br><span class="line-number">94</span><br><span class="line-number">95</span><br><span class="line-number">96</span><br><span class="line-number">97</span><br><span class="line-number">98</span><br><span class="line-number">99</span><br><span class="line-number">100</span><br><span class="line-number">101</span><br><span class="line-number">102</span><br><span class="line-number">103</span><br><span class="line-number">104</span><br><span class="line-number">105</span><br><span class="line-number">106</span><br><span class="line-number">107</span><br><span class="line-number">108</span><br><span class="line-number">109</span><br><span class="line-number">110</span><br><span class="line-number">111</span><br><span class="line-number">112</span><br><span class="line-number">113</span><br><span class="line-number">114</span><br><span class="line-number">115</span><br><span class="line-number">116</span><br><span class="line-number">117</span><br><span class="line-number">118</span><br><span class="line-number">119</span><br><span class="line-number">120</span><br><span class="line-number">121</span><br><span class="line-number">122</span><br><span class="line-number">123</span><br><span class="line-number">124</span><br><span class="line-number">125</span><br><span class="line-number">126</span><br><span class="line-number">127</span><br><span class="line-number">128</span><br><span class="line-number">129</span><br><span class="line-number">130</span><br><span class="line-number">131</span><br><span class="line-number">132</span><br><span class="line-number">133</span><br><span class="line-number">134</span><br><span class="line-number">135</span><br><span class="line-number">136</span><br><span class="line-number">137</span><br><span class="line-number">138</span><br><span class="line-number">139</span><br><span class="line-number">140</span><br><span class="line-number">141</span><br><span class="line-number">142</span><br><span class="line-number">143</span><br><span class="line-number">144</span><br><span class="line-number">145</span><br><span class="line-number">146</span><br><span class="line-number">147</span><br><span class="line-number">148</span><br><span class="line-number">149</span><br><span class="line-number">150</span><br><span class="line-number">151</span><br><span class="line-number">152</span><br><span class="line-number">153</span><br><span class="line-number">154</span><br><span class="line-number">155</span><br><span class="line-number">156</span><br><span class="line-number">157</span><br><span class="line-number">158</span><br><span class="line-number">159</span><br><span class="line-number">160</span><br><span class="line-number">161</span><br><span class="line-number">162</span><br><span class="line-number">163</span><br><span class="line-number">164</span><br><span class="line-number">165</span><br><span class="line-number">166</span><br><span class="line-number">167</span><br><span class="line-number">168</span><br><span class="line-number">169</span><br><span class="line-number">170</span><br><span class="line-number">171</span><br><span class="line-number">172</span><br><span class="line-number">173</span><br><span class="line-number">174</span><br><span class="line-number">175</span><br><span class="line-number">176</span><br><span class="line-number">177</span><br></div></div><h2 id="react-update-和-updatequeue"><a href="#react-update-和-updatequeue" class="header-anchor">#</a> react-update 和 updateQueue</h2> <h3 id="classcomponent与hostroot"><a href="#classcomponent与hostroot" class="header-anchor">#</a> ClassComponent与HostRoot</h3> <div class="language-js line-numbers-mode"><pre class="language-js"><code><span class="token keyword">export</span> type Update<span class="token operator">&lt;</span>State<span class="token operator">&gt;</span> <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token operator">|</span>
+  <span class="token comment">// 更新的过期时间，表示优先级。类比于需求的紧急程度</span>
+  <span class="token literal-property property">expirationTime</span><span class="token operator">:</span> ExpirationTime<span class="token punctuation">,</span>
+  <span class="token comment">// Suspense相关</span>
+  <span class="token literal-property property">suspenseConfig</span><span class="token operator">:</span> <span class="token keyword">null</span> <span class="token operator">|</span> SuspenseConfig<span class="token punctuation">,</span>
+  <span class="token comment">/** 更新类型
+   * export const UpdateState = 0;
+   * export const ReplaceState = 1;
+   * export const ForceUpdate = 2;
+   * export const CaptureUpdate = 3; error boundary
+   */</span>
+  <span class="token literal-property property">tag</span><span class="token operator">:</span> <span class="token number">0</span> <span class="token operator">|</span> <span class="token number">1</span> <span class="token operator">|</span> <span class="token number">2</span> <span class="token operator">|</span> <span class="token number">3</span><span class="token punctuation">,</span>
+  <span class="token comment">// 更细内容，如挂载时的根组件实例、或更新时`setState`的第一个参数</span>
+  <span class="token literal-property property">payload</span><span class="token operator">:</span> any<span class="token punctuation">,</span>
+  <span class="token comment">// 对应的更新回调，`setState`的第二个参数</span>
+  <span class="token literal-property property">callback</span><span class="token operator">:</span> <span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> mixed<span class="token punctuation">)</span> <span class="token operator">|</span> <span class="token keyword">null</span><span class="token punctuation">,</span>
+  <span class="token comment">// next指针指向下一个Update，UpdateQueue是单向链表</span>
+  <span class="token literal-property property">next</span><span class="token operator">:</span> Update<span class="token operator">&lt;</span>State<span class="token operator">&gt;</span><span class="token punctuation">,</span>
+  <span class="token comment">// DEV only</span>
+  priority<span class="token operator">?</span><span class="token operator">:</span> ReactPriorityLevel<span class="token punctuation">,</span>
+<span class="token operator">|</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+type SharedQueue<span class="token operator">&lt;</span>State<span class="token operator">&gt;</span> <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token operator">|</span>pending<span class="token operator">:</span> Update<span class="token operator">&lt;</span>State<span class="token operator">&gt;</span> <span class="token operator">|</span> <span class="token keyword">null</span><span class="token operator">|</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+<span class="token keyword">export</span> type UpdateQueue<span class="token operator">&lt;</span>State<span class="token operator">&gt;</span> <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token operator">|</span>
+  <span class="token comment">// 本次更新前该Fiber节点的state，Update基于该state计算更新。类比于master分支</span>
+  <span class="token literal-property property">baseState</span><span class="token operator">:</span> State<span class="token punctuation">,</span>
+  <span class="token comment">// 本次更新前该Fiber节点已保存的Update，单向环状链表</span>
+  <span class="token comment">// 之所以在更新产生前该Fiber节点内就存在Update，</span>
+  <span class="token comment">// 是由于某些Update优先级较低，所以在上次render阶段由Update计算state时被跳过</span>
+  <span class="token comment">// 类比于执行git rebase基于的commit</span>
+  <span class="token literal-property property">baseQueue</span><span class="token operator">:</span> Update<span class="token operator">&lt;</span>State<span class="token operator">&gt;</span> <span class="token operator">|</span> <span class="token keyword">null</span><span class="token punctuation">,</span>
+  <span class="token comment">// 本次触发更新，产生的Update会保存在shared.pending中形成单向环状链表。</span>
+  <span class="token comment">// 当由Update计算state时这个环会被剪开</span>
+  <span class="token comment">// 类比于本次需要合并commit的新的feature</span>
+  <span class="token literal-property property">shared</span><span class="token operator">:</span> SharedQueue<span class="token operator">&lt;</span>State<span class="token operator">&gt;</span><span class="token punctuation">,</span>
+  <span class="token comment">// 数组。保存update.callback !== null的Update</span>
+  <span class="token literal-property property">effects</span><span class="token operator">:</span> Array<span class="token operator">&lt;</span>Update<span class="token operator">&lt;</span>State<span class="token operator">&gt;&gt;</span> <span class="token operator">|</span> <span class="token keyword">null</span><span class="token punctuation">,</span>
+<span class="token operator">|</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br><span class="line-number">28</span><br><span class="line-number">29</span><br><span class="line-number">30</span><br><span class="line-number">31</span><br><span class="line-number">32</span><br><span class="line-number">33</span><br><span class="line-number">34</span><br><span class="line-number">35</span><br><span class="line-number">36</span><br><span class="line-number">37</span><br><span class="line-number">38</span><br><span class="line-number">39</span><br></div></div></div> <footer class="page-edit"><div class="edit-link"><a href="https://github.com/vfa25/my_doc/edit/master/docs/frontend/origin-code/react/node-structure.md" target="_blank" rel="noopener noreferrer">在 GitHub 上编辑此页</a> <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></div> <div class="last-updated"><span class="prefix">更新于:</span> <span class="time">11/18/2020, 12:17:27 AM</span></div></footer> <div class="page-nav"><p class="inner"><span class="prev">
+      ←
+      <a href="/frontend/origin-code/react/scheduler.html" class="prev">
+        Scheduler原理及实现
+      </a></span> <span class="next"><a href="/frontend/origin-code/react-native/overview.html">
+        源码初识概览
+      </a>
+      →
+    </span></p></div> </main></div><div class="global-ui"><div class="my-loader center" style="display:none;" data-v-2fbb21f3><div class="my-loader-circle" data-v-2fbb21f3></div></div><div class="my-popup" style="display:none;" data-v-0cb184d3><div class="my-popup-container" data-v-0cb184d3><div class="my-popup-exit" data-v-0cb184d3></div> <img src="" alt data-v-0cb184d3></div></div><!----><!----><div></div></div></div>
+    <script src="/assets/js/app.c3848fb9.js" defer></script><script src="/assets/js/2.02b5b629.js" defer></script><script src="/assets/js/1.ef8f17f3.js" defer></script><script src="/assets/js/120.c3961c44.js" defer></script><script src="/assets/js/38.0f8f0d7a.js" defer></script>
+  </body>
+</html>

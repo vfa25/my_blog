@@ -4,4 +4,3 @@ package-lock.json
 ecosystem.yaml
 docs/.imgs/main.js
 app.config.*
-dist
