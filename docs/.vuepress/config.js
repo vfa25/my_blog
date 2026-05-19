@@ -9,6 +9,7 @@ const {
 const { secret } = require('../../app.config')
 
 module.exports = {
+  base: "/my_blog/",
   dest: 'dist',
   title: 'Coding积分',
   navbar: true,
